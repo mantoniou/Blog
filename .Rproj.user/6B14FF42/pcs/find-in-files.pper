@@ -1,0 +1,10 @@
+{
+    "dialog-state" : {
+        "caseSensitive" : true,
+        "filePatterns" : [
+        ],
+        "path" : "~/Dropbox/Projects/R/Blog",
+        "query" : "Copyright 2018",
+        "regex" : false
+    }
+}

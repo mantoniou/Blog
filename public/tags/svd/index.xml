@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Svd on Manos Antoniou</title>
+    <link>/your_site_url_address/tags/svd/</link>
+    <description>Recent content in Svd on Manos Antoniou</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 27 Dec 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/your_site_url_address/tags/svd/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Building a letter recognition classifier</title>
+      <link>/your_site_url_address/post/building-a-letter-recognition-classifier/</link>
+      <pubDate>Wed, 27 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/your_site_url_address/post/building-a-letter-recognition-classifier/</guid>
+      <description>In this analysis i’ll develop a model that will predict the hand-written capital letters (english) displayed in a picture, using various of it’s attributes.
+INTRODUCTION Dataset Information
+This data set was originally used in the paper of P. W. Frey and D. J. Slate.“Letter Recognition Using Holland-style Adaptive Classifiers” (Machine Learning Vol 6 #2 March 91). It investigated the ability of several variations of Holland-style adaptive classifier systems to learn to correctly guess the letter categories associated with vectors of 16 integer attributes extracted from raster scan images of the letters.</description>
+    </item>
+    
+  </channel>
+</rss>

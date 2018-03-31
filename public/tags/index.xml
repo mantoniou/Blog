@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Manos Antoniou</title>
+    <link>/your_site_url_address/tags/</link>
+    <description>Recent content in Tags on Manos Antoniou</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 18 Feb 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/your_site_url_address/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Classification</title>
+      <link>/your_site_url_address/tags/classification/</link>
+      <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/your_site_url_address/tags/classification/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Clustering</title>
+      <link>/your_site_url_address/tags/clustering/</link>
+      <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/your_site_url_address/tags/clustering/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Decision Trees</title>
+      <link>/your_site_url_address/tags/decision-trees/</link>
+      <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/your_site_url_address/tags/decision-trees/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>K Nn</title>
+      <link>/your_site_url_address/tags/k-nn/</link>
+      <pubDate>Wed, 27 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/your_site_url_address/tags/k-nn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Logistic Regression</title>
+      <link>/your_site_url_address/tags/logistic-regression/</link>
+      <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/your_site_url_address/tags/logistic-regression/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Smoothing</title>
+      <link>/your_site_url_address/tags/smoothing/</link>
+      <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/your_site_url_address/tags/smoothing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Svd</title>
+      <link>/your_site_url_address/tags/svd/</link>
+      <pubDate>Wed, 27 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/your_site_url_address/tags/svd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Time Series</title>
+      <link>/your_site_url_address/tags/time-series/</link>
+      <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/your_site_url_address/tags/time-series/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Web Scrapping</title>
+      <link>/your_site_url_address/tags/web-scrapping/</link>
+      <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/your_site_url_address/tags/web-scrapping/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

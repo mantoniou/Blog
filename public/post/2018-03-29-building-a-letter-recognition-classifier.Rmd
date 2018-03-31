@@ -1,0 +1,351 @@
+---
+title: Building a letter recognition classifier
+author: ''
+description: "[Dec 27, 2017] In this analysis i’ll develop a model that will predict the hand-written capital letters (english) displayed
+in a picture, using various of it's attributes"
+date: '2017-12-27'
+slug: building-a-letter-recognition-classifier
+categories:
+  - R
+tags:
+  - classification
+  - clustering
+  - k-NN
+  - SVD
+---
+
+In this analysis i’ll develop a model that will predict the hand-written capital letters (english) displayed
+in a picture, using various of it's attributes.
+
+
+# INTRODUCTION
+
+**Dataset Information**
+
+This data set was originally used in the paper of **P. W. Frey and D. J. Slate."Letter Recognition Using Holland-style Adaptive Classifiers"**
+(Machine Learning Vol 6 #2 March 91). It investigated the ability of several
+variations of Holland-style adaptive classifier systems to learn to
+correctly guess the letter categories associated with vectors of 16
+integer attributes extracted from raster scan images of the letters. The actual
+data can be found at Letter Recognition Data Set Machine Learning Repository:
+https://archive.ics.uci.edu/ml/datasets/Letter+Recognition
+
+
+The objective is to identify each of a large number of 
+black-and-white rectangular pixel displays as one of the 26 capital letters in 
+the English alphabet. The character images were based on 20 different fonts and 
+each letter within these 20 fonts was randomly distorted to produce a file of 
+unique stimuli. Each stimulus was converted into primitive numerical 
+attributes (statistical moments and edge counts) which were then scaled to fit 
+into a range of integer values from 0 through 15.
+So in total there are **20000 observations** of **17 variables**. There are no 
+missing values in the data set.
+
+**The variables**
+
+1.	lettr	capital letter	(26 values from A to Z) 
+2.	x-box	horizontal position of box	(integer) 
+3.	y-box	vertical position of box	(integer) 
+4.	width	width of box	(integer) 
+5.	high height of box	(integer) 
+6.	onpix	total # on pixels	(integer) 
+7.	x-bar	mean x of on pixels in box	(integer) 
+8.	y-bar	mean y of on pixels in box	(integer) 
+9.	x2bar	mean x variance	(integer) 
+10.	y2bar	mean y variance	(integer) 
+11.	xybar	mean x y correlation	(integer) 
+12.	x2ybr	mean of x * x * y	(integer) 
+13.	xy2br	mean of x * y * y	(integer) 
+14.	x-ege	mean edge count left to right	(integer) 
+15.	xegvy	correlation of x-ege with y	(integer) 
+16.	y-ege	mean edge count bottom to top	(integer) 
+17.	yegvx	correlation of y-ege with x	(integer)
+
+
+# PRE-PROCCESSING 
+
+Since the original data set didn't contain any names on the variables, after i imported
+the data in R environment, i assigned the appropriate variable names. That was completed
+with the help of **letter-recognition.names** text file which accompanied the 
+original data.
+
+During the development of the prediction model, in order to predict the letter on 
+new observations, at first we've used all variables. Then we excluded some of the 4 
+correllated variables and finally we've used the variables created from the SVD 
+algorithm instead of the original.
+
+Before we apply the hierarchical clustering, we created a data set with each
+letter as one observation and the average of each variable, as a distinct 
+variable **(named letter.cluster)**.
+
+```{r PRE-PROCCESSING, echo=TRUE, message=FALSE, warning=FALSE}
+# Load Libraries
+library(tidyverse)
+library(stringr)
+library(scales)
+library(ggthemes)
+library(corrplot)
+library(caret)
+library(gmodels)
+library(class)
+library(ggdendro)
+
+
+# DATA WRANGLING ###############################################################
+# Insert dataset
+letter <- read.table("/Users/manos/Dropbox/Projects/R/Data/letter-recognition.data",
+                  sep = ",")
+
+# Create vector with new variable names
+name <- c("lettr", "x-box", "y-box", "width", "high", "onpix", "x-bar", "y-bar", 
+          "x2bar", "y2bar", "xybar", "x2ybr", "xy2br", "x-ege", "xegvy", "y-ege",
+          "yegvx")
+
+# Change the variable names of the dataset
+names(letter) <- name
+
+# Make it a tibble
+letter <- as_data_frame(letter)
+
+# Check for missing values
+sum(is.na(letter))
+
+# Create the summary dataset
+letter.cluster <- letter %>% 
+  group_by(lettr) %>% 
+  summarise_each(funs(mean))
+
+```
+
+
+# EXPLORATORY ANALYSIS
+
+In order to have an overview of the dataset's variability, i produced a box-plot
+matrix of all variables and each letter on the x-axis
+
+```{r exploratory box-plot, echo=TRUE, fig.height=10, message=FALSE, warning=FALSE}
+# Plot a box-plot for each letter and variable
+letter %>% 
+  gather("type", "n", 2:17) %>% 
+  ggplot()+
+  geom_boxplot(aes(x = lettr, y = n), outlier.size = .5, fill = "steelblue2", alpha = .7)+
+  facet_grid(type ~.)+
+  labs(y = "", x = "", 
+       title = "Box-Plots of all variables for each letter", 
+       subtitle = "")+
+ theme_fivethirtyeight()
+
+```
+
+It looks that in some variables, the letters levels have significant different 
+variance, than others. In particular, in **y-box** and **high** variables the different 
+letters don't seem to have any significant differences. On the other hand in **x-bar**,
+ **x2ybr**, **y-bar**, **y-ege** variables the different letters seem to have large
+ differences.
+
+
+We should check for correlated variables in the data set. Below you can see a
+correlogram of the data set variables.
+
+```{r exploratory correlogram, echo=TRUE, message=FALSE, warning=FALSE}
+# Plot a correlogram to check for correlations
+corrplot(cor(letter[,2:17]), method="number", type = "lower", number.cex = .6)
+
+```
+
+It seems that the first 4 variables **(x-box, y-box, width, high)** are quite 
+correlated. Especially x-box & width (0.85) and y-box & high (0.82) are highly 
+correlated.
+
+# MODELLING
+
+An interesting insight that could be obtained from the data set is to try to 
+predict the letter based on the variables produced by the digitized image. 
+Classification is the problem of identifying to 
+which of a set of categories (sub-populations) a new observation belongs, on the 
+basis of a training set of data containing observations (or instances) whose 
+category membership is known. So we must develop a model that classifies 
+(categorize) every observation (case) to one of the 26 letters of the alphabet.
+
+## **K-Nearest Neighbors (k-NN)**
+
+The K-nearest neighbors (kNN) algorithm used, in order to classify observations
+in a certain category (letter) by using the rest of the variables in the data set.
+It begins with a training data set made up of examples that are
+classified into several categories, as labeled by a nominal variable. Assume that we
+have a test data set containing unlabeled examples that otherwise have the same
+features as the training data. For each record in the test data set, kNN identifies k
+records in the training data that are the "nearest" in similarity, where k is an integer
+specified in advance. The unlabeled test instance is assigned the class of the majority
+of the k-nearest neighbors. We splitted the data set into a training data set
+(containing 70 % of the original data set observations) in which we build the 
+classification model and a testing data set (containing the rest of the original
+data set observations - 30%) in which we tested the model we build before.
+The results are presented in the "results" section. 
+
+```{r KNN, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Create a vector with the 70% of the dataset with respect to letter
+set.seed(10)
+inTrain = createDataPartition(letter$lettr, p = .7)[[1]]
+
+# Assign the 70% of observations to training data
+training <- letter[inTrain, -1]
+training.lettr <- c(t(letter[inTrain, 1]))
+
+# Assign the remaining 30 % of observations to testing data
+testing <- letter[-inTrain, -1]
+testing.lettr <- c(t(letter[-inTrain, 1]))
+
+
+# Run knn algorithm on training dataset
+# Create the knn model
+knn_model <- knn(train = training, test = testing, cl = training.lettr, k = 3)
+
+# Create a table in order to check the performance of the classification model
+t <- CrossTable(x = testing.lettr,y = knn_model,
+           prop.chisq=FALSE)
+
+# Calculate prediction success rate for all letters
+mean(diag(t$prop.col))
+
+# Check prediction success rate for each letter
+diag(t$prop.col)
+
+```
+
+The accuracy obtained from the nearest neighbors classification algorithm is around 
+**94,8%**.  I've used 3 nearest neighbors (k=3) for building the final model. Alternative
+number of neighbors (4,5,6,7 etc) produced slightly lower accuracy rate (94.3% - 94,7%).
+The model is better at predicting some letters, such as L, M, U, Z with more than 
+98% accuracy rate. On the other hand, other letters such as H, R, B are more difficult
+to predict (<90% accuracy rate). In the plot below you can see each letter accuracy
+rate of the final model.
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+# Create a data set with the accuracy rate of each letter
+letters <- diag(t$prop.col) %>% 
+  as.data.frame()
+
+# Make the appropriate transformations in order to plot
+letters$letter <- rownames(letters)
+
+# Plot the accuracy rate per letter
+ggplot(letters)+
+  geom_bar(aes(x = letter, y = .), stat="identity", fill = "steelblue2", alpha = .7)+
+    scale_y_continuous(labels=percent) +
+  labs(title = "Accuracy rate % per letter (K-NN algorithm)", 
+       x = "", y = "Accuracy rate %", subtittle = "")+
+ theme_fivethirtyeight()
+  
+
+```
+
+## **Singular Value Decomposition (SVD)**
+
+Since i discovered that there are some correlated variables in the data set, 
+i applied the SVD algorithm in order to create a data set with uncorrelated 
+variables. SVD is an algebraic tool that has many potential uses such as:  
+
+* Dimensionality reduction
+* Indexing (LSI)
+* Visualization/clustering of high-dimensional objects
+* Similarity computations/outlier detection
+* Rule mining, treatment of missing/wrong values
+
+Below i created a new dataset with the new svd variables and build a new model
+using k-NN algorithm.
+
+```{r SVD, echo=TRUE, message=FALSE, warning=FALSE}
+# Create an in Dataset 
+letter.svd <- svd(letter[,2:17])
+
+# Create a dataset with the SVD values
+letter2 <- as_data_frame(cbind(letter[,1],letter.svd$u))
+
+# Keep specific SVD variables
+letter2 <- letter2[,1:8]
+
+# Create a vector with the 70% of the dataset with respect to letter
+set.seed(10)
+inTrain = createDataPartition(letter2$lettr, p = .7)[[1]]
+
+# Assign the 70% of observations to training data
+training <- letter2[inTrain, -1]
+training.lettr <- c(t(letter2[inTrain, 1]))
+
+# Assign the remaining 30 % of observations to testing data
+testing <- letter2[-inTrain, -1]
+testing.lettr <- c(t(letter2[-inTrain, 1]))
+
+
+# Run knn algorithm on training dataset
+# Create the knn model
+knn_model.svd <- knn(train = training, test = testing, cl = training.lettr, k = 3)
+
+# Create a table in order to check the performance of the classification model
+s <- CrossTable(x = testing.lettr,y = knn_model.svd,
+           prop.chisq=FALSE)
+
+# Calculate prediction success rate for all letters
+mean(diag(s$prop.col))
+
+# Check prediction success rate for each letter
+diag(s$prop.col)
+
+```
+
+Even when all SVD variables (16) were used, the prediction rate is 
+around 93.4% (lower than the original of 94.8%). When we use less (e.g. 8), the 
+prediction rate is getting worst (83.4%). It seems that SVD does not help us improve 
+the prediction model. Almost all original variables have variability (add information)
+so they are useful for predicting the letter
+
+
+## **Hierarchical clustering**
+In this part of the analysis the objective is to assign the cases into 
+clusters. Cluster analysis or clustering is the task of grouping a set of objects
+in such a way that objects in the same group (called a cluster) are more similar 
+(in some sense or another) to each other than to those in other groups (clusters).
+Finally i build a hierarchical clustering model in order to understand which 
+letters are "closer" to others and maybe missclasified. We applied it on the 
+pre-proccessed data set (letter.cluster). 
+
+```{r Clustering, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Tranform the summary dataset to a dataframe
+letter.cluster <- as.data.frame(letter.cluster)
+
+# Assign letters variable as rownames
+rownames(letter.cluster) <- letter.cluster$lettr
+
+# Run the hierarchical clustering 
+clusters <- hclust(dist(letter.cluster))
+
+```
+
+At the plot below you can
+see the hierarchical clustering output. When we compare these results with 
+the missclasification rates of the original model, it seems that for some letters
+like "B", "D", "F" it looks relevant. For other letters such "A", "C" don't match.
+
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+# Plot the dendogram
+ggdendrogram(clusters, rotate = TRUE, size = 2)+
+  labs(title = "Dendogram of hierarchical clustering model")
+
+```
+
+
+
+# RESULTS
+
+Finally, after testing various models using k-NN algorithm, the best model used 
+the original predictors & 3 nearest neighbors (k=3). The accuracy obtained from 
+from the final model is **94,8%**.
+I also tried the **SVD technique** in order to check if the new uncorrelated variables
+would help us improve the prediction accuracy rate of the letter in a new 
+observation. But the model wasn't improved.
+
+
