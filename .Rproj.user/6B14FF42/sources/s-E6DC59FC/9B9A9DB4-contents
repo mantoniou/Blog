@@ -259,7 +259,7 @@ print(confusionMatrix(prediction, testing$diagnosis), digits=4)
 
 ```
 
-Although the overall accuracy of the model remains the same, now the type II error
+Although the overall accuracy of the model remains the same, now the type II error 
 is eliminated but the type I error is increased. In other words, we now have a 
 model that predicts perfectly a malign tumor but it also wrongly predicts some
 benign tumors as malignant (9.5%). 
