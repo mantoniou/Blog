@@ -2,93 +2,93 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Manos Antoniou</title>
-    <link>/manosantoniou.netlify.com/tags/</link>
+    <link>/tags/</link>
     <description>Recent content in Tags on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Sun, 18 Feb 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/manosantoniou.netlify.com/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Classification</title>
-      <link>/manosantoniou.netlify.com/tags/classification/</link>
+      <link>/tags/classification/</link>
       <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>/manosantoniou.netlify.com/tags/classification/</guid>
+      <guid>/tags/classification/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Clustering</title>
-      <link>/manosantoniou.netlify.com/tags/clustering/</link>
+      <link>/tags/clustering/</link>
       <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>/manosantoniou.netlify.com/tags/clustering/</guid>
+      <guid>/tags/clustering/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Decision Trees</title>
-      <link>/manosantoniou.netlify.com/tags/decision-trees/</link>
+      <link>/tags/decision-trees/</link>
       <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>/manosantoniou.netlify.com/tags/decision-trees/</guid>
+      <guid>/tags/decision-trees/</guid>
       <description></description>
     </item>
     
     <item>
       <title>K Nn</title>
-      <link>/manosantoniou.netlify.com/tags/k-nn/</link>
+      <link>/tags/k-nn/</link>
       <pubDate>Wed, 27 Dec 2017 00:00:00 +0000</pubDate>
       
-      <guid>/manosantoniou.netlify.com/tags/k-nn/</guid>
+      <guid>/tags/k-nn/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Logistic Regression</title>
-      <link>/manosantoniou.netlify.com/tags/logistic-regression/</link>
+      <link>/tags/logistic-regression/</link>
       <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>/manosantoniou.netlify.com/tags/logistic-regression/</guid>
+      <guid>/tags/logistic-regression/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Smoothing</title>
-      <link>/manosantoniou.netlify.com/tags/smoothing/</link>
+      <link>/tags/smoothing/</link>
       <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>/manosantoniou.netlify.com/tags/smoothing/</guid>
+      <guid>/tags/smoothing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Svd</title>
-      <link>/manosantoniou.netlify.com/tags/svd/</link>
+      <link>/tags/svd/</link>
       <pubDate>Wed, 27 Dec 2017 00:00:00 +0000</pubDate>
       
-      <guid>/manosantoniou.netlify.com/tags/svd/</guid>
+      <guid>/tags/svd/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Time Series</title>
-      <link>/manosantoniou.netlify.com/tags/time-series/</link>
+      <link>/tags/time-series/</link>
       <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>/manosantoniou.netlify.com/tags/time-series/</guid>
+      <guid>/tags/time-series/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Web Scrapping</title>
-      <link>/manosantoniou.netlify.com/tags/web-scrapping/</link>
+      <link>/tags/web-scrapping/</link>
       <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>/manosantoniou.netlify.com/tags/web-scrapping/</guid>
+      <guid>/tags/web-scrapping/</guid>
       <description></description>
     </item>
     
