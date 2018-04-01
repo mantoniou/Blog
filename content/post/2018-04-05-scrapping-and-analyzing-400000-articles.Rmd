@@ -1,0 +1,345 @@
+---
+title: Scrapping and analyzing 400.000 articles
+author: Manos Antoniou
+date: '2018-04-05'
+description: "[Apr 5, 2018] In this post i will analyze the articles published by NEWSBEAST.GR, 
+one of the main on-line publishers in Greece."
+slug: scrapping-and-analyzing-400-000-articles
+categories:
+  - R
+tags:
+  - Web scrapping
+  - Time series
+  - Smoothing
+---
+
+In this post i will analyze the articles published by [NEWSBEAST](http://www.newsbeast.gr), 
+one of the main on-line publishers in Greece. 
+The main question is **"Are there any trends on the daily posting frequency of NEWSBEAST?"**
+The steps below were followed before the main data analysis (link for the full r code can be 
+found at the end of the article):  
+
+* Scrapping the articles from the site (www.newbeast.gr) using rvest & car libraries in R  
+* Data preparation (including data cleansing, transformation)  
+* Exploratory analysis 
+
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+# Load library for web scraping
+library(rvest)
+library(car)
+
+# Create a dummy list
+v <- list()
+
+# Run the for loop to download posts from a number of pages 1 to 8000
+for(i in 1:8000){
+  v[[i]] <-  html(paste("http://www.newsbeast.gr/page/",i,sep="")) %>% 
+    html_nodes("h2 a , .article-top-meta-time , .article-top-meta-date , .feed-article-subtitle, .feed-article-excerpt, .article-top-meta-category") %>%
+    html_text()
+  
+}
+
+
+# Unlist the object created before
+test <- unlist(v)
+
+# Get the length of the object 
+a <- 1:length(test)
+
+# Create the title object
+title <- a[seq(1, length(a), 10)]
+title <- test[title]
+
+# Create the time object
+time <- a[seq(2, length(a), 10)]
+time <- test[time]
+
+# Create the date object
+date <- a[seq(3, length(a), 10)]
+date <- test[date]
+
+# Create the category object
+cat <- a[seq(4, length(a), 10)]
+cat <- test[cat]
+
+# Create the title object
+title2 <- a[seq(5, length(a), 10)]
+title2 <- test[title2]
+
+# Create the time object
+time2 <- a[seq(6, length(a), 10)]
+time2 <- test[time2]
+
+# Create the date object
+date2 <- a[seq(7, length(a), 10)]
+date2 <- test[date2]
+
+# Create the category object
+cat2 <- a[seq(8, length(a), 10)]
+cat2 <- test[cat2]
+
+# Create the text/content object
+text1 <- a[seq(9, length(a), 10)]
+text1 <- test[text1]
+
+# Create the text/content object
+text2 <- a[seq(10, length(a), 10)]
+text2 <- test[text2]
+
+# Combine the final dataset with all posts) 
+final <- as.data.frame(cbind(date,time,cat, title, title2, text1, text2))
+
+# Save as RDS for future use
+saveRDS(final, file= "/Users/manos/Dropbox/Projects/R/2018_01_Newsbeast/data/newsbeast.all.RDS")
+
+```
+
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(tidyverse)
+library(lubridate)
+library(ggthemes)
+
+
+# Insert data
+news <- readRDS("/Users/manos/Dropbox/Projects/R/2018_01_Newsbeast/data/newsbeast.all.RDS")
+
+# Create the date variable 
+news$date <- paste(news$date, news$time)
+news$date <- parse_date_time(news$date, '%d/%m/%Y %H:%M')
+
+# Change the class of text variables to character
+news$title <- as.character(news$title)
+news$title2 <- as.character(news$title2)
+news$text1 <- as.character(news$text1)
+news$text2 <- as.character(news$text2)
+
+
+```
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+
+# Calculate how many observations are different
+sum(news$title != news$title2)
+
+# Exclude the 2 observations from the dataset
+news <- filter(news, title == title2)
+
+# Delete the second variable beacause they are identical
+news$title2 <- NULL
+
+```
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+# Create a summary of the dataset
+summary(news)
+
+# Explore the structure
+str(news)
+
+```
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+
+news <- news %>% 
+  rename(category = cat,      # Change variable names
+         subtitle = text1,
+         summary = text2) %>% 
+  mutate(year = year(date),     # Create year, month, and weekday variables 
+         month_num = month(date),
+         month_name = month(date, label = TRUE),
+         day_num = wday(date),
+         day_name = wday(date, label = TRUE, week_start = 1)) %>% 
+  filter(year > 2013)    # Now we filter our dataset and keep observations from 2014 to 2017
+
+```
+
+
+# MAIN DATA ANALYSIS
+
+Let's create a scatter plot to see the number of articles published per day for the last 
+4 years. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+news %>% 
+  group_by(day = floor_date(date, unit = "day")) %>% 
+  summarise(N = n()) %>% 
+  ggplot() +
+  geom_point(aes(day, N), color = "steelblue", alpha = 0.7)+
+  labs(y = "Number of daily posts", x = "", 
+       title = "Number of daily posts from NEWSBEAST.GR", 
+       subtitle = "Includes all posts from 2014 until the end of 2017")+
+ theme_fivethirtyeight()
+```
+
+
+We can spot clearly that there is a constant trend (during the last 4 years) 
+of two different patterns on number of daily articles published. We suspect that
+on specific weekdays (maybe weekends?) there are significantly less published daily articles.  
+A second trend (not so clear) could be that each consecutive year less articles
+are published. 
+
+Now let's plot it again by distinguish each week day with a different color for 
+a more clear view.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+news %>% 
+  group_by(day = floor_date(date, unit = "day"), day_name) %>% 
+  summarise(N = n()) %>% 
+  ggplot() +
+  geom_point(aes(day, N, color = day_name))+
+  labs(y = "Number of daily posts", x = "", 
+       title = "Number of daily posts from NEWSBEAST.GR", 
+       subtitle = "Includes all posts from 2014 until the end of 2017",
+       fill = "Week Day")+
+  scale_color_discrete(name = "Week Day")+
+  theme_fivethirtyeight()
+  
+```
+
+So now it is clear that during the weekends the number of daily posts are much lower 
+than on work-week days. 
+
+
+# MODELLING
+
+Now let's try to fit a model on each week day and create a plot to present these. 
+In the plot below each weekday is presented by by fitting a separate smooth line 
+using [LOESS regression](https://en.wikipedia.org/wiki/Local_regression)
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+news %>% 
+  group_by(day = floor_date(date, unit = "day"), day_name) %>% 
+  summarise(N = n()) %>% 
+  ggplot() +
+  geom_smooth(
+    mapping = aes(day, N, colour = day_name),
+    show.legend = TRUE, method = "loess") +
+  labs(y = "Number of daily posts", x = "", 
+       title = "Number of daily posts from NEWSBEAST.GR", 
+       subtitle = "with LOESS curve fitted")+
+  scale_color_discrete(name = "Week Day")+
+  theme_fivethirtyeight()
+
+
+  
+```
+
+The standard error for weekend days (95% confidence level) indicates that the 
+difference from the work-week days is significant.  
+  
+
+Now let's investigate if there are significant differences between different years.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+news %>% 
+  group_by(year, day = floor_date(date, unit = "day")) %>% 
+  summarise(N = n()) %>% 
+  group_by(year) %>% 
+  summarise(avg.daily = mean(N),
+            se = sd(N)/sqrt(n())) %>%
+  mutate(lower.ci.mpg = avg.daily - qt(1 - (0.05 / 2), n() - 1) * se,
+         upper.ci.mpg = avg.daily + qt(1 - (0.05 / 2), n() - 1) * se) %>% 
+  ggplot(aes(year, avg.daily)) + 
+  geom_bar(stat="identity", fill="steelblue", alpha = .7, position=position_dodge())+
+  geom_errorbar(aes(ymin = lower.ci.mpg, ymax = upper.ci.mpg), color = "red")+
+  labs(y = "Average daily posts", x = "", 
+       title = "Average daily posts per year from NEWSBEAST.GR", 
+       subtitle = "with error bars")+
+  theme_fivethirtyeight()
+
+
+
+```
+
+By looking at the error bars it looks 
+that all differences (between years) are statistically significant, except when comparing 2016 with
+2017 were the error bars are overlapping.  
+
+This finding can be confirmed by applying the non-parametric [Wilcoxon signed-rank](https://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test)
+test in different samples (table below)
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+
+# Create the dataset
+news2 <- news %>% 
+  group_by(year, day = floor_date(date, unit = "day")) %>% 
+  summarise(N = n()) 
+
+
+# Perform the Wilcoxon signed-rank test in different samples
+wilcox.test(news2[news2$year == 2014,]$N, news2[news2$year == 2015,]$N, alternative = "two.sided")
+wilcox.test(news2[news2$year == 2015,]$N, news2[news2$year == 2016,]$N, alternative = "two.sided")
+wilcox.test(news2[news2$year == 2016,]$N, news2[news2$year == 2017,]$N, alternative = "two.sided")
+
+```
+
+| Wilcoxon test between Years | p-value |
+|:---------------------------:|:-------:|
+| 2014 - 2015                 | < 0.001 |
+| 2015 - 2016                 | < 0.001 |
+| 2016 - 2017                 | < 0.001 |
+
+
+All p-values are very low (<0.01) with confidence 
+level of 0.95, so the difference in daily mean articles posted is significant.  
+
+
+# TIME SERIES ANALYSIS
+
+Finally in order to investigate other, less obvious seasonal trends, we used
+a package dedicated on time series analysis. Using the [prophet](https://github.com/facebook/prophet) 
+package for R a forecasting model was fitted, as can be seen below, which revealed
+more seasonal trends. In particular two major "drops" appear in daily articles
+around the **christmas period** and the **summer holidays** (around August). There is also a minor 
+"drop" around the **Easter period**. 
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(prophet)
+
+df <- news2[, -1] %>% 
+  rename(y = N, ds = day)
+
+m <- prophet(df)
+future <- make_future_dataframe(m, periods = 365)
+
+forecast <- predict(m, future)
+
+plot(m, forecast)
+
+```
+
+The other useful feature is the ability to plot the various components (plot below)
+It is a simple way to pull out the daily/weekly/yearly trends. 
+In particular in the chart below we can easily spot the drop on the weekends,
+the "drops" in daily articles around the **christmas period**, **summer holidays**, 
+**Easter period** and the yearly "drop".
+
+
+```{r}
+prophet_plot_components(m, forecast)
+
+```
+
+
+
+# CONCLUSIONS
+
+There are various outcomes from this analysis on Newsbeast.gr. In particular:  
+
+* During the last 4 years there is a significant decrease on daily posted articles. Overall around **30%** less articles.  
+* The published articles during the weekends are much less than on weekdays.  
+* There are 2 major "drops" in daily articles each year, during the Christmas & summer holidays.  
+* There is a minor "drop" in daily articles published each year during the Easter holidays
+
+
+[Full R code](https://github.com/mantoniou/blogdown/blob/master/content/post/2018-03-13-scrapping-and-analyzing-400-000-articles-from-newsbeast-gr.Rmd)
+
