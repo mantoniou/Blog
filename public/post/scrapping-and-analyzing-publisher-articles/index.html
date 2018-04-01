@@ -13,8 +13,8 @@
     
   
   
-  <meta name="twitter:title" content="Scrapping and analyzing 400.000 articles"/>
-  <meta name="twitter:description" content="[Apr 5, 2018] In this post i will analyze the articles published by NEWSBEAST.GR, one of the main on-line publishers in Greece."/>
+  <meta name="twitter:title" content="Scrapping and analyzing publisher articles"/>
+  <meta name="twitter:description" content="[Apr 3, 2018] In this post i will analyze the articles published by NEWSBEAST.GR, one of the main on-line publishers in Greece."/>
   
     <meta name="twitter:site" content="@your_twitter_id"/>
   
@@ -30,7 +30,7 @@
 		
 		<meta name="description" content="Site Description">
 		<meta name="generator" content="Hugo 0.36.1" />
-		<title>Scrapping and analyzing 400.000 articles &middot; Manos Antoniou</title>
+		<title>Scrapping and analyzing publisher articles &middot; Manos Antoniou</title>
 		<link rel="shortcut icon" href="/images/favicon.ico">
 		<link rel="stylesheet" href="/css/style.css">
 		<link rel="stylesheet" href="/css/highlight.css">
@@ -69,10 +69,10 @@
             <article>
                 <header>
                     <h1>
-                        Scrapping and analyzing 400.000 articles
+                        Scrapping and analyzing publisher articles
                     </h1>
                     <h2 class="headline">
-                    Apr 5, 2018 00:00
+                    Apr 3, 2018 00:00
                     · 580 words
                     · 3 minute read
                       <span class="tags">
@@ -105,20 +105,20 @@
 <div id="main-data-analysis" class="section level1">
 <h1>MAIN DATA ANALYSIS</h1>
 <p>Let’s create a scatter plot to see the number of articles published per day for the last 4 years.</p>
-<p><img src="/post/2018-04-05-scrapping-and-analyzing-400000-articles_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="/post/2018-04-03-scrapping-and-analyzing-publisher-articles_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>We can spot clearly that there is a constant trend (during the last 4 years) of two different patterns on number of daily articles published. We suspect that on specific weekdays (maybe weekends?) there are significantly less published daily articles.<br />
 A second trend (not so clear) could be that each consecutive year less articles are published.</p>
 <p>Now let’s plot it again by distinguish each week day with a different color for a more clear view.</p>
-<p><img src="/post/2018-04-05-scrapping-and-analyzing-400000-articles_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="/post/2018-04-03-scrapping-and-analyzing-publisher-articles_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>So now it is clear that during the weekends the number of daily posts are much lower than on work-week days.</p>
 </div>
 <div id="modelling" class="section level1">
 <h1>MODELLING</h1>
 <p>Now let’s try to fit a model on each week day and create a plot to present these. In the plot below each weekday is presented by by fitting a separate smooth line using <a href="https://en.wikipedia.org/wiki/Local_regression">LOESS regression</a></p>
-<p><img src="/post/2018-04-05-scrapping-and-analyzing-400000-articles_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="/post/2018-04-03-scrapping-and-analyzing-publisher-articles_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>The standard error for weekend days (95% confidence level) indicates that the difference from the work-week days is significant.</p>
 <p>Now let’s investigate if there are significant differences between different years.</p>
-<p><img src="/post/2018-04-05-scrapping-and-analyzing-400000-articles_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="/post/2018-04-03-scrapping-and-analyzing-publisher-articles_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>By looking at the error bars it looks that all differences (between years) are statistically significant, except when comparing 2016 with 2017 were the error bars are overlapping.</p>
 <p>This finding can be confirmed by applying the non-parametric <a href="https://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test">Wilcoxon signed-rank</a> test in different samples (table below)</p>
 <table>
@@ -151,10 +151,10 @@ A second trend (not so clear) could be that each consecutive year less articles 
 <pre><code>## Initial log joint probability = -86.749
 ## Optimization terminated normally: 
 ##   Convergence detected: relative gradient magnitude is below tolerance</code></pre>
-<p><img src="/post/2018-04-05-scrapping-and-analyzing-400000-articles_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="/post/2018-04-03-scrapping-and-analyzing-publisher-articles_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>The other useful feature is the ability to plot the various components (plot below) It is a simple way to pull out the daily/weekly/yearly trends. In particular in the chart below we can easily spot the drop on the weekends, the “drops” in daily articles around the <strong>christmas period</strong>, <strong>summer holidays</strong>, <strong>Easter period</strong> and the yearly “drop”.</p>
 <pre class="r"><code>prophet_plot_components(m, forecast)</code></pre>
-<p><img src="/post/2018-04-05-scrapping-and-analyzing-400000-articles_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="/post/2018-04-03-scrapping-and-analyzing-publisher-articles_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
 <div id="conclusions" class="section level1">
 <h1>CONCLUSIONS</h1>
@@ -175,7 +175,7 @@ A second trend (not so clear) could be that each consecutive year less articles 
             </article>
 
             
-                <a class="twitter" href="https://twitter.com/intent/tweet?text=%2fpost%2fscrapping-and-analyzing-400-000-articles%2f - Scrapping%20and%20analyzing%20400.000%20articles by @your_twitter_id"><span class="icon-twitter"> tweet</span></a>
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=%2fpost%2fscrapping-and-analyzing-publisher-articles%2f - Scrapping%20and%20analyzing%20publisher%20articles by @your_twitter_id"><span class="icon-twitter"> tweet</span></a>
 
 <a class="facebook" href="#" onclick="
     window.open(
