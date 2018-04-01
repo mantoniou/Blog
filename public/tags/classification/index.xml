@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Classification on Manos Antoniou</title>
-    <link>/your_site_url_address/tags/classification/</link>
+    <link>/tags/classification/</link>
     <description>Recent content in Classification on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Sun, 18 Feb 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/your_site_url_address/tags/classification/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/classification/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Predicting using classification methods</title>
-      <link>/your_site_url_address/post/predicting-using-classification-methods/</link>
+      <link>/post/predicting-using-classification-methods/</link>
       <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>/your_site_url_address/post/predicting-using-classification-methods/</guid>
+      <guid>/post/predicting-using-classification-methods/</guid>
       <description>In this analysis i’ll try to build a model that will predict whether a tumor is malignant or benign, based on data from a study on breast cancer. Classification algorithms will be used in the modelling process.
 The dataset
 The data for this analysis refer to 569 patients from a study on breast cancer. The actual data can be found at UCI (Machine Learning Repository): https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic). The variables were computed from a digitized image of a breast mass and describe characteristics of the cell nucleus present in the image.</description>
@@ -24,10 +24,10 @@ The data for this analysis refer to 569 patients from a study on breast cancer. 
     
     <item>
       <title>Building a letter recognition classifier</title>
-      <link>/your_site_url_address/post/building-a-letter-recognition-classifier/</link>
+      <link>/post/building-a-letter-recognition-classifier/</link>
       <pubDate>Wed, 27 Dec 2017 00:00:00 +0000</pubDate>
       
-      <guid>/your_site_url_address/post/building-a-letter-recognition-classifier/</guid>
+      <guid>/post/building-a-letter-recognition-classifier/</guid>
       <description>In this analysis i’ll develop a model that will predict the hand-written capital letters (english) displayed in a picture, using various of it’s attributes.
 INTRODUCTION Dataset Information
 This data set was originally used in the paper of P. W. Frey and D. J. Slate.“Letter Recognition Using Holland-style Adaptive Classifiers” (Machine Learning Vol 6 #2 March 91). It investigated the ability of several variations of Holland-style adaptive classifier systems to learn to correctly guess the letter categories associated with vectors of 16 integer attributes extracted from raster scan images of the letters.</description>

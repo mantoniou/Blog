@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Smoothing on Manos Antoniou</title>
-    <link>/your_site_url_address/tags/smoothing/</link>
+    <link>/tags/smoothing/</link>
     <description>Recent content in Smoothing on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Wed, 04 Apr 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/your_site_url_address/tags/smoothing/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/smoothing/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Scrapping and analyzing 400.000 articles</title>
-      <link>/your_site_url_address/post/scrapping-and-analyzing-400-000-articles/</link>
+      <link>/post/scrapping-and-analyzing-400-000-articles/</link>
       <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>/your_site_url_address/post/scrapping-and-analyzing-400-000-articles/</guid>
+      <guid>/post/scrapping-and-analyzing-400-000-articles/</guid>
       <description>In this post i will analyze the articles published by NEWSBEAST, one of the main on-line publishers in Greece. The main question is “Are there any trends on the daily posting frequency of NEWSBEAST?” The steps below were followed before the main data analysis (link for the full r code can be found at the end of the article):
  Scrapping the articles from the site (www.newbeast.gr) using rvest &amp;amp; car libraries in R</description>
     </item>

@@ -3,109 +3,109 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/your_site_url_address/post/scrapping-and-analyzing-400-000-articles/</loc>
+    <loc>/post/scrapping-and-analyzing-400-000-articles/</loc>
     <lastmod>2018-04-04T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/your_site_url_address/post/predicting-using-classification-methods/</loc>
+    <loc>/post/predicting-using-classification-methods/</loc>
     <lastmod>2018-02-18T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/your_site_url_address/post/building-a-letter-recognition-classifier/</loc>
+    <loc>/post/building-a-letter-recognition-classifier/</loc>
     <lastmod>2017-12-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/your_site_url_address/about/</loc>
+    <loc>/about/</loc>
     <lastmod>2015-06-20T14:02:37+02:00</lastmod>
   </url>
   
   <url>
-    <loc>/your_site_url_address/posts/</loc>
+    <loc>/posts/</loc>
     <lastmod>2015-06-20T14:02:37+02:00</lastmod>
   </url>
   
   <url>
-    <loc>/your_site_url_address/categories/</loc>
+    <loc>/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/your_site_url_address/tags/classification/</loc>
+    <loc>/tags/classification/</loc>
     <lastmod>2018-02-18T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/your_site_url_address/tags/clustering/</loc>
+    <loc>/tags/clustering/</loc>
     <lastmod>2018-02-18T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/your_site_url_address/tags/decision-trees/</loc>
+    <loc>/tags/decision-trees/</loc>
     <lastmod>2018-02-18T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/your_site_url_address/tags/k-nn/</loc>
+    <loc>/tags/k-nn/</loc>
     <lastmod>2017-12-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/your_site_url_address/tags/logistic-regression/</loc>
+    <loc>/tags/logistic-regression/</loc>
     <lastmod>2018-02-18T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/your_site_url_address/</loc>
+    <loc>/</loc>
     <lastmod>2018-04-04T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/your_site_url_address/post/</loc>
+    <loc>/post/</loc>
     <lastmod>2018-04-04T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/your_site_url_address/categories/r/</loc>
+    <loc>/categories/r/</loc>
     <lastmod>2018-04-04T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/your_site_url_address/tags/smoothing/</loc>
+    <loc>/tags/smoothing/</loc>
     <lastmod>2018-04-04T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/your_site_url_address/tags/svd/</loc>
+    <loc>/tags/svd/</loc>
     <lastmod>2017-12-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/your_site_url_address/tags/</loc>
+    <loc>/tags/</loc>
     <lastmod>2018-02-18T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/your_site_url_address/tags/time-series/</loc>
+    <loc>/tags/time-series/</loc>
     <lastmod>2018-04-04T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/your_site_url_address/tags/web-scrapping/</loc>
+    <loc>/tags/web-scrapping/</loc>
     <lastmod>2018-04-04T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
