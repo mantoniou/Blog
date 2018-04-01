@@ -1,10 +1,10 @@
 ---
-title: Predicting using classification methods
-author: Manos Antoniou
-date: '2018-02-18'
-description: "[Feb 18, 2018] Build a model that will predict whether a tumor
+title: Predict using classification methods
+author: ''
+date: '2018-02-19'
+description: "[Feb 19, 2018] Build a model that will predict whether a tumor
 is malignant or benign, based on data from a study on breast cancer."
-slug: predicting-using-classification-methods
+slug: predict-using-classification-methods
 categories:
   - R
 tags:

@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 18 Feb 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 19 Feb 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>Classification</title>
       <link>/tags/classification/</link>
-      <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 19 Feb 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/classification/</guid>
       <description></description>
@@ -23,7 +23,7 @@
     <item>
       <title>Clustering</title>
       <link>/tags/clustering/</link>
-      <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 19 Feb 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/clustering/</guid>
       <description></description>
@@ -32,7 +32,7 @@
     <item>
       <title>Decision Trees</title>
       <link>/tags/decision-trees/</link>
-      <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 19 Feb 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/decision-trees/</guid>
       <description></description>
@@ -41,7 +41,7 @@
     <item>
       <title>K Nn</title>
       <link>/tags/k-nn/</link>
-      <pubDate>Wed, 27 Dec 2017 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 28 Dec 2017 00:00:00 +0000</pubDate>
       
       <guid>/tags/k-nn/</guid>
       <description></description>
@@ -50,7 +50,7 @@
     <item>
       <title>Logistic Regression</title>
       <link>/tags/logistic-regression/</link>
-      <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 19 Feb 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/logistic-regression/</guid>
       <description></description>
@@ -68,7 +68,7 @@
     <item>
       <title>Svd</title>
       <link>/tags/svd/</link>
-      <pubDate>Wed, 27 Dec 2017 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 28 Dec 2017 00:00:00 +0000</pubDate>
       
       <guid>/tags/svd/</guid>
       <description></description>

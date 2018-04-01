@@ -6,17 +6,17 @@
     <description>Recent content in Decision Trees on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 18 Feb 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 19 Feb 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/decision-trees/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Predicting using classification methods</title>
-      <link>/post/predicting-using-classification-methods/</link>
-      <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
+      <title>Predict using classification methods</title>
+      <link>/post/predict-using-classification-methods/</link>
+      <pubDate>Mon, 19 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/predicting-using-classification-methods/</guid>
+      <guid>/post/predict-using-classification-methods/</guid>
       <description>In this analysis i’ll try to build a model that will predict whether a tumor is malignant or benign, based on data from a study on breast cancer. Classification algorithms will be used in the modelling process.
 The dataset
 The data for this analysis refer to 569 patients from a study on breast cancer. The actual data can be found at UCI (Machine Learning Repository): https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic). The variables were computed from a digitized image of a breast mass and describe characteristics of the cell nucleus present in the image.</description>

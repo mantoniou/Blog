@@ -1,10 +1,10 @@
 ---
-title: Predicting using classification methods
-author: Manos Antoniou
-date: '2018-02-18'
-description: "[Feb 18, 2018] Build a model that will predict whether a tumor
+title: Predict using classification methods
+author: ''
+date: '2018-02-19'
+description: "[Feb 19, 2018] Build a model that will predict whether a tumor
 is malignant or benign, based on data from a study on breast cancer."
-slug: predicting-using-classification-methods
+slug: predict-using-classification-methods
 categories:
   - R
 tags:
@@ -66,19 +66,19 @@ ggplot(med2)+
   theme(axis.title = element_text()) + 
   ylab(&quot;Predictor&#39;s log value&quot;) + 
   xlab(&#39;&#39;)</code></pre>
-<p><img src="/your_site_url_addresspost/2018-02-18-predicting-using-classification-methods_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="/post/2018-02-19-predict-using-classification-methods_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>It seems that for most predictors the malignant level of tumor type has higher values than the benign level.</p>
 <p>Now let’s see if the predictors are correlated. Below there is a scatter-plot matrix of all predictors.</p>
 <pre class="r"><code># Scatterplot matrix of all numeric variables
 pairs(~., data = med[, sapply(med, is.numeric)], main = &quot;Scatterplot Matrix of variables&quot;)</code></pre>
-<p><img src="/your_site_url_addresspost/2018-02-18-predicting-using-classification-methods_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="/post/2018-02-19-predict-using-classification-methods_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>We can see that there are some predictors that are strongly related, as expected, such as radius, perimeter &amp; area.</p>
 <p>A correlogram will serve us better and quantify all correlations.</p>
 <pre class="r"><code>library(corrplot)
 
 # Plot correlogram of numeric variables
 corrplot(cor(med[,2:11]), type=&quot;lower&quot;, tl.srt = 90)</code></pre>
-<p><img src="/your_site_url_addresspost/2018-02-18-predicting-using-classification-methods_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="/post/2018-02-19-predict-using-classification-methods_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>We can spot some less significant correlations, such as concave &amp; concativity &amp; compactness. Also concave against radius, perimeter &amp; area.</p>
 </div>
 <div id="predicting-using-classification-methods" class="section level2">
@@ -407,7 +407,7 @@ print(confusionMatrix(prediction, testing$diagnosis), digits=4)</code></pre>
 
 # Plot the Classification Tree
 rpart.plot(model.all$finalModel, main = &quot;Classification Tree of tumor type prediction&quot;)</code></pre>
-<p><img src="/your_site_url_addresspost/2018-02-18-predicting-using-classification-methods_files/figure-html/Decision%20Tree%20Plot-1.png" width="672" /></p>
+<p><img src="/post/2018-02-19-predict-using-classification-methods_files/figure-html/Decision%20Tree%20Plot-1.png" width="672" /></p>
 <p>From the plot above, we can assume that concave and texture are the most import important predictors for tumor type (splits on the classification trees).</p>
 </div>
 </div>
