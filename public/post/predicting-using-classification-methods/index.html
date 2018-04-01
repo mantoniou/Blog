@@ -9,12 +9,12 @@
   
     <meta name="twitter:card" content="summary"/>
     
-      <meta name="twitter:image" content="/images/avatar.png" />
+      <meta name="twitter:image" content="/manosantoniou.netlify.comimages/avatar.png" />
     
   
   
-  <meta name="twitter:title" content="Predicting using classification methods"/>
-  <meta name="twitter:description" content="[Feb 18, 2018] Build a model that will predict whether a tumor is malignant or benign, based on data from a study on breast cancer."/>
+  <meta name="twitter:title" content="Testing"/>
+  <meta name="twitter:description" content="[Testing] Build a model that will predict whether a tumor is malignant or benign, based on data from a study on breast cancer."/>
   
     <meta name="twitter:site" content="@your_twitter_id"/>
   
@@ -30,17 +30,17 @@
 		
 		<meta name="description" content="Site Description">
 		<meta name="generator" content="Hugo 0.36.1" />
-		<title>Predicting using classification methods &middot; Manos Antoniou</title>
-		<link rel="shortcut icon" href="/images/favicon.ico">
-		<link rel="stylesheet" href="/css/style.css">
-		<link rel="stylesheet" href="/css/highlight.css">
+		<title>Testing &middot; Manos Antoniou</title>
+		<link rel="shortcut icon" href="/manosantoniou.netlify.comimages/favicon.ico">
+		<link rel="stylesheet" href="/manosantoniou.netlify.comcss/style.css">
+		<link rel="stylesheet" href="/manosantoniou.netlify.comcss/highlight.css">
 
 		
-		<link rel="stylesheet" href="/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/manosantoniou.netlify.comcss/font-awesome.min.css">
 		
 
 		
-		<link href="/index.xml" rel="alternate" type="application/rss+xml" title="Manos Antoniou" />
+		<link href="/manosantoniou.netlify.com/index.xml" rel="alternate" type="application/rss+xml" title="Manos Antoniou" />
 		
 
 		
@@ -50,17 +50,17 @@
        <nav class="main-nav">
 	
 	
-		<a href='/'> <span class="arrow">←</span>Home</a>
+		<a href='/manosantoniou.netlify.com'> <span class="arrow">←</span>Home</a>
 	
-	<a href='/about'>About</a>
-	<a href='/tags'>Tags</a>
+	<a href='/manosantoniou.netlify.comabout'>About</a>
+	<a href='/manosantoniou.netlify.comtags'>Tags</a>
 	<a href='https://www.linkedin.com/in/manos-antoniou-a558001b/'>LinkedIn</a>
 
 
 	
 
 	
-	<a class="cta" href="/index.xml">Subscribe</a>
+	<a class="cta" href="/manosantoniou.netlify.com/index.xml">Subscribe</a>
 	
 </nav>
 
@@ -69,23 +69,23 @@
             <article>
                 <header>
                     <h1>
-                        Predicting using classification methods
+                        Testing
                     </h1>
                     <h2 class="headline">
-                    Feb 18, 2018 00:00
+                    Feb 2, 2018 00:00
                     · 2753 words
                     · 13 minute read
                       <span class="tags">
                       
                       
                           
-                              <a href="/tags/classification">classification</a>
+                              <a href="/manosantoniou.netlify.comtags/classification">classification</a>
                           
-                              <a href="/tags/decision-trees">Decision trees</a>
+                              <a href="/manosantoniou.netlify.comtags/decision-trees">Decision trees</a>
                           
-                              <a href="/tags/logistic-regression">Logistic regression</a>
+                              <a href="/manosantoniou.netlify.comtags/logistic-regression">Logistic regression</a>
                           
-                              <a href="/tags/clustering">clustering</a>
+                              <a href="/manosantoniou.netlify.comtags/clustering">clustering</a>
                           
                       
                       
@@ -146,19 +146,19 @@ ggplot(med2)+
   theme(axis.title = element_text()) + 
   ylab(&quot;Predictor&#39;s log value&quot;) + 
   xlab(&#39;&#39;)</code></pre>
-<p><img src="/your_site_url_addresspost/2018-02-18-predicting-using-classification-methods_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="/post/2018-04-01-testing_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>It seems that for most predictors the malignant level of tumor type has higher values than the benign level.</p>
 <p>Now let’s see if the predictors are correlated. Below there is a scatter-plot matrix of all predictors.</p>
 <pre class="r"><code># Scatterplot matrix of all numeric variables
 pairs(~., data = med[, sapply(med, is.numeric)], main = &quot;Scatterplot Matrix of variables&quot;)</code></pre>
-<p><img src="/your_site_url_addresspost/2018-02-18-predicting-using-classification-methods_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="/post/2018-04-01-testing_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>We can see that there are some predictors that are strongly related, as expected, such as radius, perimeter &amp; area.</p>
 <p>A correlogram will serve us better and quantify all correlations.</p>
 <pre class="r"><code>library(corrplot)
 
 # Plot correlogram of numeric variables
 corrplot(cor(med[,2:11]), type=&quot;lower&quot;, tl.srt = 90)</code></pre>
-<p><img src="/your_site_url_addresspost/2018-02-18-predicting-using-classification-methods_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="/post/2018-04-01-testing_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>We can spot some less significant correlations, such as concave &amp; concativity &amp; compactness. Also concave against radius, perimeter &amp; area.</p>
 </div>
 <div id="predicting-using-classification-methods" class="section level2">
@@ -487,7 +487,7 @@ print(confusionMatrix(prediction, testing$diagnosis), digits=4)</code></pre>
 
 # Plot the Classification Tree
 rpart.plot(model.all$finalModel, main = &quot;Classification Tree of tumor type prediction&quot;)</code></pre>
-<p><img src="/your_site_url_addresspost/2018-02-18-predicting-using-classification-methods_files/figure-html/Decision%20Tree%20Plot-1.png" width="672" /></p>
+<p><img src="/post/2018-04-01-testing_files/figure-html/Decision%20Tree%20Plot-1.png" width="672" /></p>
 <p>From the plot above, we can assume that concave and texture are the most import important predictors for tumor type (splits on the classification trees).</p>
 </div>
 </div>
@@ -527,7 +527,7 @@ rpart.plot(model.all$finalModel, main = &quot;Classification Tree of tumor type 
             </article>
 
             
-                <a class="twitter" href="https://twitter.com/intent/tweet?text=%2fpost%2fpredicting-using-classification-methods%2f - Predicting%20using%20classification%20methods by @your_twitter_id"><span class="icon-twitter"> tweet</span></a>
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=%2fmanosantoniou.netlify.com%2fpost%2fpredicting-using-classification-methods%2f - Testing by @your_twitter_id"><span class="icon-twitter"> tweet</span></a>
 
 <a class="facebook" href="#" onclick="
     window.open(
@@ -575,9 +575,9 @@ rpart.plot(model.all$finalModel, main = &quot;Classification Tree of tumor type 
 
         </section>
 
-        <script src="/js/jquery-3.3.1.min.js"></script>
-<script src="/js/main.js"></script>
-<script src="/js/highlight.min.js"></script>
+        <script src="/manosantoniou.netlify.comjs/jquery-3.3.1.min.js"></script>
+<script src="/manosantoniou.netlify.comjs/main.js"></script>
+<script src="/manosantoniou.netlify.comjs/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 

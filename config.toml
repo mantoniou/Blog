@@ -1,5 +1,5 @@
 # Site settings
-baseurl = "https://determined-yalow-f42986.netlify.com/"
+baseurl = "manosantoniou.netlify.com"
 languageCode = "en"
 title = "Manos Antoniou"
 theme = "hugo-theme-cactus-plus"
