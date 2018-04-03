@@ -2,8 +2,7 @@
 title: Build a letter recognition classifier
 author: ''
 date: '2017-12-28'
-description: "[Dec 28, 2017] In this analysis i’ll develop a model that will predict the hand-written capital letters (english) displayed
-in a picture, using various of it's attributes"
+description: "[Dec 28, 2017] Develop a model that will predict the hand-written capital letters (English) displayed in a picture"
 categories:
   - R
 tags:
@@ -15,7 +14,7 @@ tags:
 
 
 
-<p>In this analysis i’ll develop a model that will predict the hand-written capital letters (english) displayed in a picture, using various of it’s attributes.</p>
+<p>In this analysis i’ll develop a model that will predict the hand-written capital letters (English) displayed in a picture, using various of it’s attributes.</p>
 <div id="introduction" class="section level1">
 <h1>INTRODUCTION</h1>
 <p><strong>Dataset Information</strong></p>
@@ -45,7 +44,7 @@ tags:
 <div id="pre-proccessing" class="section level1">
 <h1>PRE-PROCCESSING</h1>
 <p>Since the original data set didn’t contain any names on the variables, after i imported the data in R environment, i assigned the appropriate variable names. That was completed with the help of <strong>letter-recognition.names</strong> text file which accompanied the original data.</p>
-<p>During the development of the prediction model, in order to predict the letter on new observations, at first we’ve used all variables. Then we excluded some of the 4 correllated variables and finally we’ve used the variables created from the SVD algorithm instead of the original.</p>
+<p>During the development of the prediction model, in order to predict the letter on new observations, at first we’ve used all variables. Then we excluded some of the 4 correlated variables and finally we’ve used the variables created from the SVD algorithm instead of the original.</p>
 <p>Before we apply the hierarchical clustering, we created a data set with each letter as one observation and the average of each variable, as a distinct variable <strong>(named letter.cluster)</strong>.</p>
 <pre class="r"><code># Load Libraries
 library(tidyverse)
@@ -85,7 +84,7 @@ letter.cluster &lt;- letter %&gt;%
 </div>
 <div id="exploratory-analysis" class="section level1">
 <h1>EXPLORATORY ANALYSIS</h1>
-<p>In order to have an overview of the dataset’s variability, i produced a box-plot matrix of all variables and each letter on the x-axis</p>
+<p>In order to have an overview of the data-set’s variability, i produced a box-plot matrix of all variables and each letter on the x-axis</p>
 <pre class="r"><code># Plot a box-plot for each letter and variable
 letter %&gt;% 
   gather(&quot;type&quot;, &quot;n&quot;, 2:17) %&gt;% 
@@ -322,7 +321,7 @@ ggplot(letters)+
 <li>Similarity computations/outlier detection</li>
 <li>Rule mining, treatment of missing/wrong values</li>
 </ul>
-<p>Below i created a new dataset with the new svd variables and build a new model using k-NN algorithm.</p>
+<p>Below i created a new dataset with the new SVD variables and build a new model using k-NN algorithm.</p>
 <pre class="r"><code># Create an in Dataset 
 letter.svd &lt;- svd(letter[,2:17])
 
@@ -521,7 +520,7 @@ diag(s$prop.col)</code></pre>
 </div>
 <div id="hierarchical-clustering" class="section level2">
 <h2><strong>Hierarchical clustering</strong></h2>
-<p>In this part of the analysis the objective is to assign the cases into clusters. Cluster analysis or clustering is the task of grouping a set of objects in such a way that objects in the same group (called a cluster) are more similar (in some sense or another) to each other than to those in other groups (clusters). Finally i build a hierarchical clustering model in order to understand which letters are “closer” to others and maybe missclasified. We applied it on the pre-proccessed data set (letter.cluster).</p>
+<p>In this part of the analysis the objective is to assign the cases into clusters. Cluster analysis or clustering is the task of grouping a set of objects in such a way that objects in the same group (called a cluster) are more similar (in some sense or another) to each other than to those in other groups (clusters). Finally i build a hierarchical clustering model in order to understand which letters are “closer” to others and maybe misclassified. We applied it on the pre-processed data set (letter.cluster).</p>
 <pre class="r"><code># Tranform the summary dataset to a dataframe
 letter.cluster &lt;- as.data.frame(letter.cluster)
 
@@ -530,7 +529,7 @@ rownames(letter.cluster) &lt;- letter.cluster$lettr
 
 # Run the hierarchical clustering 
 clusters &lt;- hclust(dist(letter.cluster))</code></pre>
-<p>At the plot below you can see the hierarchical clustering output. When we compare these results with the missclasification rates of the original model, it seems that for some letters like “B”, “D”, “F” it looks relevant. For other letters such “A”, “C” don’t match.</p>
+<p>At the plot below you can see the hierarchical clustering output. When we compare these results with the misclassification rates of the original model, it seems that for some letters like “B”, “D”, “F” it looks relevant. For other letters such “A”, “C” don’t match.</p>
 <pre class="r"><code># Plot the dendogram
 ggdendrogram(clusters, rotate = TRUE, size = 2)+
   labs(title = &quot;Dendogram of hierarchical clustering model&quot;)</code></pre>
