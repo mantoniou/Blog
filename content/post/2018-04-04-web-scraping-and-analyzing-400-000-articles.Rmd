@@ -340,5 +340,5 @@ There are various outcomes from this analysis on Newsbeast.gr. In particular:
 * There is a minor "drop" in daily articles published each year during the Easter holidays
 
 
-[Full R code](https://raw.githubusercontent.com/mantoniou/Blog/master/content/post/2018-04-05-web-scraping-and-analyzing-400-000-articles.Rmd)
+[Full R code](https://raw.githubusercontent.com/mantoniou/Blog/master/content/post/2018-04-04-web-scraping-and-analyzing-400-000-articles.Rmd)
 
