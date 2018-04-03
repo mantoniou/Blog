@@ -12,13 +12,13 @@
     
     
     <item>
-      <title>Web scrapping and analyzing 400.000 articles</title>
-      <link>/post/web-scrapping-and-analyzing-400-000-articles/</link>
+      <title>Web scraping and analyzing 400.000 articles</title>
+      <link>/post/web-scraping-and-analyzing-400-000-articles/</link>
       <pubDate>Thu, 05 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/web-scrapping-and-analyzing-400-000-articles/</guid>
+      <guid>/post/web-scraping-and-analyzing-400-000-articles/</guid>
       <description>In this post i will analyze the articles published by NEWSBEAST, one of the main on-line publishers in Greece. The main question is “Are there any trends on the daily posting frequency of NEWSBEAST?” The steps below were followed before the main data analysis (link for the full r code can be found at the end of the article):
- Scrapping the articles from the site (www.newbeast.gr) using rvest &amp;amp; car libraries in R</description>
+ Scraping the articles from the site (www.newbeast.gr) using rvest &amp;amp; car libraries in R</description>
     </item>
     
   </channel>
