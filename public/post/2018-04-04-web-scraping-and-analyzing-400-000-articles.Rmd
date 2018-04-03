@@ -1,8 +1,8 @@
 ---
 title: Web scraping and analyzing 400.000 articles
 author: ''
-date: '2018-04-05'
-description: "[Apr 5, 2018] Perform web scraping and analysis on 400.000 articles published by NEWSBEAST.GR, one of the main on-line publishers in Greece"
+date: '2018-04-04'
+description: "[Apr 4, 2018] Perform web scraping and analysis on 400.000 articles published by NEWSBEAST.GR, one of the main on-line publishers in Greece"
 slug: web-scraping-and-analyzing-400-000-articles
 categories:
   - R

@@ -1,13 +1,13 @@
 ---
-title: Web scrapping and analyzing 400.000 articles
+title: Web scraping and analyzing 400.000 articles
 author: ''
-date: '2018-04-05'
-description: "[Apr 5, 2018] Perform web scrapping and analysis on 400.000 articles published by NEWSBEAST.GR, one of the main on-line publishers in Greece"
-slug: web-scrapping-and-analyzing-400-000-articles
+date: '2018-04-04'
+description: "[Apr 4, 2018] Perform web scraping and analysis on 400.000 articles published by NEWSBEAST.GR, one of the main on-line publishers in Greece"
+slug: web-scraping-and-analyzing-400-000-articles
 categories:
   - R
 tags:
-  - Web scrapping
+  - Web scraping
   - Time series
   - Smoothing
 ---
@@ -18,7 +18,7 @@ The main question is **"Are there any trends on the daily posting frequency of N
 The steps below were followed before the main data analysis (link for the full r code can be 
 found at the end of the article):  
 
-* Scrapping the articles from the site (www.newbeast.gr) using rvest & car libraries in R  
+* Scraping the articles from the site (www.newbeast.gr) using rvest & car libraries in R  
 * Data preparation (including data cleansing, transformation)  
 * Exploratory analysis 
 
@@ -340,5 +340,5 @@ There are various outcomes from this analysis on Newsbeast.gr. In particular:
 * There is a minor "drop" in daily articles published each year during the Easter holidays
 
 
-[Full R code](https://raw.githubusercontent.com/mantoniou/Blog/master/content/post/2018-04-05-web-scrapping-and-analyzing-400-000-articles.Rmd)
+[Full R code](https://raw.githubusercontent.com/mantoniou/Blog/master/content/post/2018-04-05-web-scraping-and-analyzing-400-000-articles.Rmd)
 
