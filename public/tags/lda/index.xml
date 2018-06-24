@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lda on Manos Antoniou</title>
+    <link>/tags/lda/</link>
+    <description>Recent content in Lda on Manos Antoniou</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 24 Jun 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/lda/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Text analytics &amp; topic modelling on music genres song lyrics</title>
+      <link>/post/text-analytics-topic-modelling-songs-lyrics/</link>
+      <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/text-analytics-topic-modelling-songs-lyrics/</guid>
+      <description>This analysis uses a dataset of more than 380,000 songs since 1970 published in kaggle. The main objective is to develop clusters of music genres by the song lyrics and the steps are the following:
+ Data preparation (cleansing, transform etc.) Exploratory analysis
+ Topic modelling  Various R libraries were used, but it is mainly based on #tidytext and #tidyverse environment.
+Data preparation was a very important part of the analysis.</description>
+    </item>
+    
+  </channel>
+</rss>
