@@ -48,6 +48,15 @@
     </item>
     
     <item>
+      <title>Lda</title>
+      <link>/tags/lda/</link>
+      <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/lda/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Logistic Regression</title>
       <link>/tags/logistic-regression/</link>
       <pubDate>Mon, 19 Feb 2018 00:00:00 +0000</pubDate>
@@ -75,11 +84,38 @@
     </item>
     
     <item>
+      <title>Text Analytics</title>
+      <link>/tags/text-analytics/</link>
+      <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/text-analytics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tidytext</title>
+      <link>/tags/tidytext/</link>
+      <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/tidytext/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Time Series</title>
       <link>/tags/time-series/</link>
       <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/time-series/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Topic Modelling</title>
+      <link>/tags/topic-modelling/</link>
+      <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/topic-modelling/</guid>
       <description></description>
     </item>
     

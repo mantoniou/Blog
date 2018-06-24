@@ -6,13 +6,25 @@
     <description>Recent content on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 04 Apr 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 24 Jun 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Web scraping and analyzing 400.000 articles</title>
+      <title>Text analytics &amp; topic modelling on music genres song lyrics</title>
+      <link>/post/text-analytics-topic-modelling-songs-lyrics/</link>
+      <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/text-analytics-topic-modelling-songs-lyrics/</guid>
+      <description>This analysis uses a dataset of more than 380,000 songs since 1970 published in kaggle. The main objective is to develop clusters of music genres by the song lyrics and the steps are the following:
+ Data preparation (cleansing, transform etc.) Exploratory analysis
+ Topic modelling  Various R libraries were used, but it is mainly based on #tidytext and #tidyverse environment.
+Data preparation was a very important part of the analysis.</description>
+    </item>
+    
+    <item>
+      <title>Web scraping and analyzing 400,000 articles</title>
       <link>/post/web-scraping-and-analyzing-400-000-articles/</link>
       <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
       
