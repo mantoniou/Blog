@@ -370,5 +370,5 @@ Core I5 2.1 GHz. Some of the tasks can be demanding (for large datasets with
 text data). e.g. the LDA modelling task took around 7-8 minutes to complete.
 
 
-[Full R code](https://raw.githubusercontent.com/mantoniou/Blog/master/content/post/2018-04-04-web-scraping-and-analyzing-400-000-articles.Rmd)
+[Full R code](https://github.com/mantoniou/Blog/blob/master/content/post/2018-06-text-analytics-song-lyrics.Rmd)
 
