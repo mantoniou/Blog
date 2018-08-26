@@ -246,5 +246,5 @@ fit %>%
 
 ```
 
-[Full R code](https://github.com/mantoniou/Blog/blob/master/content/post/2018-06-text-analytics-song-lyrics.Rmd)
+[Full R code](https://github.com/mantoniou/Blog/blob/master/content/post/2018-08-forecasting-arima-gdp-eurozone.Rmd)
 
