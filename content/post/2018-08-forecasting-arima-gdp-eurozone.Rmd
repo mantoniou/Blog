@@ -261,13 +261,18 @@ fit %>%
 
 ```
 
-- It looks that GDP will keep growing in the next couple of years
+- It looks that GDP will keep growing in the next couple of years. In particular the forecasts are:
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+fit %>% 
+  forecast(h = 7) 
+```
+
 - It seems that by the end of 2019, there is a strong possibility that in one or more of 
 the quarters of the year, the GDP will break the barrier of **3 trillion €**
 
 More models developed using other forecasting approaches, such as 
 **exponential smoothing**(exponential smoothing methods with trend and seasonality Holt-Winters) &
-**exponential triple smoothing** with worst performance than ARIMA model. 
+**exponential triple smoothing**, but the ARIMA model performance was better. 
 
 [Full R code](https://github.com/mantoniou/Blog/blob/master/content/post/2018-08-forecasting-arima-gdp-eurozone.Rmd)
 

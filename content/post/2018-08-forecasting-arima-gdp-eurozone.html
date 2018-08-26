@@ -75,9 +75,19 @@ The final model is a seasonal <strong>ARIMA(2,1,1)(0,1,1)[4]</strong>. Both seas
 <p>Below there is a time series plot of the Eurozone countries quarterly GDP forecasts for 2018-19.</p>
 <p><img src="/post/2018-08-forecasting-arima-gdp-eurozone_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <ul>
-<li>It looks that GDP will keep growing in the next couple of years</li>
+<li>It looks that GDP will keep growing in the next couple of years. In particular the forecasts are:</li>
+</ul>
+<pre><code>##         Point Forecast   Lo 80   Hi 80   Lo 95   Hi 95
+## 2018 Q2        2887406 2853687 2921524 2835996 2939748
+## 2018 Q3        2892970 2841213 2945670 2814191 2973955
+## 2018 Q4        2990005 2917818 3063978 2880312 3103876
+## 2019 Q1        2888631 2805996 2973700 2763213 3019742
+## 2019 Q2        2973066 2870171 3079650 2817151 3137610
+## 2019 Q3        2976688 2859234 3098966 2798945 3165717
+## 2019 Q4        3076720 2939974 3219827 2870063 3298258</code></pre>
+<ul>
 <li>It seems that by the end of 2019, there is a strong possibility that in one or more of the quarters of the year, the GDP will break the barrier of <strong>3 trillion €</strong></li>
 </ul>
-<p>More models developed using other forecasting approaches, such as <strong>exponential smoothing</strong>(exponential smoothing methods with trend and seasonality Holt-Winters) &amp; <strong>exponential triple smoothing</strong> with worst performance than ARIMA model.</p>
+<p>More models developed using other forecasting approaches, such as <strong>exponential smoothing</strong>(exponential smoothing methods with trend and seasonality Holt-Winters) &amp; <strong>exponential triple smoothing</strong>, but the ARIMA model performance was better.</p>
 <p><a href="https://github.com/mantoniou/Blog/blob/master/content/post/2018-08-forecasting-arima-gdp-eurozone.Rmd">Full R code</a></p>
 </div>
