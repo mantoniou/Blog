@@ -160,7 +160,7 @@ an almost identical path.
 
 Below there is an autocorrelation function plot. The correlations associated with
 the lag plots form what is called the autocorrelation function (ACF). 
-Spices that exceeds the confidence intervals (blue lines) indicates that autocorelation 
+Spices that exceeds the confidence intervals (blue lines) indicates that autocorrelation 
 with specific lag is statistically significant (different than zero)
 
 
@@ -261,7 +261,8 @@ fit %>%
 
 ```
 
-- It looks that GDP will keep growing in the next couple of years. In particular the forecasts are:
+- It looks that GDP will keep growing in the next couple of years. In particular 
+the forecasts for the future quarters are:
 ```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 fit %>% 
   forecast(h = 7) 

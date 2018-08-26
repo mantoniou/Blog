@@ -39,7 +39,7 @@ In particular, the eurozone (EU 19) quarterly GDP (Gross domestic product) datas
 <p>A lag plot will help us understand if there is autocorrelation in the time series. Another way to look at time series data is to plot each observation against another observation that occurred some time previously. For example, you could plot yt against yt−1. This is called a lag plot because you are plotting the time series against lags of itself. Basically it is a scatterplot between the time series and the lagged values of the time series.</p>
 <p><img src="/post/2018-08-forecasting-arima-gdp-eurozone_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>There is a strong seasonality at lag 4 (1 year), as all quarters line plots follow an almost identical path.</p>
-<p>Below there is an autocorrelation function plot. The correlations associated with the lag plots form what is called the autocorrelation function (ACF). Spices that exceeds the confidence intervals (blue lines) indicates that autocorelation with specific lag is statistically significant (different than zero)</p>
+<p>Below there is an autocorrelation function plot. The correlations associated with the lag plots form what is called the autocorrelation function (ACF). Spices that exceeds the confidence intervals (blue lines) indicates that autocorrelation with specific lag is statistically significant (different than zero)</p>
 <p><img src="/post/2018-08-forecasting-arima-gdp-eurozone_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>It looks that there are significant autocorrelations at all lags, which indicates a trend and/or seasonality in the time series.</p>
 <p>We can also use the Ljung-Box test to test if the time series is white noise. White noise is a time series that is purely random. Below there is a test at lag 4.</p>
@@ -75,7 +75,7 @@ The final model is a seasonal <strong>ARIMA(2,1,1)(0,1,1)[4]</strong>. Both seas
 <p>Below there is a time series plot of the Eurozone countries quarterly GDP forecasts for 2018-19.</p>
 <p><img src="/post/2018-08-forecasting-arima-gdp-eurozone_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <ul>
-<li>It looks that GDP will keep growing in the next couple of years. In particular the forecasts are:</li>
+<li>It looks that GDP will keep growing in the next couple of years. In particular the forecasts for the future quarters are:</li>
 </ul>
 <pre><code>##         Point Forecast   Lo 80   Hi 80   Lo 95   Hi 95
 ## 2018 Q2        2887406 2853687 2921524 2835996 2939748
