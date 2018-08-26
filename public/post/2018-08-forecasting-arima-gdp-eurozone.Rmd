@@ -101,7 +101,7 @@ Below there is a time series plot of the Eurozone countries quarterly GDP since 
 # Simple time series plot
 autoplot(gdp_ts, facets = TRUE)+
   labs(title = "Quarterly GDP for Eurozone countries",
-       subtitle = "with loess curve fitted",
+       subtitle = "In million euro (€)",
        y = "Quarterly GDP (€)",
        x = "year") +
   geom_smooth(method = "loess") +
@@ -119,12 +119,15 @@ There are a few outputs from the time series plot above:
 - There is a significant disruption in GDP growth around years 2008-9
 
 
-A seasonal plot is used below to investigate seasonality.
+A seasonal plot is used below to investigate seasonality. A seasonal plot is 
+similar to a time plot except that the data are plotted against the individual 
+“seasons” in which the data were observed.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 ## Seasonal plot
 ggseasonplot(gdp_ts) +
   labs(title = "Seasonal GDP plot for Eurozone countries",
+        subtitle = "In million euro (€)",
        y = "GDP (€)")+
   theme_fivethirtyeight()
 ```
@@ -135,20 +138,31 @@ The 2nd & 3rd are about the same.
 
 
 A lag plot will help us understand if there is autocorrelation in the time series.
-It is a scatterplot between the time series and the lagged values of the time series. 
+Another way to look at time series data is to plot each observation against another
+observation that occurred some time previously. For example, you could plot yt 
+against yt−1. This is called a lag plot because you are plotting the time series 
+against lags of itself. 
+Basically it is a scatterplot between the time series and the lagged values of the time series. 
+
+
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 ## Lag plot of time series
 gglagplot(gdp_ts)+
-  ggtitle("Lag plot of quarterly GDP for Eurozone countries") +
+    labs(title = "Lag plot of quarterly GDP for Eurozone countries",
+        subtitle = "In million euro (€)",
+       y = "GDP (€)")+
   theme_fivethirtyeight()
 ```
 
 There is a strong seasonality at lag 4 (1 year), as all quarters line plots follow
 an almost identical path.
 
-Below there is an autocorrelation function plot. It will indicate to us
-if there are significant autocorrelations in the time series.
+Below there is an autocorrelation function plot. The correlations associated with
+the lag plots form what is called the autocorrelation function (ACF). 
+Spices that exceeds the confidence intervals (blue lines) indicates that autocorelation 
+with specific lag is statistically significant (different than zero)
+
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 # Autocorellation plot
@@ -161,7 +175,8 @@ It looks that there are significant autocorrelations at all lags, which indicate
 trend and/or seasonality in the time series.
 
 
-We can also use the Ljung-Box test to test if the time series is white noise. Below 
+We can also use the Ljung-Box test to test if the time series is white noise. 
+White noise is a time series that is purely random. Below 
 there is a test at lag 4.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
@@ -237,7 +252,7 @@ fit %>%
   forecast(h = 8) %>% 
   autoplot() +
   labs(title = "Forecasting of Eurozone countries quarterly GDP",
-       subtitle = "for years 2018-19",
+       subtitle = "In million euro (€), for years 2018-19",
        y = "GDP (€)")+
   scale_x_continuous(breaks = seq(1995, 2020, 1)) +
   theme_fivethirtyeight() +
@@ -245,6 +260,14 @@ fit %>%
 
 
 ```
+
+- It looks that GDP will keep growing in the next couple of years
+- It seems that by the end of 2019, there is a strong possibility that in one or more of 
+the quarters of the year, the GDP will break the barrier of **3 trillion €**
+
+More models developed using other forecasting approaches, such as 
+**exponential smoothing**(exponential smoothing methods with trend and seasonality Holt-Winters) &
+**exponential triple smoothing** with worst performance than ARIMA model. 
 
 [Full R code](https://github.com/mantoniou/Blog/blob/master/content/post/2018-08-forecasting-arima-gdp-eurozone.Rmd)
 
