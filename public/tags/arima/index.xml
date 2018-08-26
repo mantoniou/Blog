@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Arima on Manos Antoniou</title>
+    <link>/tags/arima/</link>
+    <description>Recent content in Arima on Manos Antoniou</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 26 Aug 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/arima/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Forecasting GDP in the eurozone, using Eurostat dataset</title>
+      <link>/post/forecasting-arima-modelling-gdp-eurostat/</link>
+      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/forecasting-arima-modelling-gdp-eurostat/</guid>
+      <description>This analysis uses public Eurostat datasets, to forecast future total quarterly GDP of all eurozone countries. Eurostat is the statistical office of the European Union situated in Luxembourg. Its mission is to provide high quality statistics for Europe. Eurostat offers a whole range of important and interesting data that governments, businesses, the education sector, journalists and the public can use for their work and daily life.
+In particular, the eurozone (EU 19) quarterly GDP (Gross domestic product) dataset is used.</description>
+    </item>
+    
+  </channel>
+</rss>

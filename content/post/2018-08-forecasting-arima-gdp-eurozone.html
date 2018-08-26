@@ -1,0 +1,78 @@
+---
+title: Forecasting GDP in the eurozone, using Eurostat dataset
+author: ''
+date: '2018-08-26'
+description: "[Aug 26, 2018] Forecasting eurozone quarterly GDP (Gross domestic product) using Eurostat data & ARIMA modelling"
+slug: forecasting-arima-modelling-gdp-eurostat
+categories:
+  - R
+tags:
+  - Forecasting
+  - Arima
+  - Eurostat
+---
+
+
+
+<p>This analysis uses public Eurostat datasets, to forecast future total quarterly GDP of all eurozone countries. Eurostat is the statistical office of the European Union situated in Luxembourg. Its mission is to provide high quality statistics for Europe. Eurostat offers a whole range of important and interesting data that governments, businesses, the education sector, journalists and the public can use for their work and daily life.<br />
+In particular, the eurozone (EU 19) quarterly GDP (Gross domestic product) dataset is used. The eurozone consists of 19 countries: Austria, Belgium, Cyprus, Estonia, Finland, France, Germany, Greece, Ireland, Italy, Latvia, Lithuania, Luxembourg, Malta, the Netherlands, Portugal, Slovakia, Slovenia, and Spain.</p>
+<p>Gross domestic (GDP) is a monetary measure of the market value of all the final goods and services produced in a period (quarterly or yearly) of time. It is commonly used to determine the economic performance of a country or regions.</p>
+<p>The <a href="https://cran.r-project.org/web/packages/eurostat/index.html">Eurostat package</a> used to obtain the dataset and <a href="https://cran.r-project.org/web/packages/forecast/index.html">Forecast package</a> for the ARIMA modelling.</p>
+<p>More details about the ETL steps can be found, in the actual code, at the link at the end of the article.</p>
+<div id="exploratory-analysis" class="section level1">
+<h1>Exploratory Analysis</h1>
+<p>During exploratory analysis, we try to discover patterns in the time series such as:<br />
+- <strong>Trend</strong> A pattern involving long-term increase or decrease in the time series<br />
+- <strong>Seasonality</strong> A period pattern exists due to the calendar (e.g. quarter, month, weekday)<br />
+- <strong>Cyclicity</strong> A pattern exists where the data exhibits rise and fall that are not of a fixed period (duration usually of at least two years)</p>
+<p>Below there is a time series plot of the Eurozone countries quarterly GDP since 1995.</p>
+<p><img src="/post/2018-08-forecasting-arima-gdp-eurozone_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>There are a few outputs from the time series plot above:<br />
+- We can say that there is an overall positive trend<br />
+- There is no noticeable increased/decreased variability in the trend<br />
+- It looks that there is some seasonality, but needs further investigation<br />
+- There is no cyclicity<br />
+- There is a significant disruption in GDP growth around years 2008-9</p>
+<p>A seasonal plot is used below to investigate seasonality.</p>
+<p><img src="/post/2018-08-forecasting-arima-gdp-eurozone_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>This strengthens our confidence for seasonality in the time series. It seems that the 4th quarter is always the higher, while the 1st is the lowest in each year. The 2nd &amp; 3rd are about the same.</p>
+<p>A lag plot will help us understand if there is autocorrelation in the time series. It is a scatterplot between the time series and the lagged values of the time series.</p>
+<p><img src="/post/2018-08-forecasting-arima-gdp-eurozone_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>There is a strong seasonality at lag 4 (1 year), as all quarters line plots follow an almost identical path.</p>
+<p>Below there is an autocorrelation function plot. It will indicate to us if there are significant autocorrelations in the time series.</p>
+<p><img src="/post/2018-08-forecasting-arima-gdp-eurozone_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>It looks that there are significant autocorrelations at all lags, which indicates a trend and/or seasonality in the time series.</p>
+<p>We can also use the Ljung-Box test to test if the time series is white noise. Below there is a test at lag 4.</p>
+<pre><code>## 
+##  Box-Ljung test
+## 
+## data:  gdp_ts
+## X-squared = 319.62, df = 4, p-value &lt; 2.2e-16</code></pre>
+<p>Ljung-Box test p-value is very small &lt; 0.01, so there is strong evidence that the time series is not white noise and has seasonality and/or trend.</p>
+</div>
+<div id="modelling" class="section level1">
+<h1>Modelling</h1>
+<p>ARIMA (Auto-regressive integrated moving average) models provide one of the main approaches to time series forecasting. It is the most widely-used approach to time series forecasting, and aim to describe the autocorrelations in the data.</p>
+<p>The final fitted model was produced by the auto.arima() function of the <strong>forecast library</strong>. It rapidly estimates a series of model and return the best, according to either AIC, AICc or BIC value. After fitting the ARIMA model, it is essential to check that the residuals are well-behaved (i.e., no outlines or patterns) and resemble white noise. Below there are some residual plots for the fitted ARIMA model.</p>
+<p><img src="/post/2018-08-forecasting-arima-gdp-eurozone_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre><code>## 
+##  Ljung-Box test
+## 
+## data:  Residuals from ARIMA(2,1,1)(0,1,1)[4]
+## Q* = 6.1916, df = 4, p-value = 0.1853
+## 
+## Model df: 4.   Total lags used: 8</code></pre>
+<p>We can say that the model is fairly good, since the residuals are closely normally distributed, have no real pattern and autocorrelations are not significant.<br />
+The final model is a seasonal <strong>ARIMA(2,1,1)(0,1,1)[4]</strong>. Both seasonal and first differences have been used, indicated by the middle slot in each part of the model. Also, one lagged error and one seasonally lagged error has been selected, indicated by the last slot in each part of the model. Two autoregression terms have been used, indicated by the first slot in the model. No seasonal autoregression terms have been used.</p>
+<p>Finally, the accuracy of the forecasting model is examined. Below there is a test for the model accuracy, using all four quarters in 2017 &amp; the 1st quarter of 2018 as a test set.</p>
+<pre><code>##                     ME     RMSE     MAE         MPE      MAPE      MASE
+## Training set -1763.393 18524.64 13332.4 -0.08197817 0.6440916 0.1939318
+## Test set     47152.498 49475.29 47152.5  1.68398118 1.6839812 0.6858757
+##                    ACF1 Theil&#39;s U
+## Training set 0.06526246        NA
+## Test set     0.09563655 0.6768184</code></pre>
+<p>MAPE (Mean absolute percentage error) for the test set is 1.68, so we can conclude that the prediction accuracy of the model is around <strong>98.3 %</strong>.</p>
+<p>Below there is a time series plot of the Eurozone countries quarterly GDP forecasts for 2018-19.</p>
+<p><img src="/post/2018-08-forecasting-arima-gdp-eurozone_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><a href="https://github.com/mantoniou/Blog/blob/master/content/post/2018-06-text-analytics-song-lyrics.Rmd">Full R code</a></p>
+</div>
