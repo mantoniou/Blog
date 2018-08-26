@@ -1,5 +1,5 @@
 ---
-title: Forecasting GDP in the eurozone, using Eurostat dataset
+title: Forecasting GDP in the eurozone
 author: ''
 date: '2018-08-26'
 description: "[Aug 26, 2018] Forecasting eurozone quarterly GDP (Gross domestic product) using Eurostat data & ARIMA modelling"
