@@ -1,0 +1,500 @@
+---
+title: Clustering of EU countries
+author: ''
+date: '2018-10-27'
+description: "[Oct 27, 2018] Segmentation of EU countries, including cluster analysis based on consumer & business confidence indicators"
+
+slug: clustering-of-eu-countries
+categories:
+  - R
+tags:
+  - clustering
+  - K-means
+---
+
+
+
+In this article I used a public Eurostat dataset, to develop a 
+segmentation of the EU countries. 
+This dataset consists of 5 confidence indicators:  
+
+- **Consumer Confidence Indicator**  
+- **Construction confidence indicator**  
+- **Industrial confidence indicator**  
+- **Retail confidence indicator**  
+- **Services Confidence Indicator**  
+
+These indicators are formed via qualitative surveys which are conducted on a monthly 
+basis in the following areas:
+**manufacturing industry, construction, consumers, retail trade, services and financial services**. 
+These surveys started in 1980 and gradually include all the new EU 
+members. About 137,000 firms and more than 41,000 consumers are currently surveyed
+every month across the EU. 
+
+The used metrics is the balance i.e. the difference between positive and negative
+answers (in percentage points of total answers), as index, as confidence indicators
+(arithmetic average of balances).
+
+
+More information about these surveys can be found at this 
+[link](https://ec.europa.eu/eurostat/cache/metadata/en/ei_bcs_esms.htm)
+
+The eurozone consists of 19 countries: Austria, Belgium, Cyprus, 
+Estonia, Finland, France, Germany, Greece, Ireland, Italy, Latvia, Lithuania, 
+Luxembourg, Malta, the Netherlands, Portugal, Slovakia, Slovenia, and Spain. 
+
+The [Eurostat package](https://cran.r-project.org/web/packages/eurostat/index.html) 
+used to obtain the original datasets.
+
+More details about the ETL steps can be found, in the actual code, at the link 
+at the end of the article.
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+
+# Libraries
+library(tidyverse)
+library(rvest)
+library(eurostat)
+
+
+```
+
+
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+# Eurostat Confidence Indicators dataset #######################################
+dat <- get_eurostat("ei_bssi_m_r2", time_format = "date")
+dat <- label_eurostat(dat)
+
+sent <- 
+  dat %>% 
+  filter(s_adj == "Unadjusted data (i.e. neither seasonally adjusted nor calendar adjusted data)") %>% 
+  select(geo, time, indic, values) %>% 
+  spread(indic, values) %>% 
+  rename(date = time) 
+
+# Save the data
+saveRDS(sent, file = "data/tidy/sent.RDS")
+```
+
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+
+# Load the stored dataset
+sent <- readRDS("/Users/manos/OneDrive/Projects/R/All_Projects/2018_10_ClusterAnalysis/data/tidy/sent.RDS") 
+# Create the final dataset
+final <-
+  sent %>%
+  filter(date >= '2014-01-01') %>%
+  select(-date) %>%
+  group_by(geo) %>%
+  summarise_all(median, na.rm = TRUE) %>% 
+  mutate(Business = (`Construction confidence indicator` + `Industrial confidence indicator` +
+           `Retail confidence indicator` + `Services Confidence Indicator`)/4,
+         Consumers = `Consumer confidence indicator`) %>% 
+  mutate(geo = recode(geo, 
+                      "Germany (until 1990 former territory of the FRG)" = "Germany",
+                      "Czech Republic" = "Czech Rep."))
+
+
+```
+
+
+# ETL & Exploratory Analysis
+
+The original dataset consists of 11,340 observations that include these indicators
+for EU countries on a monthly basis. In the processed dataset I used i) observations
+from 2014 onward & ii) the median values of each variable for each state, so finally the dataset consists of 28 observations in total. One more 
+variable was created, by averaging all Business related confidence indicators 
+(Construction, Industrial, Retail & Services Confidence Indicators), to use a general **business confidence indicator**.
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+# Create Map data ##############################################################
+
+library(grid)
+library(rworldmap)
+
+
+# Get the world map
+worldMap <- getMap()
+
+# Member States of the European Union
+europeanUnion <- c("Austria","Belgium","Bulgaria","Croatia","Cyprus",
+                   "Czech Rep.","Denmark","Estonia","Finland","France",
+                   "Germany","Greece","Hungary","Ireland","Italy","Latvia",
+                   "Lithuania","Luxembourg","Malta","Netherlands","Poland",
+                   "Portugal","Romania","Slovakia","Slovenia","Spain",
+                   "Sweden","United Kingdom")
+
+# Select only the index of states member of the E.U.
+indEU <- which(worldMap$NAME%in%europeanUnion)
+
+
+# Extract longitude and latitude border's coordinates of members states of E.U. 
+europeCoords <- lapply(indEU, function(i){
+  df <- data.frame(worldMap@polygons[[i]]@Polygons[[1]]@coords)
+  df$region =as.character(worldMap$NAME[i])
+  colnames(df) <- list("long", "lat", "region")
+  return(df)
+})
+
+europeCoords <- do.call("rbind", europeCoords)
+
+```
+
+
+It would be interesting to see the map plots of the confidence indicators. Below
+there are plots with the consumer & averaging business confidence indicators. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+# Create table
+europeanUnionTable <- data.frame(country = final$geo, value = final$Business)
+europeCoords$value <- europeanUnionTable$value[match(europeCoords$region,europeanUnionTable$country)]
+
+
+# Produce spatial visualisation
+ggplot() + 
+  geom_polygon(data = europeCoords, aes(x = long, y = lat, group = region, fill = value),
+                             colour = "black", size = 0.1) +
+  coord_map(xlim = c(-13, 35),  ylim = c(32, 71)) + 
+  scale_fill_gradient(name = "Business Confidence Indicator", low = "#FF0000FF", high = "#FFFF00FF", na.value = "grey50") +
+  theme(axis.text.x = element_blank(),
+  axis.text.y = element_blank(), axis.ticks.x = element_blank(),
+  axis.ticks.y = element_blank(), axis.title = element_blank(),
+  plot.margin = unit(0 * c(-1.5, -1.5, -1.5, -1.5), "lines")) + 
+  scale_fill_gradient(name = "Business \nConfidence", low = "#FF0000FF", high = "#FFFF00FF", na.value = "grey50") +
+  labs(title = "Business Confidence per EU country",
+       subtitle = "-Median value of aggregated bus. conf. indicators for 2014-2018 \n-Red indicates low confidence & yellow indicates high confidence levels")+
+  theme(panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        panel.background = element_blank())
+
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+# Create table
+europeanUnionTable <- data.frame(country = final$geo, value = final$Consumers)
+europeCoords$value <- europeanUnionTable$value[match(europeCoords$region,europeanUnionTable$country)]
+
+
+# Produce spatial visualisation
+ggplot() + 
+  geom_polygon(data = europeCoords, aes(x = long, y = lat, group = region, fill = value),
+                             colour = "black", size = 0.1) +
+  coord_map(xlim = c(-13, 35),  ylim = c(32, 71)) + 
+  scale_fill_gradient(name = "Consumers Confidence Indicator", low = "#FF0000FF", high = "#FFFF00FF", na.value = "grey50") +
+  theme(axis.text.x = element_blank(),
+  axis.text.y = element_blank(), axis.ticks.x = element_blank(),
+  axis.ticks.y = element_blank(), axis.title = element_blank(),
+  plot.margin = unit(0 * c(-1.5, -1.5, -1.5, -1.5), "lines")) + 
+  scale_fill_gradient(name = "Consumer \nConfidence", low = "#FF0000FF", high = "#FFFF00FF", na.value = "grey50") +
+  labs(title = "Consumers Confidence per EU country",
+       subtitle = "-Median value of consumer conf. indicator for 2014-2018 \n-Red indicates low confidence & yellow indicates high confidence levels")+
+  theme(panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        panel.background = element_blank())
+
+
+```
+
+- It is clear that there are significant differences between countries.  
+- Northern Europe countries tend to have higher consumers confidence 
+indicators.  
+- There are some outliers here. E.g. Greece has significantly lower confidence indicator
+than the rest of the nations. 
+
+
+Below there is a scatterplot with marker labels indicating the positioning of
+each country in respect to consumer and business confidence indicators. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(ggthemes)
+
+final <- filter(final, geo %in% europeanUnion) 
+
+# Scatter plot
+final %>% 
+ggplot(aes(Consumers, Business)) +
+  geom_point()+
+  geom_text(aes(label = geo), check_overlap = TRUE, vjust = 1, hjust = 1) +
+  theme_fivethirtyeight() +
+  theme(axis.title = element_text()) +
+  labs(x = "Consumer Confidence",
+       y = "Business Confidence",
+       title = "Scatterplot of EU countries confidence levels",
+       subtitle = "Data from 2014-2018") 
+
+```
+
+We can indicate some patterns from the plot above, similar to the findings before:   
+- There are some outliers, such as Greece(bottom left) & Sweden(top right)  
+- There is a group of countries that are placed in the middle of the plot, indicating
+average consumer & business confidence  
+- In all countries, the business confidence is substantially higher than
+consumer confidence
+
+
+# Segmentation
+
+Since there are quite a few differences between countries regarding 
+confidence indicators, it would be interesting to develop a segmentation, to check how well the countries are forming teams.  
+The **k-means** algorithm used for the segmentation. 
+It is the widest used unsupervised learning algorithm. The procedure follows
+a simple and easy way to classify a given data set through a certain number of 
+clusters (assume k clusters) fixed apriori. The main idea is to define k centers,
+one for each cluster. These centers should be placed in a cunning way because of
+different location causes different result. So, the better choice is to place
+them as much as possible far away from each other. The next step is to take each 
+point belonging to a given data set and associate it to the nearest center. When 
+no point is pending, the first step is completed and an early group age is done. 
+At this point we need to re-calculate k new centroids as barycenter of the clusters
+resulting from the previous step. After we have these k new centroids, a new 
+binding has to be done between the same data set points and the nearest new center.
+A loop has been generated. As a result of this loop we may notice that the k 
+centers change their location step by step until no more changes are done or in 
+other words centers do not move any more.
+
+
+## Indicate suitable number of clusters
+
+The elbow (scree) plot below, is used to check for the suitable number of clusters. 
+So what we are looking for, is the point at which the curve in the plot begins
+to flatten out. 
+
+
+In detail, the total within cluster sum of squares is calculated (the sum of 
+euclidean distances between each observation and the centroid corresponding to 
+the cluster to which the observation is assigned). 
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(purrr)
+library(cluster)
+
+# Produce matrix of distances
+kmeans.dat <- dist(scale(final[, 2:6]))
+
+# Use map_dbl to run many models with varying value of k (centers)
+tot_withinss <- map_dbl(1:10,  function(k){
+  model <- kmeans(x = kmeans.dat, centers = k)
+  model$tot.withinss
+})
+
+# Generate a data frame containing both k and tot_withinss
+elbow_df <- data.frame(
+  k = 1:10,
+  tot_withinss = tot_withinss
+)
+
+# Elbow plot
+ggplot(elbow_df, aes(x = k, y = tot_withinss)) +
+  geom_line() +
+  scale_x_continuous(breaks = 1:10) +
+  theme_fivethirtyeight() +
+  theme(axis.title = element_text()) +
+  labs(y = "Total within sum of squares",
+       x = "Number of clusters",
+       title = "Elbow (scree) plot",
+       subtitle = "Check optimal number of clusters")
+
+```
+
+
+**Silhouette analysis**
+
+In general, silhouette analysis determines how well each of the observations fit into 
+corresponding cluster (Higher values are better).
+
+It involves calculating a measurement called the silhouette width for every 
+observation:  
+- A value close to 1 suggests that this observation is well matched to its current cluster.  
+- A value of 0 suggests that it is on the border between two clusters and possibly 
+belong to either one.  
+- A value close to -1 indicates that the observation has a better fit to its 
+closest neighbouring cluster.
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+library(purrr)
+library(cluster)
+
+# Use map_dbl to run many models with varying value of k
+sil_width <- map_dbl(2:10,  function(k){
+  model <- pam(x = kmeans.dat, k = k)
+  model$silinfo$avg.width
+})
+
+# Generate a data frame containing both k and sil_width
+sil_df <- data.frame(
+  k = 2:10,
+  sil_width = sil_width
+)
+
+# Plot the relationship between k and sil_width
+ggplot(sil_df, aes(x = k, y = sil_width)) +
+  geom_line() +
+  scale_x_continuous(breaks = 2:10)+
+  theme_fivethirtyeight() +
+  theme(axis.title = element_text()) +
+  labs(y = "Average Silhouette width",
+       x = "Number of clusters",
+       title = "Silhouette Analysis")
+
+```
+
+In conclusion, I proceed with 2 clusters, as it is more suitable both from a 
+technical & practical point of view.
+
+
+Below there is a table plot with **information about all clusters**, indicating the 
+mean value of each confidence indicator within the cluster
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+set.seed(42)
+
+# Build a k-means model with a k of 2
+model_customers <- kmeans(kmeans.dat, centers = 2)
+
+# Extract the vector of cluster assignments from the model
+clust_countries <- model_customers$cluster
+
+# Build the dataframe by adding the cluster
+segment_countries <-
+  mutate(final[1:6], cluster = clust_countries) %>%
+  mutate(cluster = recode(cluster,
+                             "1" = "B",
+                             "2" = "A"))
+
+library(kableExtra)
+
+# Calculate the mean for each variable & print the table
+segment_countries %>%
+  group_by(cluster) %>%
+  add_tally() %>%
+  summarise_each(funs(round(mean(., na.rm = TRUE),2))) %>%
+  select("cluster", "n", 3:ncol(final)) %>% 
+  rename("Construction"  =  "Construction confidence indicator",
+         "Consumer"  =  "Consumer confidence indicator",
+         "Industrial"  =  "Industrial confidence indicator",
+         "Retail"  =  "Retail confidence indicator",
+         "Services"  =  "Services Confidence Indicator"
+         ) %>% 
+  kable("html", caption = 'Confidence indicators') %>%
+  kable_styling(position = "center") %>% 
+  scroll_box(width = "100%", height = "200px")
+
+  # kable() %>%
+  # kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+
+```
+
+
+- Cluster A tend to have higher values than cluster B on Construction confidence indicator, Consumer confidence indicator & Services Confidence Indicator
+
+- Both clusters tend to have similar values on Industrial confidence indicator & Retail confidence indicator
+
+## Principal components
+It would be nice to plot these clustering results and check these out visually. 
+But it is impossible to visualise so many variables, as various dimensions are
+required. 
+One way to overcome this is to use some dimensionality reduction technique. In particular, PCA (principal components analysis) is used.  
+It finds structure in features and aid in visualization.  
+In particular:  
+- It will find some linear combination of variables to create principal components (new features)    
+- Maintain most variance in the data    
+- Principal components (new features) are uncorrelated (i.e. orthogonal to each other)
+
+The plot below (bi-plot) shows all the original observations plotted on the first
+two principal components. 
+        
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+# apply pca
+pca_soft <- prcomp(scale(kmeans.dat))
+
+library(ggord)
+
+# Print biplot
+ggord(pca_soft, segment_countries$cluster, ellipse = FALSE, hull = TRUE, arrow = 1, vec_ext = 3, veccol = 'red', veclsz = 1) +
+  labs(title = "Biplot of principal components analysis",
+       subtitle = "Check how well the clusters are separated")
+
+```
+
+- The A cluster clearly stands out from cluster B
+- There is just a minor overlap 
+
+Finally, below there is a map plot of the clustering results.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+# Create table with results
+europeanUnionTable <- data.frame(country = segment_countries$geo, value = factor(segment_countries$cluster))
+europeCoords$value <- europeanUnionTable$value[match(europeCoords$region,europeanUnionTable$country)]
+
+
+# Plot the map with clusters
+ggplot() + 
+  geom_polygon(data = europeCoords, aes(x = long, y = lat, group = region, fill = value),
+                             colour = "black", size = 0.1) +
+  coord_map(xlim = c(-13, 35),  ylim = c(32, 71))+ 
+  theme(
+  axis.text.x = element_blank(),
+  axis.text.y = element_blank(), axis.ticks.x = element_blank(),
+  axis.ticks.y = element_blank(), axis.title = element_blank(),
+  plot.margin = unit(0 * c(-1.5, -1.5, -1.5, -1.5), "lines")) + 
+  labs(title = "Clusters in EU ",
+       subtitle = "based on confidence indicators",
+       fill = "Cluster")+
+  theme(panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        panel.background = element_blank()) +
+   scale_fill_manual(values=c("#33A02C", "#E31A1C"))
+
+```
+
+- In general, northern Europe countries tend to have higher confidence indicators that place them in cluster A  
+- The clustering results can confirm the theory of the two-speed EU (significant differences 
+between countries in many aspects as the standard of living etc.) 
+
+
+Below there is a table of all EU countries indicating their cluster.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+library(DT)
+
+# Print the table
+segment_countries %>% 
+  select(c(1, "cluster", 2:6)) %>% 
+  mutate(cluster = factor(cluster)) %>% 
+  rename(Cluster = cluster, Country = geo) %>% 
+  rename("Construction"  =  "Construction confidence indicator",
+         "Consumer"  =  "Consumer confidence indicator",
+         "Industrial"  =  "Industrial confidence indicator",
+         "Retail"  =  "Retail confidence indicator",
+         "Services"  =  "Services Confidence Indicator"
+         ) %>% 
+  arrange(Cluster, Country) %>% 
+  kable("html", caption = 'Confidence indicators') %>%
+  kable_styling(position = "center") %>% 
+  scroll_box(width = "100%", height = "300px")
+# 
+#   datatable(filter = 'top', options = list(pageLength = 10, autoWidth = TRUE, dom = 'pt', scrollX = TRUE))
+
+```
+
+[Full R code](https://github.com/mantoniou/Blog/blob/master/content/post/2018-10-27-clustering-of-eu-countries.Rmd)
+

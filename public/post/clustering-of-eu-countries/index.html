@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 
+			
+  
+    <meta name="twitter:card" content="summary"/>
+    
+      <meta name="twitter:image" content="/images/avatar.png" />
+    
+  
+  
+  <meta name="twitter:title" content="Clustering of EU countries"/>
+  <meta name="twitter:description" content="[Oct 27, 2018] Segmentation of EU countries, including cluster analysis based on consumer &amp; business confidence indicators"/>
+  
+    <meta name="twitter:site" content="@your_twitter_id"/>
+  
+  
+  
+  
+    <meta name="twitter:creator" content="@"/>
+  
+
+
+
+		
+		
+		<meta name="description" content="Site Description">
+		<meta name="generator" content="Hugo 0.36.1" />
+		<title>Clustering of EU countries &middot; Manos Antoniou</title>
+		<link rel="shortcut icon" href="/images/favicon.ico">
+		<link rel="stylesheet" href="/css/style.css">
+		<link rel="stylesheet" href="/css/highlight.css">
+
+		
+		<link rel="stylesheet" href="/css/font-awesome.min.css">
+		
+
+		
+		<link href="/index.xml" rel="alternate" type="application/rss+xml" title="Manos Antoniou" />
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='/about'>About</a>
+	<a href='/tags'>Tags</a>
+	<a href='https://www.linkedin.com/in/manos-antoniou-a558001b/'>LinkedIn</a>
+
+
+	
+
+	
+	<a class="cta" href="/index.xml">Subscribe</a>
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        Clustering of EU countries
+                    </h1>
+                    <h2 class="headline">
+                    Oct 27, 2018 00:00
+                    · 1326 words
+                    · 7 minute read
+                      <span class="tags">
+                      
+                      
+                          
+                              <a href="/tags/clustering">clustering</a>
+                          
+                              <a href="/tags/k-means">K-means</a>
+                          
+                      
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                
+                <section id="post-body">
+                    <script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<p>In this article I used a public Eurostat dataset, to develop a segmentation of the EU countries. This dataset consists of 5 confidence indicators:</p>
+<ul>
+<li><strong>Consumer Confidence Indicator</strong><br />
+</li>
+<li><strong>Construction confidence indicator</strong><br />
+</li>
+<li><strong>Industrial confidence indicator</strong><br />
+</li>
+<li><strong>Retail confidence indicator</strong><br />
+</li>
+<li><strong>Services Confidence Indicator</strong></li>
+</ul>
+<p>These indicators are formed via qualitative surveys which are conducted on a monthly basis in the following areas: <strong>manufacturing industry, construction, consumers, retail trade, services and financial services</strong>. These surveys started in 1980 and gradually include all the new EU members. About 137,000 firms and more than 41,000 consumers are currently surveyed every month across the EU.</p>
+<p>The used metrics is the balance i.e. the difference between positive and negative answers (in percentage points of total answers), as index, as confidence indicators (arithmetic average of balances).</p>
+<p>More information about these surveys can be found at this <a href="https://ec.europa.eu/eurostat/cache/metadata/en/ei_bcs_esms.htm">link</a></p>
+<p>The eurozone consists of 19 countries: Austria, Belgium, Cyprus, Estonia, Finland, France, Germany, Greece, Ireland, Italy, Latvia, Lithuania, Luxembourg, Malta, the Netherlands, Portugal, Slovakia, Slovenia, and Spain.</p>
+<p>The <a href="https://cran.r-project.org/web/packages/eurostat/index.html">Eurostat package</a> used to obtain the original datasets.</p>
+<p>More details about the ETL steps can be found, in the actual code, at the link at the end of the article.</p>
+<div id="etl-exploratory-analysis" class="section level1">
+<h1>ETL &amp; Exploratory Analysis</h1>
+<p>The original dataset consists of 11,340 observations that include these indicators for EU countries on a monthly basis. In the processed dataset I used i) observations from 2014 onward &amp; ii) the median values of each variable for each state, so finally the dataset consists of 28 observations in total. One more variable was created, by averaging all Business related confidence indicators (Construction, Industrial, Retail &amp; Services Confidence Indicators), to use a general <strong>business confidence indicator</strong>.</p>
+<p>It would be interesting to see the map plots of the confidence indicators. Below there are plots with the consumer &amp; averaging business confidence indicators.</p>
+<p><img src="/post/2018-10-27-clustering-of-eu-countries_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="/post/2018-10-27-clustering-of-eu-countries_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<ul>
+<li>It is clear that there are significant differences between countries.<br />
+</li>
+<li>Northern Europe countries tend to have higher consumers confidence indicators.<br />
+</li>
+<li>There are some outliers here. E.g. Greece has significantly lower confidence indicator than the rest of the nations.</li>
+</ul>
+<p>Below there is a scatterplot with marker labels indicating the positioning of each country in respect to consumer and business confidence indicators.</p>
+<p><img src="/post/2018-10-27-clustering-of-eu-countries_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>We can indicate some patterns from the plot above, similar to the findings before:<br />
+- There are some outliers, such as Greece(bottom left) &amp; Sweden(top right)<br />
+- There is a group of countries that are placed in the middle of the plot, indicating average consumer &amp; business confidence<br />
+- In all countries, the business confidence is substantially higher than consumer confidence</p>
+</div>
+<div id="segmentation" class="section level1">
+<h1>Segmentation</h1>
+<p>Since there are quite a few differences between countries regarding confidence indicators, it would be interesting to develop a segmentation, to check how well the countries are forming teams.<br />
+The <strong>k-means</strong> algorithm used for the segmentation. It is the widest used unsupervised learning algorithm. The procedure follows a simple and easy way to classify a given data set through a certain number of clusters (assume k clusters) fixed apriori. The main idea is to define k centers, one for each cluster. These centers should be placed in a cunning way because of different location causes different result. So, the better choice is to place them as much as possible far away from each other. The next step is to take each point belonging to a given data set and associate it to the nearest center. When no point is pending, the first step is completed and an early group age is done. At this point we need to re-calculate k new centroids as barycenter of the clusters resulting from the previous step. After we have these k new centroids, a new binding has to be done between the same data set points and the nearest new center. A loop has been generated. As a result of this loop we may notice that the k centers change their location step by step until no more changes are done or in other words centers do not move any more.</p>
+<div id="indicate-suitable-number-of-clusters" class="section level2">
+<h2>Indicate suitable number of clusters</h2>
+<p>The elbow (scree) plot below, is used to check for the suitable number of clusters. So what we are looking for, is the point at which the curve in the plot begins to flatten out.</p>
+<p>In detail, the total within cluster sum of squares is calculated (the sum of euclidean distances between each observation and the centroid corresponding to the cluster to which the observation is assigned).</p>
+<p><img src="/post/2018-10-27-clustering-of-eu-countries_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><strong>Silhouette analysis</strong></p>
+<p>In general, silhouette analysis determines how well each of the observations fit into corresponding cluster (Higher values are better).</p>
+<p>It involves calculating a measurement called the silhouette width for every observation:<br />
+- A value close to 1 suggests that this observation is well matched to its current cluster.<br />
+- A value of 0 suggests that it is on the border between two clusters and possibly belong to either one.<br />
+- A value close to -1 indicates that the observation has a better fit to its closest neighbouring cluster.</p>
+<p><img src="/post/2018-10-27-clustering-of-eu-countries_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>In conclusion, I proceed with 2 clusters, as it is more suitable both from a technical &amp; practical point of view.</p>
+<p>Below there is a table plot with <strong>information about all clusters</strong>, indicating the mean value of each confidence indicator within the cluster</p>
+<div style="border: 1px solid #ddd; padding: 5px; overflow-y: scroll; height:200px; overflow-x: scroll; width:100%; ">
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-10">Table 1: </span>Confidence indicators
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+cluster
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+Construction
+</th>
+<th style="text-align:right;">
+Consumer
+</th>
+<th style="text-align:right;">
+Industrial
+</th>
+<th style="text-align:right;">
+Retail
+</th>
+<th style="text-align:right;">
+Services
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+0.72
+</td>
+<td style="text-align:right;">
+8.42
+</td>
+<td style="text-align:right;">
+-1.06
+</td>
+<td style="text-align:right;">
+5.61
+</td>
+<td style="text-align:right;">
+19.20
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+-17.76
+</td>
+<td style="text-align:right;">
+-13.05
+</td>
+<td style="text-align:right;">
+-0.70
+</td>
+<td style="text-align:right;">
+5.86
+</td>
+<td style="text-align:right;">
+9.66
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li><p>Cluster A tend to have higher values than cluster B on Construction confidence indicator, Consumer confidence indicator &amp; Services Confidence Indicator</p></li>
+<li><p>Both clusters tend to have similar values on Industrial confidence indicator &amp; Retail confidence indicator</p></li>
+</ul>
+</div>
+<div id="principal-components" class="section level2">
+<h2>Principal components</h2>
+<p>It would be nice to plot these clustering results and check these out visually. But it is impossible to visualise so many variables, as various dimensions are required. One way to overcome this is to use some dimensionality reduction technique. In particular, PCA (principal components analysis) is used.<br />
+It finds structure in features and aid in visualization.<br />
+In particular:<br />
+- It will find some linear combination of variables to create principal components (new features)<br />
+- Maintain most variance in the data<br />
+- Principal components (new features) are uncorrelated (i.e. orthogonal to each other)</p>
+<p>The plot below (bi-plot) shows all the original observations plotted on the first two principal components.</p>
+<p><img src="/post/2018-10-27-clustering-of-eu-countries_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<ul>
+<li>The A cluster clearly stands out from cluster B</li>
+<li>There is just a minor overlap</li>
+</ul>
+<p>Finally, below there is a map plot of the clustering results.</p>
+<p><img src="/post/2018-10-27-clustering-of-eu-countries_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<ul>
+<li>In general, northern Europe countries tend to have higher confidence indicators that place them in cluster A<br />
+</li>
+<li>The clustering results can confirm the theory of the two-speed EU (significant differences between countries in many aspects as the standard of living etc.)</li>
+</ul>
+<p>Below there is a table of all EU countries indicating their cluster.</p>
+<div style="border: 1px solid #ddd; padding: 5px; overflow-y: scroll; height:300px; overflow-x: scroll; width:100%; ">
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-13">Table 2: </span>Confidence indicators
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Country
+</th>
+<th style="text-align:left;">
+Cluster
+</th>
+<th style="text-align:right;">
+Construction
+</th>
+<th style="text-align:right;">
+Consumer
+</th>
+<th style="text-align:right;">
+Industrial
+</th>
+<th style="text-align:right;">
+Retail
+</th>
+<th style="text-align:right;">
+Services
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Czech Rep.
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+-19.7
+</td>
+<td style="text-align:right;">
+3.5
+</td>
+<td style="text-align:right;">
+3.1
+</td>
+<td style="text-align:right;">
+19.8
+</td>
+<td style="text-align:right;">
+33.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+-2.2
+</td>
+<td style="text-align:right;">
+0.9
+</td>
+<td style="text-align:right;">
+1.0
+</td>
+<td style="text-align:right;">
+-3.7
+</td>
+<td style="text-align:right;">
+18.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Denmark
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+-4.3
+</td>
+<td style="text-align:right;">
+15.0
+</td>
+<td style="text-align:right;">
+-3.9
+</td>
+<td style="text-align:right;">
+8.5
+</td>
+<td style="text-align:right;">
+8.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Finland
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+-4.0
+</td>
+<td style="text-align:right;">
+14.9
+</td>
+<td style="text-align:right;">
+-3.0
+</td>
+<td style="text-align:right;">
+-4.7
+</td>
+<td style="text-align:right;">
+11.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Luxembourg
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+5.2
+</td>
+<td style="text-align:right;">
+6.7
+</td>
+<td style="text-align:right;">
+-15.7
+</td>
+<td style="text-align:right;">
+-5.7
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malta
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+<td style="text-align:right;">
+2.3
+</td>
+<td style="text-align:right;">
+4.7
+</td>
+<td style="text-align:right;">
+6.1
+</td>
+<td style="text-align:right;">
+28.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Netherlands
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+10.7
+</td>
+<td style="text-align:right;">
+8.1
+</td>
+<td style="text-align:right;">
+1.6
+</td>
+<td style="text-align:right;">
+6.9
+</td>
+<td style="text-align:right;">
+8.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sweden
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+15.7
+</td>
+<td style="text-align:right;">
+13.8
+</td>
+<td style="text-align:right;">
+3.7
+</td>
+<td style="text-align:right;">
+17.7
+</td>
+<td style="text-align:right;">
+26.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ireland
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+10.6
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Austria
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-3.7
+</td>
+<td style="text-align:right;">
+-8.1
+</td>
+<td style="text-align:right;">
+-3.5
+</td>
+<td style="text-align:right;">
+-7.1
+</td>
+<td style="text-align:right;">
+15.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Belgium
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-13.9
+</td>
+<td style="text-align:right;">
+-4.0
+</td>
+<td style="text-align:right;">
+-4.3
+</td>
+<td style="text-align:right;">
+-7.0
+</td>
+<td style="text-align:right;">
+15.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bulgaria
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-21.7
+</td>
+<td style="text-align:right;">
+-28.7
+</td>
+<td style="text-align:right;">
+0.6
+</td>
+<td style="text-align:right;">
+15.3
+</td>
+<td style="text-align:right;">
+9.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cyprus
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-28.4
+</td>
+<td style="text-align:right;">
+-9.1
+</td>
+<td style="text-align:right;">
+-1.8
+</td>
+<td style="text-align:right;">
+-0.9
+</td>
+<td style="text-align:right;">
+18.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Estonia
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-3.0
+</td>
+<td style="text-align:right;">
+-3.5
+</td>
+<td style="text-align:right;">
+2.6
+</td>
+<td style="text-align:right;">
+12.5
+</td>
+<td style="text-align:right;">
+5.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Greece
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-45.2
+</td>
+<td style="text-align:right;">
+-56.9
+</td>
+<td style="text-align:right;">
+-6.3
+</td>
+<td style="text-align:right;">
+2.1
+</td>
+<td style="text-align:right;">
+3.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Spain
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-28.4
+</td>
+<td style="text-align:right;">
+-1.9
+</td>
+<td style="text-align:right;">
+-1.6
+</td>
+<td style="text-align:right;">
+11.3
+</td>
+<td style="text-align:right;">
+18.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+France
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-29.2
+</td>
+<td style="text-align:right;">
+-14.2
+</td>
+<td style="text-align:right;">
+-3.4
+</td>
+<td style="text-align:right;">
+-4.4
+</td>
+<td style="text-align:right;">
+-0.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Croatia
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-11.2
+</td>
+<td style="text-align:right;">
+-19.3
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+<td style="text-align:right;">
+8.0
+</td>
+<td style="text-align:right;">
+15.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hungary
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-5.1
+</td>
+<td style="text-align:right;">
+-17.0
+</td>
+<td style="text-align:right;">
+5.7
+</td>
+<td style="text-align:right;">
+9.1
+</td>
+<td style="text-align:right;">
+7.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Italy
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-19.8
+</td>
+<td style="text-align:right;">
+-9.2
+</td>
+<td style="text-align:right;">
+-1.3
+</td>
+<td style="text-align:right;">
+6.4
+</td>
+<td style="text-align:right;">
+7.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lithuania
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-19.7
+</td>
+<td style="text-align:right;">
+-8.8
+</td>
+<td style="text-align:right;">
+-6.4
+</td>
+<td style="text-align:right;">
+5.5
+</td>
+<td style="text-align:right;">
+9.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Latvia
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-19.3
+</td>
+<td style="text-align:right;">
+-8.5
+</td>
+<td style="text-align:right;">
+-2.7
+</td>
+<td style="text-align:right;">
+6.1
+</td>
+<td style="text-align:right;">
+4.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Poland
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-22.2
+</td>
+<td style="text-align:right;">
+-9.3
+</td>
+<td style="text-align:right;">
+-10.6
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+1.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Portugal
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-31.8
+</td>
+<td style="text-align:right;">
+-11.3
+</td>
+<td style="text-align:right;">
+-0.5
+</td>
+<td style="text-align:right;">
+1.3
+</td>
+<td style="text-align:right;">
+9.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Romania
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-13.3
+</td>
+<td style="text-align:right;">
+-19.1
+</td>
+<td style="text-align:right;">
+0.4
+</td>
+<td style="text-align:right;">
+10.5
+</td>
+<td style="text-align:right;">
+8.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Slovenia
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-7.0
+</td>
+<td style="text-align:right;">
+-11.2
+</td>
+<td style="text-align:right;">
+6.3
+</td>
+<td style="text-align:right;">
+16.7
+</td>
+<td style="text-align:right;">
+19.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Slovakia
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-10.0
+</td>
+<td style="text-align:right;">
+-7.5
+</td>
+<td style="text-align:right;">
+4.7
+</td>
+<td style="text-align:right;">
+15.7
+</td>
+<td style="text-align:right;">
+7.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+United Kingdom
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+-4.5
+</td>
+<td style="text-align:right;">
+-0.3
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+<td style="text-align:right;">
+7.4
+</td>
+<td style="text-align:right;">
+7.8
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><a href="https://github.com/mantoniou/Blog/blob/master/content/post/2018-10-27-clustering-of-eu-countries.Rmd">Full R code</a></p>
+</div>
+</div>
+
+                </section>
+            </article>
+
+            
+                
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+<a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+<a class="a2a_button_linkedin"></a>
+<a class="a2a_button_twitter"></a>
+<a class="a2a_button_facebook"></a>
+<a class="a2a_button_google_plus"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/mantoniou">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.linkedin.com/in/manos-antoniou-a558001b">
+        <i class="fa fa-linkedin-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://twitter.com/mantoniou1">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2018 Manos Antoniou 
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-116714552-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+    </body>
+</html>
