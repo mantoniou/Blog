@@ -223,14 +223,15 @@ final <- filter(final, geo %in% europeanUnion)
 # Scatter plot
 final %>% 
 ggplot(aes(Consumers, Business)) +
-  geom_point()+
+  geom_point(col = "red")+
   geom_text(aes(label = geo), check_overlap = TRUE, vjust = 1, hjust = 1) +
   theme_fivethirtyeight() +
   theme(axis.title = element_text()) +
   labs(x = "Consumer Confidence",
        y = "Business Confidence",
        title = "Scatterplot of EU countries confidence levels",
-       subtitle = "Data from 2014-2018") 
+       subtitle = "Data from 2014-2018") +
+  xlim(-65, 20)
 
 ```
 
@@ -435,7 +436,6 @@ ggord(pca_soft, segment_countries$cluster, ellipse = FALSE, hull = TRUE, arrow =
 - The A cluster clearly stands out from cluster B
 - There is just a minor overlap 
 
-Finally, below there is a map plot of the clustering results.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 
@@ -454,8 +454,8 @@ ggplot() +
   axis.text.y = element_blank(), axis.ticks.x = element_blank(),
   axis.ticks.y = element_blank(), axis.title = element_blank(),
   plot.margin = unit(0 * c(-1.5, -1.5, -1.5, -1.5), "lines")) + 
-  labs(title = "Clusters in EU ",
-       subtitle = "based on confidence indicators",
+  labs(title = "EU clusters based on confidence indicators",
+       subtitle = "- Green indicates higher & red lower conf. indicators",
        fill = "Cluster")+
   theme(panel.grid = element_blank(),
         axis.text = element_blank(),
@@ -470,7 +470,8 @@ ggplot() +
 between countries in many aspects as the standard of living etc.) 
 
 
-Below there is a table of all EU countries indicating their cluster.
+Below there is a table of all EU countries indicating their cluster and the median
+confidence indicators (since 2014)
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 
