@@ -6,10 +6,24 @@
     <description>Recent content in Clustering on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 19 Feb 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 27 Oct 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/clustering/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Clustering of EU countries</title>
+      <link>/post/clustering-of-eu-countries/</link>
+      <pubDate>Sat, 27 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/clustering-of-eu-countries/</guid>
+      <description>In this article I used a public Eurostat dataset, to develop a segmentation of the EU countries. This dataset consists of 5 confidence indicators:
+ Consumer Confidence Indicator
+ Construction confidence indicator
+ Industrial confidence indicator
+ Retail confidence indicator
+ Services Confidence Indicator  These indicators are formed via qualitative surveys which are conducted on a monthly basis in the following areas: manufacturing industry, construction, consumers, retail trade, services and financial services.</description>
+    </item>
     
     <item>
       <title>Predict using classification methods</title>
