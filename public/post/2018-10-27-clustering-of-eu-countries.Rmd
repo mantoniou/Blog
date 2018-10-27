@@ -489,7 +489,7 @@ segment_countries %>%
          "Services"  =  "Services Confidence Indicator"
          ) %>% 
   arrange(Cluster, Country) %>% 
-  kable("html", caption = 'Confidence indicators') %>%
+  kable("html", caption = '') %>%
   kable_styling(position = "center") %>% 
   scroll_box(width = "100%", height = "300px")
 # 
