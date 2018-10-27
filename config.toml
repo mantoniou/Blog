@@ -10,7 +10,7 @@ hasCJKLanguage = false
 [params]
 	author = ""
 	description = "Site Description"
-	bio = "Advanced Analytics | Data Science Blog"
+	bio = "Data Science | Advanced Analytics Blog"
 
 	twitter = "your_twitter_id"
 	facebook = "your_facebook_id"
