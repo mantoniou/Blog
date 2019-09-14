@@ -2,7 +2,7 @@
 title: Clustering of EU countries
 author: ''
 date: '2018-10-27'
-description: "[Oct 27, 2018] Segmentation of EU countries, including cluster analysis based on consumer & business confidence indicators"
+description: "Segmentation of EU countries, including cluster analysis based on consumer & business confidence indicators"
 
 slug: clustering-of-eu-countries
 categories:

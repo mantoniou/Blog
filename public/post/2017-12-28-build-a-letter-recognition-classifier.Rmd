@@ -2,7 +2,7 @@
 title: Build a letter recognition classifier
 author: ''
 date: '2017-12-28'
-description: "[Dec 28, 2017] Develop a model that will predict the hand-written capital letters (English) displayed in a picture"
+description: "Develop a model that will predict the hand-written capital letters (English) displayed in a picture"
 categories:
   - R
 tags:
@@ -91,7 +91,7 @@ library(ggdendro)
 
 # DATA WRANGLING ###############################################################
 # Insert dataset
-letter <- read.table("/Users/manos/Dropbox/Projects/R/Data/letter-recognition.data",
+letter <- read.table("/Users/manos/OneDrive/Projects/R/Data/letter-recognition.data",
                   sep = ",")
 
 # Create vector with new variable names

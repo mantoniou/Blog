@@ -14,7 +14,7 @@
   
   
   <meta name="twitter:title" content="Web scraping and analyzing 400,000 articles"/>
-  <meta name="twitter:description" content="[Apr 4, 2018] Perform web scraping and analysis on 400,000 articles published by NEWSBEAST.GR, one of the main on-line publishers in Greece"/>
+  <meta name="twitter:description" content="Perform web scraping and analysis on 400,000 articles published by NEWSBEAST.GR, one of the main on-line publishers in Greece"/>
   
     <meta name="twitter:site" content="@your_twitter_id"/>
   
@@ -94,7 +94,11 @@
                   
                 
                 <section id="post-body">
-                    <p>In this post i will analyze the articles published by <a href="http://www.newsbeast.gr">NEWSBEAST</a>, one of the main on-line publishers in Greece. The main question is <strong>“Are there any trends on the daily posting frequency of NEWSBEAST?”</strong> The steps below were followed before the main data analysis (link for the full r code can be found at the end of the article):</p>
+                    <p>In this post i will analyze the articles published by <a href="http://www.newsbeast.gr">NEWSBEAST</a>,
+one of the main on-line publishers in Greece.
+The main question is <strong>“Are there any trends on the daily posting frequency of NEWSBEAST?”</strong>
+The steps below were followed before the main data analysis (link for the full r code can be
+found at the end of the article):</p>
 <ul>
 <li>Scraping the articles from the site (www.newbeast.gr) using rvest &amp; car libraries in R<br />
 </li>
@@ -104,23 +108,35 @@
 </ul>
 <div id="main-data-analysis" class="section level1">
 <h1>MAIN DATA ANALYSIS</h1>
-<p>Let’s create a scatter plot to see the number of articles published per day for the last 4 years.</p>
+<p>Let’s create a scatter plot to see the number of articles published per day for the last
+4 years.</p>
 <p><img src="/post/2018-04-04-web-scraping-and-analyzing-400-000-articles_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>We can spot clearly that there is a constant trend (during the last 4 years) of two different patterns on number of daily articles published. We suspect that on specific weekdays (maybe weekends?) there are significantly less published daily articles.<br />
-A second trend (not so clear) could be that each consecutive year less articles are published.</p>
-<p>Now let’s plot it again by distinguish each week day with a different color for a more clear view.</p>
+<p>We can spot clearly that there is a constant trend (during the last 4 years)
+of two different patterns on number of daily articles published. We suspect that
+on specific weekdays (maybe weekends?) there are significantly less published daily articles.<br />
+A second trend (not so clear) could be that each consecutive year less articles
+are published.</p>
+<p>Now let’s plot it again by distinguish each week day with a different color for
+a more clear view.</p>
 <p><img src="/post/2018-04-04-web-scraping-and-analyzing-400-000-articles_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>So now it is clear that during the weekends the number of daily posts are much lower than on work-week days.</p>
+<p>So now it is clear that during the weekends the number of daily posts are much lower
+than on work-week days.</p>
 </div>
 <div id="modelling" class="section level1">
 <h1>MODELLING</h1>
-<p>Now let’s try to fit a model on each week day and create a plot to present these. In the plot below each weekday is presented by by fitting a separate smooth line using <a href="https://en.wikipedia.org/wiki/Local_regression">LOESS regression</a></p>
+<p>Now let’s try to fit a model on each week day and create a plot to present these.
+In the plot below each weekday is presented by by fitting a separate smooth line
+using <a href="https://en.wikipedia.org/wiki/Local_regression">LOESS regression</a></p>
 <p><img src="/post/2018-04-04-web-scraping-and-analyzing-400-000-articles_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<p>The standard error for weekend days (95% confidence level) indicates that the difference from the work-week days is significant.</p>
+<p>The standard error for weekend days (95% confidence level) indicates that the
+difference from the work-week days is significant.</p>
 <p>Now let’s investigate if there are significant differences between different years.</p>
 <p><img src="/post/2018-04-04-web-scraping-and-analyzing-400-000-articles_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>By looking at the error bars it looks that all differences (between years) are statistically significant, except when comparing 2016 with 2017 were the error bars are overlapping.</p>
-<p>This finding can be confirmed by applying the non-parametric <a href="https://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test">Wilcoxon signed-rank</a> test in different samples (table below)</p>
+<p>By looking at the error bars it looks
+that all differences (between years) are statistically significant, except when comparing 2016 with
+2017 were the error bars are overlapping.</p>
+<p>This finding can be confirmed by applying the non-parametric <a href="https://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test">Wilcoxon signed-rank</a>
+test in different samples (table below)</p>
 <table>
 <thead>
 <tr class="header">
@@ -143,16 +159,26 @@ A second trend (not so clear) could be that each consecutive year less articles 
 </tr>
 </tbody>
 </table>
-<p>All p-values are very low (&lt;0.01) with confidence level of 0.95, so the difference in daily mean articles posted is significant.</p>
+<p>All p-values are very low (&lt;0.01) with confidence
+level of 0.95, so the difference in daily mean articles posted is significant.</p>
 </div>
 <div id="time-series-analysis" class="section level1">
 <h1>TIME SERIES ANALYSIS</h1>
-<p>Finally in order to investigate other, less obvious seasonal trends, we used a package dedicated on time series analysis. Using the <a href="https://github.com/facebook/prophet">prophet</a> package for R a forecasting model was fitted, as can be seen below, which revealed more seasonal trends. In particular two major “drops” appear in daily articles around the <strong>christmas period</strong> and the <strong>summer holidays</strong> (around August). There is also a minor “drop” around the <strong>Easter period</strong>.</p>
+<p>Finally in order to investigate other, less obvious seasonal trends, we used
+a package dedicated on time series analysis. Using the <a href="https://github.com/facebook/prophet">prophet</a>
+package for R a forecasting model was fitted, as can be seen below, which revealed
+more seasonal trends. In particular two major “drops” appear in daily articles
+around the <strong>christmas period</strong> and the <strong>summer holidays</strong> (around August). There is also a minor
+“drop” around the <strong>Easter period</strong>.</p>
 <pre><code>## Initial log joint probability = -86.749
 ## Optimization terminated normally: 
 ##   Convergence detected: relative gradient magnitude is below tolerance</code></pre>
 <p><img src="/post/2018-04-04-web-scraping-and-analyzing-400-000-articles_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<p>The other useful feature is the ability to plot the various components (plot below) It is a simple way to pull out the daily/weekly/yearly trends. In particular in the chart below we can easily spot the drop on the weekends, the “drops” in daily articles around the <strong>christmas period</strong>, <strong>summer holidays</strong>, <strong>Easter period</strong> and the yearly “drop”.</p>
+<p>The other useful feature is the ability to plot the various components (plot below)
+It is a simple way to pull out the daily/weekly/yearly trends.
+In particular in the chart below we can easily spot the drop on the weekends,
+the “drops” in daily articles around the <strong>christmas period</strong>, <strong>summer holidays</strong>,
+<strong>Easter period</strong> and the yearly “drop”.</p>
 <pre class="r"><code>prophet_plot_components(m, forecast)</code></pre>
 <p><img src="/post/2018-04-04-web-scraping-and-analyzing-400-000-articles_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
@@ -218,7 +244,7 @@ A second trend (not so clear) could be that each consecutive year less articles 
     
     <p class="small">
     
-       © Copyright 2018 Manos Antoniou 
+       © Copyright 2019 Manos Antoniou 
     
     </p>
 </footer>

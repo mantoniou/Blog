@@ -2,7 +2,7 @@
 title: Text analytics & topic modelling on music genres song lyrics
 author: ''
 date: '2018-06-24'
-description: "[Jun 24, 2018] Text analytics & topic modelling in more than 380,000 song lyrics, of various music genres in the past 50 years"
+description: "Text analytics & topic modelling in more than 380,000 song lyrics, of various music genres in the past 50 years"
 slug: text-analytics-topic-modelling-songs-lyrics
 categories:
   - R
@@ -62,7 +62,7 @@ the article.
 
 ```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 # Insert data
-songs <- read_csv("./data/songs.csv")
+songs <- read_csv("/Users/manos/Onedrive/Projects/R/Blog/data/songs.csv")
 
 ```
 

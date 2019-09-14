@@ -2,7 +2,7 @@
 title: Predict using classification methods
 author: ''
 date: '2018-02-19'
-description: "[Feb 19, 2018] Build a model that will predict whether a tumor
+description: "Build a model that will predict whether a tumor
 is malignant or benign, based on data from a study on breast cancer."
 slug: predict-using-classification-methods
 categories:
@@ -44,7 +44,7 @@ k) type (tumor can be either malignant -M- or benign -B-)
 # Load Libraries
 library(dplyr)
 library(tidyr)
-library(xda)
+# library(xda)
 library(corrgram)
 library(ggplot2)
 library(ggthemes)
@@ -52,7 +52,7 @@ library(cluster)
 library(caret)
 
 # Insert dataset into R
-med <- read.table("/Users/manos/Dropbox/Projects/R/Blogdown/data/cancer.txt", sep=",", header = TRUE)
+med <- read.table("/Users/manos/Onedrive/Projects/R/Blogdown/data/cancer.txt", sep=",", header = TRUE)
 
 
 # Discard the id column as it will not be used in any of the analysis below 
@@ -231,7 +231,7 @@ prediction <- predict(glm_model, newdata= testing, type = "response")
 prediction <- ifelse(prediction > 0.5, "M", "B")
 
 # Check the accuracy of the  prediction model by printing the confusion matrix.
-print(confusionMatrix(prediction, testing$diagnosis), digits=4)
+print(confusionMatrix(as.factor(prediction), testing$diagnosis), digits=4)
 
 ```
 
@@ -256,7 +256,7 @@ prediction <- predict(glm_model, newdata= testing, type = "response")
 prediction <- ifelse(prediction > 0.8, "M", "B")
 
 # Check the accuracy of the  prediction model by printing the confusion matrix.
-print(confusionMatrix(prediction, testing$diagnosis), digits=4)
+print(confusionMatrix(as.factor(prediction), testing$diagnosis), digits=4)
 
 ```
 

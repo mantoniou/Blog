@@ -2,7 +2,7 @@
 title: Clustering of EU countries
 author: ''
 date: '2018-10-27'
-description: "[Oct 27, 2018] Segmentation of EU countries, including cluster analysis based on consumer & business confidence indicators"
+description: "Segmentation of EU countries, including cluster analysis based on consumer & business confidence indicators"
 
 slug: clustering-of-eu-countries
 categories:
@@ -16,7 +16,9 @@ tags:
 <script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
 
 
-<p>In this article I used a public Eurostat dataset, to develop a segmentation of the EU countries. This dataset consists of 5 confidence indicators:</p>
+<p>In this article I used a public Eurostat dataset, to develop a
+segmentation of the EU countries.
+This dataset consists of 5 confidence indicators:</p>
 <ul>
 <li><strong>Consumer Confidence Indicator</strong><br />
 </li>
@@ -28,50 +30,97 @@ tags:
 </li>
 <li><strong>Services Confidence Indicator</strong></li>
 </ul>
-<p>These indicators are formed via qualitative surveys which are conducted on a monthly basis in the following areas: <strong>manufacturing industry, construction, consumers, retail trade, services and financial services</strong>. These surveys started in 1980 and gradually include all the new EU members. About 137,000 firms and more than 41,000 consumers are currently surveyed every month across the EU.</p>
-<p>The used metrics is the balance i.e. the difference between positive and negative answers (in percentage points of total answers), as index, as confidence indicators (arithmetic average of balances).</p>
-<p>More information about these surveys can be found at this <a href="https://ec.europa.eu/eurostat/cache/metadata/en/ei_bcs_esms.htm">link</a></p>
-<p>The eurozone consists of 19 countries: Austria, Belgium, Cyprus, Estonia, Finland, France, Germany, Greece, Ireland, Italy, Latvia, Lithuania, Luxembourg, Malta, the Netherlands, Portugal, Slovakia, Slovenia, and Spain.</p>
-<p>The <a href="https://cran.r-project.org/web/packages/eurostat/index.html">Eurostat package</a> used to obtain the original datasets.</p>
-<p>More details about the ETL steps can be found, in the actual code, at the link at the end of the article.</p>
+<p>These indicators are formed via qualitative surveys which are conducted on a monthly
+basis in the following areas:
+<strong>manufacturing industry, construction, consumers, retail trade, services and financial services</strong>.
+These surveys started in 1980 and gradually include all the new EU
+members. About 137,000 firms and more than 41,000 consumers are currently surveyed
+every month across the EU.</p>
+<p>The used metrics is the balance i.e. the difference between positive and negative
+answers (in percentage points of total answers), as index, as confidence indicators
+(arithmetic average of balances).</p>
+<p>More information about these surveys can be found at this
+<a href="https://ec.europa.eu/eurostat/cache/metadata/en/ei_bcs_esms.htm">link</a></p>
+<p>The eurozone consists of 19 countries: Austria, Belgium, Cyprus,
+Estonia, Finland, France, Germany, Greece, Ireland, Italy, Latvia, Lithuania,
+Luxembourg, Malta, the Netherlands, Portugal, Slovakia, Slovenia, and Spain.</p>
+<p>The <a href="https://cran.r-project.org/web/packages/eurostat/index.html">Eurostat package</a>
+used to obtain the original datasets.</p>
+<p>More details about the ETL steps can be found, in the actual code, at the link
+at the end of the article.</p>
 <div id="etl-exploratory-analysis" class="section level1">
 <h1>ETL &amp; Exploratory Analysis</h1>
-<p>The original dataset consists of 11,340 observations that include these indicators for EU countries on a monthly basis. In the processed dataset I used i) observations from 2014 onward &amp; ii) the median values of each variable for each state, so finally the dataset consists of 28 observations in total. One more variable was created, by averaging all Business related confidence indicators (Construction, Industrial, Retail &amp; Services Confidence Indicators), to use a general <strong>business confidence indicator</strong>.</p>
-<p>It would be interesting to see the map plots of the confidence indicators. Below there are plots with the consumer &amp; averaging business confidence indicators.</p>
+<p>The original dataset consists of 11,340 observations that include these indicators
+for EU countries on a monthly basis. In the processed dataset I used i) observations
+from 2014 onward &amp; ii) the median values of each variable for each state, so finally the dataset consists of 28 observations in total. One more
+variable was created, by averaging all Business related confidence indicators
+(Construction, Industrial, Retail &amp; Services Confidence Indicators), to use a general <strong>business confidence indicator</strong>.</p>
+<p>It would be interesting to see the map plots of the confidence indicators. Below
+there are plots with the consumer &amp; averaging business confidence indicators.</p>
 <p><img src="/post/2018-10-27-clustering-of-eu-countries_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p><img src="/post/2018-10-27-clustering-of-eu-countries_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <ul>
 <li>It is clear that there are significant differences between countries.<br />
 </li>
-<li>Northern Europe countries tend to have higher consumers confidence indicators.<br />
+<li>Northern Europe countries tend to have higher consumers confidence
+indicators.<br />
 </li>
-<li>There are some outliers here. E.g. Greece has significantly lower confidence indicator than the rest of the nations.</li>
+<li>There are some outliers here. E.g. Greece has significantly lower confidence indicator
+than the rest of the nations.</li>
 </ul>
-<p>Below there is a scatterplot with marker labels indicating the positioning of each country in respect to consumer and business confidence indicators.</p>
+<p>Below there is a scatterplot with marker labels indicating the positioning of
+each country in respect to consumer and business confidence indicators.</p>
 <p><img src="/post/2018-10-27-clustering-of-eu-countries_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>We can indicate some patterns from the plot above, similar to the findings before:<br />
 - There are some outliers, such as Greece(bottom left) &amp; Sweden(top right)<br />
-- There is a group of countries that are placed in the middle of the plot, indicating average consumer &amp; business confidence<br />
-- In all countries, the business confidence is substantially higher than consumer confidence</p>
+- There is a group of countries that are placed in the middle of the plot, indicating
+average consumer &amp; business confidence<br />
+- In all countries, the business confidence is substantially higher than
+consumer confidence</p>
 </div>
 <div id="segmentation" class="section level1">
 <h1>Segmentation</h1>
-<p>Since there are quite a few differences between countries regarding confidence indicators, it would be interesting to develop a segmentation, to check how well the countries are forming teams.<br />
-The <strong>k-means</strong> algorithm used for the segmentation. It is the widest used unsupervised learning algorithm. The procedure follows a simple and easy way to classify a given data set through a certain number of clusters (assume k clusters) fixed apriori. The main idea is to define k centers, one for each cluster. These centers should be placed in a cunning way because of different location causes different result. So, the better choice is to place them as much as possible far away from each other. The next step is to take each point belonging to a given data set and associate it to the nearest center. When no point is pending, the first step is completed and an early group age is done. At this point we need to re-calculate k new centroids as barycenter of the clusters resulting from the previous step. After we have these k new centroids, a new binding has to be done between the same data set points and the nearest new center. A loop has been generated. As a result of this loop we may notice that the k centers change their location step by step until no more changes are done or in other words centers do not move any more.</p>
+<p>Since there are quite a few differences between countries regarding
+confidence indicators, it would be interesting to develop a segmentation, to check how well the countries are forming teams.<br />
+The <strong>k-means</strong> algorithm used for the segmentation.
+It is the widest used unsupervised learning algorithm. The procedure follows
+a simple and easy way to classify a given data set through a certain number of
+clusters (assume k clusters) fixed apriori. The main idea is to define k centers,
+one for each cluster. These centers should be placed in a cunning way because of
+different location causes different result. So, the better choice is to place
+them as much as possible far away from each other. The next step is to take each
+point belonging to a given data set and associate it to the nearest center. When
+no point is pending, the first step is completed and an early group age is done.
+At this point we need to re-calculate k new centroids as barycenter of the clusters
+resulting from the previous step. After we have these k new centroids, a new
+binding has to be done between the same data set points and the nearest new center.
+A loop has been generated. As a result of this loop we may notice that the k
+centers change their location step by step until no more changes are done or in
+other words centers do not move any more.</p>
 <div id="indicate-suitable-number-of-clusters" class="section level2">
 <h2>Indicate suitable number of clusters</h2>
-<p>The elbow (scree) plot below, is used to check for the suitable number of clusters. So what we are looking for, is the point at which the curve in the plot begins to flatten out.</p>
-<p>In detail, the total within cluster sum of squares is calculated (the sum of euclidean distances between each observation and the centroid corresponding to the cluster to which the observation is assigned).</p>
+<p>The elbow (scree) plot below, is used to check for the suitable number of clusters.
+So what we are looking for, is the point at which the curve in the plot begins
+to flatten out.</p>
+<p>In detail, the total within cluster sum of squares is calculated (the sum of
+euclidean distances between each observation and the centroid corresponding to
+the cluster to which the observation is assigned).</p>
 <p><img src="/post/2018-10-27-clustering-of-eu-countries_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p><strong>Silhouette analysis</strong></p>
-<p>In general, silhouette analysis determines how well each of the observations fit into corresponding cluster (Higher values are better).</p>
-<p>It involves calculating a measurement called the silhouette width for every observation:<br />
+<p>In general, silhouette analysis determines how well each of the observations fit into
+corresponding cluster (Higher values are better).</p>
+<p>It involves calculating a measurement called the silhouette width for every
+observation:<br />
 - A value close to 1 suggests that this observation is well matched to its current cluster.<br />
-- A value of 0 suggests that it is on the border between two clusters and possibly belong to either one.<br />
-- A value close to -1 indicates that the observation has a better fit to its closest neighbouring cluster.</p>
+- A value of 0 suggests that it is on the border between two clusters and possibly
+belong to either one.<br />
+- A value close to -1 indicates that the observation has a better fit to its
+closest neighbouring cluster.</p>
 <p><img src="/post/2018-10-27-clustering-of-eu-countries_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>In conclusion, I proceed with 2 clusters, as it is more suitable both from a technical &amp; practical point of view.</p>
-<p>Below there is a table plot with <strong>information about all clusters</strong>, indicating the mean value of each confidence indicator within the cluster</p>
+<p>In conclusion, I proceed with 2 clusters, as it is more suitable both from a
+technical &amp; practical point of view.</p>
+<p>Below there is a table plot with <strong>information about all clusters</strong>, indicating the
+mean value of each confidence indicator within the cluster</p>
 <div style="border: 1px solid #ddd; padding: 5px; overflow-y: scroll; height:200px; overflow-x: scroll; width:100%; ">
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
@@ -159,13 +208,17 @@ B
 </div>
 <div id="principal-components" class="section level2">
 <h2>Principal components</h2>
-<p>It would be nice to plot these clustering results and check these out visually. But it is impossible to visualise so many variables, as various dimensions are required. One way to overcome this is to use some dimensionality reduction technique. In particular, PCA (principal components analysis) is used.<br />
+<p>It would be nice to plot these clustering results and check these out visually.
+But it is impossible to visualise so many variables, as various dimensions are
+required.
+One way to overcome this is to use some dimensionality reduction technique. In particular, PCA (principal components analysis) is used.<br />
 It finds structure in features and aid in visualization.<br />
 In particular:<br />
 - It will find some linear combination of variables to create principal components (new features)<br />
 - Maintain most variance in the data<br />
 - Principal components (new features) are uncorrelated (i.e. orthogonal to each other)</p>
-<p>The plot below (bi-plot) shows all the original observations plotted on the first two principal components.</p>
+<p>The plot below (bi-plot) shows all the original observations plotted on the first
+two principal components.</p>
 <p><img src="/post/2018-10-27-clustering-of-eu-countries_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <ul>
 <li>The A cluster clearly stands out from cluster B</li>
@@ -175,9 +228,11 @@ In particular:<br />
 <ul>
 <li>In general, northern Europe countries tend to have higher confidence indicators that place them in cluster A<br />
 </li>
-<li>The clustering results can confirm the theory of the two-speed EU (significant differences between countries in many aspects as the standard of living etc.)</li>
+<li>The clustering results can confirm the theory of the two-speed EU (significant differences
+between countries in many aspects as the standard of living etc.)</li>
 </ul>
-<p>Below there is a table of all EU countries indicating their cluster and the median confidence indicators (since 2014)</p>
+<p>Below there is a table of all EU countries indicating their cluster and the median
+confidence indicators (since 2014)</p>
 <div style="border: 1px solid #ddd; padding: 5px; overflow-y: scroll; height:300px; overflow-x: scroll; width:100%; ">
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
