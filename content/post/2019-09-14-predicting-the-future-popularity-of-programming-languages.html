@@ -1,0 +1,848 @@
+---
+title: Predicting the future popularity of programming languages
+author: ''
+date: '2019-09-14'
+description: "By using Stack Overflow usage data, build multiple forecasting models to predict future popularity of programming languages"
+slug: predicting-the-future-popularity-of-programming-languages
+categories:
+  - R
+tags:
+  - Forecasting
+  - Arima
+  - Exponential Smoothing
+---
+
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<div id="insert-data-and-etl" class="section level1">
+<h1>Insert data and ETL</h1>
+<p>Stack overflow data were used for this analysis. The dataset was downloaded from the <a href="https://data.stackexchange.com/">Stack Exchange Data Explorer</a>.
+The processed file is also downloadable <a href="https://gist.github.com/dgrtwo/a30d99baa9b7bfc9f2440b355ddd1f75">here</a>.
+It was used by <a href="https://twitter.com/drob">David Robinson</a> in a <a href="https://www.datacamp.com/">datacamp</a> project.</p>
+<p>Each Stack Overflow question has a tag, which marks a question to describe its
+topic or technology. This data has one observation for each pair of a tag and a year, showing the
+number of questions asked in that tag in that year and the total number of
+questions asked in that year. For instance, there were 54 questions asked about
+the .htaccess tag in 2008, out of a total of 58390 questions in that year.</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:left;">
+tag
+</th>
+<th style="text-align:right;">
+number
+</th>
+<th style="text-align:right;">
+year_total
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+2008
+</td>
+<td style="text-align:left;">
+.htaccess
+</td>
+<td style="text-align:right;">
+54
+</td>
+<td style="text-align:right;">
+58390
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2008
+</td>
+<td style="text-align:left;">
+.net
+</td>
+<td style="text-align:right;">
+5910
+</td>
+<td style="text-align:right;">
+58390
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2008
+</td>
+<td style="text-align:left;">
+.net-2.0
+</td>
+<td style="text-align:right;">
+289
+</td>
+<td style="text-align:right;">
+58390
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2008
+</td>
+<td style="text-align:left;">
+.net-3.5
+</td>
+<td style="text-align:right;">
+319
+</td>
+<td style="text-align:right;">
+58390
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2008
+</td>
+<td style="text-align:left;">
+.net-4.0
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+58390
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2008
+</td>
+<td style="text-align:left;">
+.net-assembly
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+58390
+</td>
+</tr>
+</tbody>
+</table>
+<p>Instead of using the counts of each tag questions in a year we’ll calculate &amp; use the
+<strong>fraction of each tag questions</strong> and the overall questions in that year. It is
+more convenient to perform the comparison now.</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:left;">
+tag
+</th>
+<th style="text-align:right;">
+number
+</th>
+<th style="text-align:right;">
+year_total
+</th>
+<th style="text-align:right;">
+fraction
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+2008
+</td>
+<td style="text-align:left;">
+.htaccess
+</td>
+<td style="text-align:right;">
+54
+</td>
+<td style="text-align:right;">
+58390
+</td>
+<td style="text-align:right;">
+0.0009
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2008
+</td>
+<td style="text-align:left;">
+.net
+</td>
+<td style="text-align:right;">
+5910
+</td>
+<td style="text-align:right;">
+58390
+</td>
+<td style="text-align:right;">
+0.1012
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2008
+</td>
+<td style="text-align:left;">
+.net-2.0
+</td>
+<td style="text-align:right;">
+289
+</td>
+<td style="text-align:right;">
+58390
+</td>
+<td style="text-align:right;">
+0.0049
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2008
+</td>
+<td style="text-align:left;">
+.net-3.5
+</td>
+<td style="text-align:right;">
+319
+</td>
+<td style="text-align:right;">
+58390
+</td>
+<td style="text-align:right;">
+0.0055
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2008
+</td>
+<td style="text-align:left;">
+.net-4.0
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+58390
+</td>
+<td style="text-align:right;">
+0.0001
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2008
+</td>
+<td style="text-align:left;">
+.net-assembly
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+58390
+</td>
+<td style="text-align:right;">
+0.0001
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="how-have-popular-programming-languages-changed-over-time" class="section level1">
+<h1>How have popular programming languages changed over time?</h1>
+<p>It would be interesting to look at the popularity of the top programming
+languages. In particular, the following programming languages are included:</p>
+<ul>
+<li>java</li>
+<li>JavaScript<br />
+</li>
+<li>c#<br />
+</li>
+<li>c++<br />
+</li>
+<li>python<br />
+</li>
+<li>php<br />
+</li>
+<li>ruby<br />
+</li>
+<li>r</li>
+</ul>
+<p>The fraction of each tag questions (on the overall questions in the year) used
+for this comparison.</p>
+<p><img src="/post/2019-09-14-predicting-the-future-popularity-of-programming-languages_files/figure-html/unnamed-chunk-3-1.png" width="960" /></p>
+<p>We can identify that some languages are rising &amp; others that falling in popularity.
+In particular JavaScript, java, c#, c++, ruby are falling and python with R
+(languages used in analytics) are rising. Although this is true
+we should check if the total number of questions is growing significantly.</p>
+<p><img src="/post/2019-09-14-predicting-the-future-popularity-of-programming-languages_files/figure-html/unnamed-chunk-4-1.png" width="960" /></p>
+<p>It is clear that since 2013 the total number of questions is not significantly
+growing. So we can say that the trends of the programming languages could be significant, especially from 2013 onward.</p>
+</div>
+<div id="predicting-the-future-popularity-of-programming-languages" class="section level1">
+<h1>Predicting the future popularity of programming languages</h1>
+<p>It would be interesting to predict the future popularity of the programming
+languages. I’ll use the <a href="https://cran.r-project.org/web/packages/forecast/forecast.pdf">forecast package</a>
+to generate predictions. In particular, I’m combining the power of the main forecasting
+methodologies, <strong>ARIMA &amp; Exponential smoothing</strong>. In particular for each time-series
+(each programming language) 2 separate models are created, using ARIMA* &amp; Exponential smoothing methods<strong>,
+and the best one is selected for prediction. </strong>MAPE (mean absolute percentage error)**
+is chosen to evaluate the forecasting models.<br />
+* ARIMA (Auto-regressive integrating moving average) is a very popular technique for time
+series modelling. It describes the correlation between data points and takes into account
+the difference of the values.<br />
+** Exponential Smoothing methods include simple exponential smoothing (larger weights are
+assigned to more recent observations than to observations from the distant past),
+double exponential smoothing or Holt linear trend model (also takes account the
+trend of the series) and triple exponential smoothing or Host’s Winters method
+(also takes account both the trend and the seasonality of the time series)</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+tag
+</th>
+<th style="text-align:right;">
+mape_arima
+</th>
+<th style="text-align:right;">
+mape_ets
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+c#
+</td>
+<td style="text-align:right;">
+5.14
+</td>
+<td style="text-align:right;">
+9.15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+c++
+</td>
+<td style="text-align:right;">
+5.12
+</td>
+<td style="text-align:right;">
+4.36
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+java
+</td>
+<td style="text-align:right;">
+3.62
+</td>
+<td style="text-align:right;">
+6.32
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+php
+</td>
+<td style="text-align:right;">
+4.54
+</td>
+<td style="text-align:right;">
+9.81
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+python
+</td>
+<td style="text-align:right;">
+5.80
+</td>
+<td style="text-align:right;">
+10.65
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+r
+</td>
+<td style="text-align:right;">
+15.26
+</td>
+<td style="text-align:right;">
+8.91
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ruby
+</td>
+<td style="text-align:right;">
+6.63
+</td>
+<td style="text-align:right;">
+11.44
+</td>
+</tr>
+</tbody>
+</table>
+<p>As you can see above, R &amp; C++ predictions are better when applying exponential
+smoothing method than ARIMA. For the rest of the programming languages, ARIMA seems
+to be the best methodology.</p>
+<p>Below there is a table with the future predictions, using the best performing
+model</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+tag
+</th>
+<th style="text-align:right;">
+index
+</th>
+<th style="text-align:left;">
+key
+</th>
+<th style="text-align:right;">
+fraction
+</th>
+<th style="text-align:right;">
+lo.80
+</th>
+<th style="text-align:right;">
+lo.95
+</th>
+<th style="text-align:right;">
+hi.80
+</th>
+<th style="text-align:right;">
+hi.95
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+c#
+</td>
+<td style="text-align:right;">
+2019
+</td>
+<td style="text-align:left;">
+forecast
+</td>
+<td style="text-align:right;">
+0.0473700
+</td>
+<td style="text-align:right;">
+0.0369888
+</td>
+<td style="text-align:right;">
+0.0314934
+</td>
+<td style="text-align:right;">
+0.0577512
+</td>
+<td style="text-align:right;">
+0.0632466
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+c#
+</td>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:left;">
+forecast
+</td>
+<td style="text-align:right;">
+0.0400400
+</td>
+<td style="text-align:right;">
+0.0253588
+</td>
+<td style="text-align:right;">
+0.0175870
+</td>
+<td style="text-align:right;">
+0.0547212
+</td>
+<td style="text-align:right;">
+0.0624930
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+c#
+</td>
+<td style="text-align:right;">
+2021
+</td>
+<td style="text-align:left;">
+forecast
+</td>
+<td style="text-align:right;">
+0.0327100
+</td>
+<td style="text-align:right;">
+0.0147293
+</td>
+<td style="text-align:right;">
+0.0052109
+</td>
+<td style="text-align:right;">
+0.0506907
+</td>
+<td style="text-align:right;">
+0.0602091
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+c#
+</td>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:left;">
+forecast
+</td>
+<td style="text-align:right;">
+0.0253800
+</td>
+<td style="text-align:right;">
+0.0046176
+</td>
+<td style="text-align:right;">
+-0.0063733
+</td>
+<td style="text-align:right;">
+0.0461424
+</td>
+<td style="text-align:right;">
+0.0571333
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+java
+</td>
+<td style="text-align:right;">
+2019
+</td>
+<td style="text-align:left;">
+forecast
+</td>
+<td style="text-align:right;">
+0.0777976
+</td>
+<td style="text-align:right;">
+0.0720138
+</td>
+<td style="text-align:right;">
+0.0689520
+</td>
+<td style="text-align:right;">
+0.0835814
+</td>
+<td style="text-align:right;">
+0.0866432
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+java
+</td>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:left;">
+forecast
+</td>
+<td style="text-align:right;">
+0.0815882
+</td>
+<td style="text-align:right;">
+0.0719591
+</td>
+<td style="text-align:right;">
+0.0668618
+</td>
+<td style="text-align:right;">
+0.0912173
+</td>
+<td style="text-align:right;">
+0.0963146
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+java
+</td>
+<td style="text-align:right;">
+2021
+</td>
+<td style="text-align:left;">
+forecast
+</td>
+<td style="text-align:right;">
+0.0862540
+</td>
+<td style="text-align:right;">
+0.0749955
+</td>
+<td style="text-align:right;">
+0.0690356
+</td>
+<td style="text-align:right;">
+0.0975125
+</td>
+<td style="text-align:right;">
+0.1034724
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+java
+</td>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:left;">
+forecast
+</td>
+<td style="text-align:right;">
+0.0895722
+</td>
+<td style="text-align:right;">
+0.0781559
+</td>
+<td style="text-align:right;">
+0.0721125
+</td>
+<td style="text-align:right;">
+0.1009884
+</td>
+<td style="text-align:right;">
+0.1070319
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+java
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:left;">
+forecast
+</td>
+<td style="text-align:right;">
+0.0904288
+</td>
+<td style="text-align:right;">
+0.0788499
+</td>
+<td style="text-align:right;">
+0.0727203
+</td>
+<td style="text-align:right;">
+0.1020077
+</td>
+<td style="text-align:right;">
+0.1081372
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+python
+</td>
+<td style="text-align:right;">
+2019
+</td>
+<td style="text-align:left;">
+forecast
+</td>
+<td style="text-align:right;">
+0.1095000
+</td>
+<td style="text-align:right;">
+0.1035134
+</td>
+<td style="text-align:right;">
+0.1003444
+</td>
+<td style="text-align:right;">
+0.1154866
+</td>
+<td style="text-align:right;">
+0.1186556
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+python
+</td>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:left;">
+forecast
+</td>
+<td style="text-align:right;">
+0.1201000
+</td>
+<td style="text-align:right;">
+0.1067137
+</td>
+<td style="text-align:right;">
+0.0996274
+</td>
+<td style="text-align:right;">
+0.1334863
+</td>
+<td style="text-align:right;">
+0.1405726
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+python
+</td>
+<td style="text-align:right;">
+2021
+</td>
+<td style="text-align:left;">
+forecast
+</td>
+<td style="text-align:right;">
+0.1307000
+</td>
+<td style="text-align:right;">
+0.1083004
+</td>
+<td style="text-align:right;">
+0.0964427
+</td>
+<td style="text-align:right;">
+0.1530996
+</td>
+<td style="text-align:right;">
+0.1649573
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+python
+</td>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:left;">
+forecast
+</td>
+<td style="text-align:right;">
+0.1413000
+</td>
+<td style="text-align:right;">
+0.1085103
+</td>
+<td style="text-align:right;">
+0.0911525
+</td>
+<td style="text-align:right;">
+0.1740897
+</td>
+<td style="text-align:right;">
+0.1914475
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+python
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:left;">
+forecast
+</td>
+<td style="text-align:right;">
+0.1519000
+</td>
+<td style="text-align:right;">
+0.1075025
+</td>
+<td style="text-align:right;">
+0.0839999
+</td>
+<td style="text-align:right;">
+0.1962975
+</td>
+<td style="text-align:right;">
+0.2198001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+r
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:left;">
+forecast
+</td>
+<td style="text-align:right;">
+0.0336761
+</td>
+<td style="text-align:right;">
+0.0186408
+</td>
+<td style="text-align:right;">
+0.0106816
+</td>
+<td style="text-align:right;">
+0.0487115
+</td>
+<td style="text-align:right;">
+0.0566707
+</td>
+</tr>
+</tbody>
+</table>
+<p>Below there is a plot with the future predictions</p>
+<p><img src="/post/2019-09-14-predicting-the-future-popularity-of-programming-languages_files/figure-html/unnamed-chunk-8-1.png" width="960" /></p>
+</div>
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<p>To compare programming languages popularity we used the fraction of total questions
+(on Stack Overflow) that concern each language for the last 10 years.
+Stack overflow is, by far, the most popular platform for
+questions and answers on a wide range of topics in computer programming.</p>
+<p>Of course, there are a lot of other metrics that could be used to measure
+popularity. Furthermore, forecasting models, like all models, are not perfect and could have higher deviations than predicted.
+But, given the relatively small MAPE for all time series (less than 9 % for all),
+the predictions should be a good indication for the future popularity of programming languages.</p>
+<p>Overall, the results are the following:<br />
+- Analytics programming languages <strong>(Python &amp; R)</strong> will continue gaining popularity<br />
+- <strong>Java</strong> will gain a little and then keep a constant popularity<br />
+- <strong>JavaScript, C# &amp; C++</strong> will loose significant popularity<br />
+- <strong>PHP &amp; Ruby</strong> could lose almost all their popularity and become obsolete in the next 5 years</p>
+</div>

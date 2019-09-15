@@ -1,0 +1,308 @@
+---
+title: Predicting the future popularity of programming languages
+author: ''
+date: '2019-09-14'
+description: "By using Stack Overflow usage data, build multiple forecasting models to predict future popularity of programming languages"
+slug: predicting-the-future-popularity-of-programming-languages
+categories:
+  - R
+tags:
+  - Forecasting
+  - Arima
+  - Exponential Smoothing
+---
+
+
+# Insert data and ETL
+
+Stack overflow data were used for this analysis. The dataset was downloaded from the [Stack Exchange Data Explorer](https://data.stackexchange.com/). 
+The processed file is also downloadable [here](https://gist.github.com/dgrtwo/a30d99baa9b7bfc9f2440b355ddd1f75). 
+It was used by [David Robinson](https://twitter.com/drob) in a [datacamp](https://www.datacamp.com/) project.
+
+Each Stack Overflow question has a tag, which marks a question to describe its
+topic or technology. This data has one observation for each pair of a tag and a year, showing the 
+number of questions asked in that tag in that year and the total number of 
+questions asked in that year. For instance, there were 54 questions asked about
+the .htaccess tag in 2008, out of a total of 58390 questions in that year.
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
+library(tidyverse)
+library(plotly)
+library(DT)
+library(kableExtra)
+library(knitr)
+
+theme_set(theme_minimal())
+
+yearly_tag <- read_csv("https://gist.githubusercontent.com/dgrtwo/a30d99baa9b7bfc9f2440b355ddd1f75/raw/700ab5bb0b5f8f5a14377f5103dbe921d4238216/by_tag_year.csv")
+
+kable(head(yearly_tag)) %>% 
+  kable_styling()
+```
+
+
+Instead of using the counts of each tag questions in a year we'll calculate & use the 
+**fraction of each tag questions** and the overall questions in that year. It is
+more convenient to perform the comparison now.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+# Add fraction column
+yearly_tag <- 
+    yearly_tag %>% 
+    mutate(fraction = round(number/year_total, 4))
+
+ 
+# Print the new table
+kable(head(yearly_tag)) %>% 
+  kable_styling()
+```
+
+# How have popular programming languages changed over time?
+
+It would be interesting to look at the popularity of the top programming
+languages. In particular, the following programming languages are included:
+
+- java 
+- JavaScript  
+- c#  
+- c++  
+- python  
+- php  
+- ruby  
+- r  
+
+The fraction of each tag questions (on the overall questions in the year) used 
+for this comparison.
+
+
+```{r echo=FALSE, fig.height=7, fig.width=10, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+# Get the six largest tags
+programming_lang <- c("r", "python", "c#", "java", "JavaScript", "php", "c++", "ruby")
+
+yearly_top <- 
+  yearly_tag %>% 
+  filter(tag %in% programming_lang)
+
+d_ends <- 
+  yearly_top %>% 
+  group_by(tag) %>% 
+  slice(n()) %>% 
+  pull(fraction)
+
+d_ends[1] <- 0.053
+d_ends[6] <- 0.024
+
+d_labels <- 
+  yearly_top %>% 
+  group_by(tag) %>% 
+  slice(n()) %>% 
+  pull(tag)
+
+
+
+# Filter for the six largest tags
+ggplot(yearly_top) +
+  geom_line(aes(x = year, y = fraction, color = tag), size = 1.5, alpha = .8) +
+  geom_point(aes(x = year, y = fraction, color = tag), size = 2) +
+  scale_x_continuous(expand = c(0, 0), breaks = c(2008:2018)) +
+  scale_y_continuous(labels = scales::percent, breaks = c(0, .025, .05, .075, .1, .125), sec.axis = sec_axis(~ ., breaks = d_ends, labels = d_labels)) +
+  labs(title = "Fraction of total questions per year in Stack Overflow",
+       subtitle = "for top programming languages",
+       x = "", 
+       y = "Fraction of total queries in the year") +
+  theme(legend.position = "none")
+
+
+
+```
+
+We can identify that some languages are rising & others that falling in popularity. 
+In particular JavaScript, java, c#, c++, ruby are falling and python with R 
+(languages used in analytics) are rising. Although this is true
+we should check if the total number of questions is growing significantly. 
+
+
+```{r echo=FALSE, fig.height=7, fig.width=10}
+
+yearly_tag %>% 
+  group_by(year) %>% 
+  summarise(year_total = first(year_total)) %>%
+  filter(year <= 2017) %>% 
+  ggplot() +
+  geom_line(aes(year, year_total), color = "steelblue", size = 1.5, alpha = .5 ) +
+  geom_point(aes(year, year_total), color = "steelblue", size = 1.5) +
+  scale_x_continuous(breaks = c(2008:2017)) +
+  labs(title = "Total number of questions in Stack overflow per year",
+       x = "",
+       y = "Num. of questions")
+
+
+```
+
+It is clear that since 2013 the total number of questions is not significantly 
+growing. So we can say that the trends of the programming languages could be significant, especially from 2013 onward. 
+
+# Predicting the future popularity of programming languages
+
+It would be interesting to predict the future popularity of the programming
+languages. I'll use the [forecast package](https://cran.r-project.org/web/packages/forecast/forecast.pdf) 
+to generate predictions. In particular, I'm combining the power of the main forecasting
+methodologies, **ARIMA & Exponential smoothing**. In particular for each time-series
+(each programming language) 2 separate models are created, using ARIMA* & Exponential smoothing methods**, 
+and the best one is selected for prediction. **MAPE (mean absolute percentage error)** 
+is chosen to evaluate the forecasting models.   
+* ARIMA (Auto-regressive integrating moving average) is a very popular technique for time
+series modelling. It describes the correlation between data points and takes into account
+the difference of the values.  
+** Exponential Smoothing methods include simple exponential smoothing (larger weights are
+assigned to more recent observations than to observations from the distant past), 
+double exponential smoothing or Holt linear trend model (also takes account the 
+trend of the series) and triple exponential smoothing or Host's Winters method 
+(also takes account both the trend and the seasonality of the time series)
+
+
+```{r message=FALSE, include=FALSE, paged.print=FALSE}
+library(forecast)
+library(sweep)
+
+
+# Get tags for top programming languages
+programming_lang <- c("r", "python", "c#", "java", "JavaScript", "php", "c++", "ruby")
+
+# Create the dataset
+yearly_nest <- 
+yearly_tag  %>% 
+  filter(tag %in% programming_lang) %>%
+  arrange(tag, year) %>%
+  select(tag, fraction) %>% 
+  group_by(tag) %>% 
+  nest(.key = "data.tbl") %>% # nest it
+  mutate(data.ts = map(.x    = data.tbl, #create ts object
+                       .f    = ts,
+                       start = 2008)
+                       ) %>% 
+  mutate(fit_ets = map(data.ts, ets)) %>%
+  mutate(summary_ets = map(fit_ets, summary)) %>%
+  mutate(mape_ets = map(summary_ets, 5)) %>% 
+  mutate(fit.arima = map(data.ts, auto.arima)) %>%
+  mutate(summary_arima = map(fit.arima, summary)) %>%
+  mutate(mape_arima = map(summary_arima, 5)) %>% 
+  
+  mutate(final_model = if_else(as.numeric(mape_arima) <= as.numeric(mape_ets), fit.arima, fit_ets)) %>% 
+  
+  mutate(predict = map(final_model, forecast, h = 5)) %>% 
+  mutate(sweep = map(predict, sw_sweep)) %>% 
+  unnest(sweep) %>% 
+  mutate(fraction = if_else(fraction < 0, 0, fraction))
+
+
+table_a <- 
+yearly_tag  %>% 
+  filter(tag %in% programming_lang) %>%
+  arrange(tag, year) %>%
+  select(tag, fraction) %>% 
+  group_by(tag) %>% 
+  nest(.key = "data.tbl") %>% # nest it
+  mutate(data.ts = map(.x    = data.tbl, #create ts object
+                       .f    = ts,
+                       start = 2008)
+                       ) %>% 
+  mutate(fit_ets = map(data.ts, ets)) %>%
+  mutate(summary_ets = map(fit_ets, summary)) %>%
+  mutate(mape_ets = map(summary_ets, 5)) %>% 
+  mutate(fit.arima = map(data.ts, auto.arima)) %>%
+  mutate(summary_arima = map(fit.arima, summary)) %>%
+  mutate(mape_arima = map(summary_arima, 5)) %>% 
+  select(tag, mape_arima, mape_ets) %>% 
+  mutate(mape_arima = round(as.numeric(mape_arima), 2), 
+         mape_ets = round(as.numeric(mape_ets), 2)) 
+
+
+```
+
+
+```{r echo=FALSE}
+table_a %>% 
+  kable() %>% 
+  kable_styling()
+
+```
+
+As you can see above, R & C++ predictions are better when applying exponential 
+smoothing method than ARIMA. For the rest of the programming languages, ARIMA seems
+to be the best methodology. 
+
+Below there is a table with the future predictions, using the best performing 
+model
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+filter(yearly_nest, key == "forecast") %>%
+  top_n(15) %>% 
+  kable() %>% 
+  kable_styling()
+
+```
+
+Below there is a plot with the future predictions
+
+
+```{r echo=FALSE, fig.height=7, fig.width=10, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+d_ends <- yearly_nest %>% 
+  group_by(tag) %>% 
+  slice(n()) %>% 
+  pull(fraction)
+
+d_ends[4] <- 0.005
+
+d_labels <- yearly_nest %>% 
+  group_by(tag) %>% 
+  slice(n()) %>% 
+  pull(tag)
+
+
+# Create the plot 
+yearly_nest %>% 
+  ggplot() +
+  theme_minimal() +
+  geom_line(aes(x = index, y = fraction, color = tag), size = 1.5, alpha = .8) +
+  geom_point(aes(x = index, y = fraction, color = tag, shape = key ), size = 2) +
+  scale_x_continuous(expand = c(0, 0), breaks = c(2008:2024)) +
+  geom_rect(data=data.frame(xmin = 2018, xmax = Inf, ymin = -Inf, ymax = Inf),
+    aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), fill="steelblue", alpha=0.2) +
+  geom_text(aes(x = 2019, y = 0.15, label = "Prediction", fill = 1), nudge_x = 1.5, colour = "white", size = 5) +
+  scale_y_continuous(labels = scales::percent,  sec.axis = sec_axis(~ ., breaks = d_ends, labels = d_labels)) +
+  labs(title = "Predicting future fraction of total questions per year in Stack Overflow",
+       subtitle = "for top programming languages",
+       x = "", 
+       y = "Fraction of total queries in the year") +
+  theme(legend.position = "none") 
+
+
+```
+
+
+# Summary
+
+To compare programming languages popularity we used the fraction of total questions
+(on Stack Overflow) that concern each language for the last 10 years. 
+Stack overflow is, by far, the most popular platform for 
+questions and answers on a wide range of topics in computer programming.
+
+Of course, there are a lot of other metrics that could be used to measure
+popularity. Furthermore, forecasting models, like all models, are not perfect and could have higher deviations than predicted. 
+But, given the relatively small MAPE for all time series (less than 9 % for all), 
+the predictions should be a good indication for the future popularity of programming languages.  
+
+Overall, the results are the following:  
+- Analytics programming languages **(Python & R)** will continue gaining popularity  
+- **Java** will gain a little and then keep a constant popularity  
+- **JavaScript, C# & C++** will loose significant popularity  
+- **PHP & Ruby** could lose almost all their popularity and become obsolete in the next 5 years
+
+
