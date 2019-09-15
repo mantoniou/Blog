@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 27 Oct 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 14 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Predicting the future popularity of programming languages</title>
+      <link>/post/predicting-the-future-popularity-of-programming-languages/</link>
+      <pubDate>Sat, 14 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/predicting-the-future-popularity-of-programming-languages/</guid>
+      <description>Insert data and ETL Stack overflow data were used for this analysis. The dataset was downloaded from the Stack Exchange Data Explorer. The processed file is also downloadable here. It was used by David Robinson in a datacamp project.
+Each Stack Overflow question has a tag, which marks a question to describe its topic or technology. This data has one observation for each pair of a tag and a year, showing the number of questions asked in that tag in that year and the total number of questions asked in that year.</description>
+    </item>
     
     <item>
       <title>Clustering of EU countries</title>

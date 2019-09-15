@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 26 Aug 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 14 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>Arima</title>
       <link>/tags/arima/</link>
-      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 14 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/arima/</guid>
       <description></description>
@@ -57,9 +57,18 @@
     </item>
     
     <item>
+      <title>Exponential Smoothing</title>
+      <link>/tags/exponential-smoothing/</link>
+      <pubDate>Sat, 14 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/exponential-smoothing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Forecasting</title>
       <link>/tags/forecasting/</link>
-      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 14 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/forecasting/</guid>
       <description></description>

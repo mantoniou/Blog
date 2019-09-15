@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/post/predicting-the-future-popularity-of-programming-languages/</loc>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/post/clustering-of-eu-countries/</loc>
     <lastmod>2018-10-27T00:00:00+00:00</lastmod>
   </url>
@@ -44,7 +49,7 @@
   
   <url>
     <loc>/tags/arima/</loc>
-    <lastmod>2018-08-26T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -78,8 +83,14 @@
   </url>
   
   <url>
+    <loc>/tags/exponential-smoothing/</loc>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/forecasting/</loc>
-    <lastmod>2018-08-26T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -109,7 +120,7 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2018-10-27T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -121,13 +132,13 @@
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2018-10-27T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/categories/r/</loc>
-    <lastmod>2018-10-27T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -145,7 +156,7 @@
   
   <url>
     <loc>/tags/</loc>
-    <lastmod>2018-08-26T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
