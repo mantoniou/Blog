@@ -1,9 +1,9 @@
 {
-    "path" : "~/OneDrive/Projects/R/Blog/content/post",
-    "sortOrder" : [
+    "path": "~/OneDrive/Projects/R/Blog/content/post",
+    "sortOrder": [
         {
-            "ascending" : false,
-            "columnIndex" : 2
+            "columnIndex": 2,
+            "ascending": false
         }
     ]
 }

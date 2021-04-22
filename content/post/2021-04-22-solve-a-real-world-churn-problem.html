@@ -1,0 +1,539 @@
+---
+title: Solve a real-world churn problem with Machine learning (including a detailed case study)
+author: ''
+date: '2021-04-22'
+description: "Use R & Tidyverse to develop a churn management strategy"
+slug: solve-a-real-world-churn-problem
+categories:
+  - R
+tags:
+  - XGBoost
+  - Random forest
+  - Logistic Regression
+  - Churn
+  - Classification
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>Use R &amp; Tidyverse to develop a churn management strategy</p>
+<div id="churn-definition" class="section level3">
+<h3>Churn definition</h3>
+<p>Customer churn is a major problem for most of the companies. Losing customers require gaining new customers to replace them. This could be around 10X more expensive than retaining existing customers, depending on the domain.</p>
+<p>A customer is considered as churn when he/she stop using your company’s product or service. This is easy to define it for contractual setting, as a customer is considered as churn when fails to renew the contract. But in a non-contractual setting there aren’t clear rules for defining churn. In most of these cases, business users with extended domain knowledge together with data scientists/data analysts define what is considered as churn in the specific problem. e.g. in a retail organization the team could define that a customer is a churn when fails to purchase for the last 4 months.</p>
+</div>
+<div id="benefits-of-churn-management" class="section level3">
+<h3>Benefits of churn management</h3>
+<p>The main benefit is increased revenue by obtaining higher retention rates and customer satisfaction. The other benefit is the optimization of marketing expenditures with targeted marketing campaigns &amp; reallocation of marketing budgets.</p>
+</div>
+<div id="churn-rate" class="section level3">
+<h3>Churn rate</h3>
+<p>You can calculate churn rate by dividing the number of customers lost during a specific time period – say a quarter or a year – by the number of customers we had at the beginning of that time period.</p>
+<p>For example, if we start the quarter with 400 customers and end with 380, our churn rate is 5% because we lost 5% or 20 of our customers.</p>
+</div>
+<div id="our-churn-problem" class="section level3">
+<h3>Our churn problem</h3>
+<p>Our case study is a bank that wants to develop a churn model to predict the probability of a customer to churn. The banking sector has become one of the main industries in developed countries. The technical progress and the increasing number of banks raised the level of competition. Banks are working hard to survive in this competitive market depending on multiple strategies.</p>
+<p>Three main strategies have been proposed to generate more revenues:</p>
+<ul>
+<li><strong>Acquire new customers</strong><br />
+</li>
+<li><strong>Upsell the existing customers</strong> (persuade a customer to buy something additional or more expensive)</li>
+<li><strong>Increase the retention period of customers</strong></li>
+</ul>
+<p>In our case, we focus on the last strategy i.e. increase the retention period of customers. The original dataset is public and can be found at <a href="https://www.kaggle.com/shrutimechlearn/churn-modelling">kaggle</a></p>
+</div>
+<div id="import-libraries" class="section level3">
+<h3>Import libraries</h3>
+<p>At first we are loading all libraries.</p>
+<pre class="r"><code>library(tidyverse)
+library(ggthemes)
+library(correlationfunnel)
+library(knitr)
+library(caret)
+library(recipes)
+library(yardstick)
+library(DT)
+
+# Set the black &amp; white theme for all plots
+theme_set(theme_bw())</code></pre>
+</div>
+<div id="load-dataset" class="section level3">
+<h3>Load dataset</h3>
+<p>We use the read_csv() function (from readr library) to read the csv file in R.</p>
+<pre class="r"><code>bank &lt;- read_csv(file = &quot;/Users/manos/OneDrive/Projects/R/All_Projects/Churn/data/Churn_Modelling.csv&quot;)
+
+bank &lt;- 
+  bank %&gt;% 
+  mutate(Churn = if_else(Exited == 0, &quot;No&quot;, &quot;Yes&quot;),
+         HasCrCard = if_else(HasCrCard == 0, &quot;No&quot;, &quot;Yes&quot;),
+         IsActiveMember = if_else(IsActiveMember == 0, &quot;No&quot;, &quot;Yes&quot;)) %&gt;% 
+  select(- RowNumber, -CustomerId, - Surname, -Exited)</code></pre>
+</div>
+<div id="inspect-the-dataset" class="section level3">
+<h3>Inspect the dataset</h3>
+<p>Use glimpse() function to inspect the dataset.</p>
+<pre class="r"><code>bank %&gt;% glimpse()</code></pre>
+<pre><code>## Rows: 10,000
+## Columns: 11
+## $ CreditScore     &lt;dbl&gt; 619, 608, 502, 699, 850, 645, 822, 376, 501, 684, 528…
+## $ Geography       &lt;chr&gt; &quot;France&quot;, &quot;Spain&quot;, &quot;France&quot;, &quot;France&quot;, &quot;Spain&quot;, &quot;Spai…
+## $ Gender          &lt;chr&gt; &quot;Female&quot;, &quot;Female&quot;, &quot;Female&quot;, &quot;Female&quot;, &quot;Female&quot;, &quot;Ma…
+## $ Age             &lt;dbl&gt; 42, 41, 42, 39, 43, 44, 50, 29, 44, 27, 31, 24, 34, 2…
+## $ Tenure          &lt;dbl&gt; 2, 1, 8, 1, 2, 8, 7, 4, 4, 2, 6, 3, 10, 5, 7, 3, 1, 9…
+## $ Balance         &lt;dbl&gt; 0.00, 83807.86, 159660.80, 0.00, 125510.82, 113755.78…
+## $ NumOfProducts   &lt;dbl&gt; 1, 1, 3, 2, 1, 2, 2, 4, 2, 1, 2, 2, 2, 2, 2, 2, 1, 2,…
+## $ HasCrCard       &lt;chr&gt; &quot;Yes&quot;, &quot;No&quot;, &quot;Yes&quot;, &quot;No&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;,…
+## $ IsActiveMember  &lt;chr&gt; &quot;Yes&quot;, &quot;Yes&quot;, &quot;No&quot;, &quot;No&quot;, &quot;Yes&quot;, &quot;No&quot;, &quot;Yes&quot;, &quot;No&quot;, &quot;…
+## $ EstimatedSalary &lt;dbl&gt; 101348.88, 112542.58, 113931.57, 93826.63, 79084.10, …
+## $ Churn           &lt;chr&gt; &quot;Yes&quot;, &quot;No&quot;, &quot;Yes&quot;, &quot;No&quot;, &quot;No&quot;, &quot;Yes&quot;, &quot;No&quot;, &quot;Yes&quot;, &quot;…</code></pre>
+<p>Below there is a detailed description of all variables of the dataset</p>
+<ul>
+<li>CreditScore | A credit score is a number between 300–850 that depicts a consumer’s creditworthiness. The higher the score, the better a borrower looks to potential lenders<br />
+</li>
+<li>Geography | Customer’s country<br />
+</li>
+<li>Gender | Customer’s gender<br />
+</li>
+<li>Age | Customer’s age<br />
+</li>
+<li>Tenure | Number of years for which the customer has been with the bank<br />
+</li>
+<li>Balance | Customer’s current balance<br />
+</li>
+<li>NumOfProducts | Number of bank products the customer is utilizing<br />
+</li>
+<li>HasCrCard | Whether or not has a credit card<br />
+</li>
+<li>IsActiveMember | Whether or not the customer is an active member</li>
+<li>EstimatedSalary | The estimated salary of the customer</li>
+<li>Churn | Whether or not the customer churned</li>
+</ul>
+</div>
+<div id="check-for-missing-values" class="section level3">
+<h3>Check for missing values</h3>
+<p>One of the most common problems in any data analysis is to discover &amp; handle missing data.</p>
+<pre class="r"><code>bank %&gt;%
+    map_df(~ sum(is.na(.))) %&gt;%
+    gather() %&gt;%
+    arrange(desc(value))</code></pre>
+<pre><code>## # A tibble: 11 x 2
+##    key             value
+##    &lt;chr&gt;           &lt;int&gt;
+##  1 CreditScore         0
+##  2 Geography           0
+##  3 Gender              0
+##  4 Age                 0
+##  5 Tenure              0
+##  6 Balance             0
+##  7 NumOfProducts       0
+##  8 HasCrCard           0
+##  9 IsActiveMember      0
+## 10 EstimatedSalary     0
+## 11 Churn               0</code></pre>
+<p>There aren’t any missing values.</p>
+</div>
+<div id="check-the-levels-of-categoricaltext-variables" class="section level3">
+<h3>Check the levels of categorical/text variables</h3>
+<p>Now we want to check the levels of all categorical variables.</p>
+<pre class="r"><code>bank %&gt;%
+  summarise_if(is.character, n_distinct) %&gt;% 
+  t()</code></pre>
+<pre><code>##                [,1]
+## Geography         3
+## Gender            2
+## HasCrCard         2
+## IsActiveMember    2
+## Churn             2</code></pre>
+<p>It looks that all character variables, are categorical variables with a few levels (2-3).</p>
+</div>
+<div id="categorical-variables-distribution" class="section level3">
+<h3>Categorical variables distribution</h3>
+<p>Now we want to check the distribution of categorical variables in relation to churn.</p>
+<pre class="r"><code>bank %&gt;% 
+  select_if(is.character) %&gt;% 
+  gather(key = key, value = value, - Churn, factor_key = T) %&gt;% 
+  ggplot(aes( x = value, fill = Churn)) +
+  geom_bar() +
+  facet_wrap(~key, scales = &#39;free&#39;) +
+  scale_x_discrete(labels = abbreviate) +
+  labs(
+    title = &#39;Distribution of categorical variables in relation to churn&#39;,
+    x = &#39;&#39;) +
+  scale_fill_economist()</code></pre>
+<p><img src="/post/2021-04-22-solve-a-real-world-churn-problem_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>The main findings are:</p>
+<ul>
+<li>Customers from Germany are more likely to churn</li>
+<li>Male customers are slightly less likely to churn<br />
+</li>
+<li>Active members are less likely to churn</li>
+</ul>
+</div>
+<div id="numerical-variables-distribution" class="section level3">
+<h3>Numerical variables distribution</h3>
+<p>Check the distribution of the numerical variables concerning churn.</p>
+<pre class="r"><code>bank %&gt;% 
+  select_if(function(col) is.numeric(col) | all(col == .$Churn)) %&gt;% 
+  gather(key = &quot;Variable&quot;, value = &quot;Value&quot;, -Churn) %&gt;% 
+  ggplot(aes(Value, fill = Churn)) +
+  geom_histogram(bins = 20) +
+  facet_wrap(~ Variable, scales = &quot;free&quot;) +
+  labs(
+    title = &quot;Numerical variables histograms&quot;,
+    x = &quot;&quot;
+  ) +
+  scale_fill_economist()</code></pre>
+<p><img src="/post/2021-04-22-solve-a-real-world-churn-problem_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>The main findings are:</p>
+<ul>
+<li>It seems that higher age means higher probability of churn</li>
+</ul>
+</div>
+<div id="correlation-funnel" class="section level3">
+<h3>Correlation funnel</h3>
+<p>Correlation is a very important metric to understand the relationship between variables. The package correlationfunnel produces a chart, which helps us understand the relationship of all variables (categorical &amp; numerical) with churn.</p>
+<p>At first, it creates binary variables of each class of categorical variables and 4 bins of each numerical variable (based on quantiles). It plots all variables starting from the most correlated to the less correlated.</p>
+<pre class="r"><code># Create correlation Funnel 
+bank %&gt;%
+  drop_na() %&gt;% 
+    binarize() %&gt;% 
+    correlate(Churn__Yes) %&gt;% 
+    plot_correlation_funnel()</code></pre>
+<p><img src="/post/2021-04-22-solve-a-real-world-churn-problem_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>It looks that Age, Number of products, Geography &amp; Member activity seems quite important. Balance &amp; gender are less important. At last, credit score, tenure, estimated salary &amp; credit card seems to be unimportant for churn, as almost all classes are near zero correlated.</p>
+</div>
+<div id="modelling" class="section level1">
+<h1>MODELLING</h1>
+<p>Now we can go ahead anddevelop a machine learning model that will predict the churn probability for all customers.</p>
+<div id="split-dataset" class="section level3">
+<h3>Split dataset</h3>
+<p>At first, we’re splitting the dataset into 2 parts, training &amp; test dataset. We’ll use the training dataset to train our model &amp; the testing dataset to check the performance of the model.</p>
+<pre class="r"><code># Split the dataset in two parts
+set.seed(1)
+inTrain = createDataPartition(bank$Churn, p = .70)[[1]]
+
+# Assign the 70% of observations to training data
+training &lt;- bank[inTrain,]
+
+# Assign the remaining 30 % of observations to testing data
+testing &lt;- bank[-inTrain,]</code></pre>
+</div>
+<div id="prepare-the-recipe-of-data-for-modeling" class="section level3">
+<h3>Prepare the recipe of data for modeling</h3>
+<p>Here we’re using the recipes package to apply the same pre-processing steps to training &amp; test data.</p>
+<pre class="r"><code># Create the recipe object
+recipe_obj &lt;- 
+  recipe(Churn ~ ., data = training) %&gt;% 
+  step_zv(all_predictors()) %&gt;%       # check any zero variance features
+  step_center(all_numeric()) %&gt;% 
+  step_scale(all_numeric()) %&gt;%         # scale the numeric features
+  prep()</code></pre>
+</div>
+<div id="processing-data-according-the-recipe" class="section level3">
+<h3>Processing data according the recipe</h3>
+<pre class="r"><code>train_data &lt;- bake(recipe_obj, training)
+
+test_data  &lt;- bake(recipe_obj, testing)</code></pre>
+</div>
+<div id="setting-the-train-controls-for-modeling" class="section level3">
+<h3>Setting the train controls for modeling</h3>
+<p>We’re using TrainControl() function in order to specify some parameters during model training, e.g. the resampling method, number of folds in K-Fold etc.</p>
+<pre class="r"><code>train_ctr &lt;- trainControl(method = &#39;cv&#39;, 
+                          number = 10,
+                          classProbs = TRUE,
+                          summaryFunction = twoClassSummary)</code></pre>
+</div>
+<div id="develop-multiple-machine-learning-models" class="section level3">
+<h3>Develop multiple machine learning models</h3>
+<p>Develop a <strong>logistic regression</strong> model</p>
+<pre class="r"><code>Logistic_model &lt;- train(Churn ~ .,
+                        data = train_data,
+                        method = &#39;glm&#39;,
+                        family = &#39;binomial&#39;,
+                        trControl = train_ctr,
+                        metric = &#39;ROC&#39;)</code></pre>
+<p>Develop a <strong>random forest</strong> model</p>
+<pre class="r"><code>rf_model &lt;- train(Churn ~ .,
+                  data = train_data,
+                  method = &#39;rf&#39;,
+                  trControl = train_ctr,
+                  tuneLength = 5,
+                  metric = &#39;ROC&#39;)</code></pre>
+<p>Develop an <strong>XGBoost model</strong></p>
+<pre class="r"><code>xgb_model &lt;- train(Churn ~ ., data = train_data,
+                        method = &#39;xgbTree&#39;,
+                        trControl = train_ctr,
+                        tuneLength = 5,
+                        metric = &#39;ROC&#39;)</code></pre>
+<p>Now we can save all models in a single file</p>
+<pre class="r"><code>save(Logistic_model, rf_model, xgb_model, file = &quot;/Users/manos/OneDrive/Projects/R/All_Projects/Churn/data/ml_models_bank.RDA&quot;)</code></pre>
+<p>We can load all trained models</p>
+<pre class="r"><code>load(file = &quot;/Users/manos/OneDrive/Projects/R/All_Projects/Churn/data/ml_models_bank.RDA&quot;)</code></pre>
+</div>
+<div id="model-comparison" class="section level3">
+<h3>Model Comparison</h3>
+<p>In this step we’ll compare the models accuracy.</p>
+<pre class="r"><code>model_list &lt;- resamples(list(Logistic = Logistic_model,
+                             Random_forest = rf_model,
+                             XgBoost = xgb_model))
+
+summary(model_list)</code></pre>
+<pre><code>## 
+## Call:
+## summary.resamples(object = model_list)
+## 
+## Models: Logistic, Random_forest, XgBoost 
+## Number of resamples: 10 
+## 
+## ROC 
+##                    Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
+## Logistic      0.7310692 0.7629073 0.7713738 0.7685092 0.7793850 0.7893184    0
+## Random_forest 0.8257989 0.8573118 0.8669290 0.8653269 0.8735644 0.8900139    0
+## XgBoost       0.8445059 0.8651163 0.8716812 0.8717819 0.8818719 0.8984382    0
+## 
+## Sens 
+##                    Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
+## Logistic      0.9408602 0.9573794 0.9605027 0.9612578 0.9654857 0.9820789    0
+## Random_forest 0.9425494 0.9546864 0.9631957 0.9608965 0.9681900 0.9802513    0
+## XgBoost       0.9498208 0.9609515 0.9641577 0.9648430 0.9677275 0.9784946    0
+## 
+## Spec 
+##                    Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
+## Logistic      0.1818182 0.2126465 0.2245395 0.2307003 0.2376761 0.3076923    0
+## Random_forest 0.3732394 0.4534128 0.4825175 0.4803211 0.5131119 0.5594406    0
+## XgBoost       0.4265734 0.4797843 0.4964789 0.4902098 0.5034965 0.5524476    0</code></pre>
+<ul>
+<li>Based on ROC (AUC value) the best model is <strong>XgBoost</strong>.</li>
+</ul>
+<p>The AUC value of the best model (mean of logistic regression) is <strong>0.87</strong>. In general, models with an AUC value &gt; 0.7 are considered as useful, depending of course on the context of the problem.</p>
+</div>
+<div id="model-evaluation" class="section level3">
+<h3>Model evaluation</h3>
+<pre class="r"><code># Predictions on test data
+pred_logistic &lt;- predict(Logistic_model, newdata = test_data, type = &#39;prob&#39;)
+
+pred_rf &lt;- predict(rf_model, newdata = test_data, type = &#39;prob&#39;)
+
+pred_xgb &lt;- predict(xgb_model, newdata = test_data, type = &#39;prob&#39;)
+
+
+evaluation_tbl &lt;- tibble(true_class     = test_data$Churn,
+                         logistic_churn = pred_logistic$Yes,
+                         rf_churn       = pred_rf$Yes,
+                         xgb_churn      = pred_xgb$Yes)
+
+evaluation_tbl</code></pre>
+<pre><code>## # A tibble: 2,999 x 4
+##    true_class logistic_churn rf_churn xgb_churn
+##    &lt;fct&gt;               &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+##  1 Yes                0.125     0.276    0.297 
+##  2 No                 0.234     0.178    0.0503
+##  3 Yes                0.289     0.758    0.997 
+##  4 No                 0.112     0.158    0.0631
+##  5 No                 0.0600    0.002    0.0139
+##  6 No                 0.160     0.006    0.0324
+##  7 No                 0.0991    0.002    0.0349
+##  8 No                 0.0669    0.042    0.0267
+##  9 No                 0.232     0.164    0.246 
+## 10 No                 0.0311    0.056    0.0181
+## # … with 2,989 more rows</code></pre>
+</div>
+<div id="roc-curve" class="section level3">
+<h3>Roc curve</h3>
+<p>ROC curve or receiver operating characteristic curve is a plot that illustrates the diagnostic ability of a binary classifier system as its discrimination threshold is varied.</p>
+<p>i.e. how well the model predicts at different thresholds</p>
+<pre class="r"><code># set the second level as the positive class
+options(yardstick.event_first = FALSE)
+
+# creating data for ploting ROC curve
+roc_curve_logistic &lt;- roc_curve(evaluation_tbl, true_class, logistic_churn) %&gt;% 
+  mutate(model = &#39;logistic&#39;)
+
+roc_curve_rf &lt;- roc_curve(evaluation_tbl, true_class, rf_churn) %&gt;% 
+  mutate(model = &#39;RF&#39;)
+
+roc_curve_xgb &lt;- roc_curve(evaluation_tbl, true_class, xgb_churn) %&gt;% 
+  mutate(model = &#39;XGB&#39;)
+
+# combine all the roc curve data
+roc_curve_combine_tbl &lt;- Reduce(rbind, list(roc_curve_logistic, roc_curve_rf,
+                                            roc_curve_xgb))
+
+head(roc_curve_combine_tbl,10)</code></pre>
+<pre><code>## # A tibble: 10 x 4
+##    .threshold specificity sensitivity model   
+##         &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;   
+##  1  -Inf         0              1     logistic
+##  2     0.0115    0              1     logistic
+##  3     0.0118    0.000419       1     logistic
+##  4     0.0134    0.000838       1     logistic
+##  5     0.0137    0.00126        1     logistic
+##  6     0.0141    0.00168        1     logistic
+##  7     0.0144    0.00209        1     logistic
+##  8     0.0149    0.00251        1     logistic
+##  9     0.0152    0.00293        1     logistic
+## 10     0.0154    0.00293        0.998 logistic</code></pre>
+<pre class="r"><code># Plot ROC curves
+
+roc_curve_combine_tbl %&gt;% 
+  ggplot(aes(x = 1- specificity, y = sensitivity, color = model))+
+  geom_line(size = 1)+
+  geom_abline(linetype = &#39;dashed&#39;)+
+  scale_color_tableau()+
+  labs(title = &#39;ROC curve Comparison&#39;,
+       x = &#39;1 - Specificity&#39;,
+       y = &#39;Sensitivity&#39;)</code></pre>
+<p><img src="/post/2021-04-22-solve-a-real-world-churn-problem_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>The largest the AUC value, the better is the model accuracy.</p>
+</div>
+<div id="feature-importance" class="section level3">
+<h3>Feature Importance</h3>
+<p>It is important to understand how a model works, especially in a case of a churn model. A common measure that is used is the global feature importance. It measures the contribution of each variable towards the churn prediction.</p>
+<p>This importance is calculated explicitly for each attribute in the dataset, allowing attributes to be ranked and compared to each other. Importance is calculated for a single decision tree by the amount that each attribute split point improves the performance measure, weighted by the number of observations the node is responsible for. The feature importances are then averaged across all of the the decision trees within the model.</p>
+<pre class="r"><code>ggplot(varImp(xgb_model)) +
+  labs(title = &quot;Feature Importance for XGBoost churn model&quot;) </code></pre>
+<p><img src="/post/2021-04-22-solve-a-real-world-churn-problem_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p>It seems that the top 2 most important feature are:<br />
+- <strong>Age</strong><br />
+- <strong>Number of products</strong></p>
+</div>
+<div id="predict-churn-for-new-customers" class="section level3">
+<h3>Predict churn for new customers</h3>
+<p>When we want to run predictions on customers we can follow the process below.</p>
+<pre class="r"><code>new_data &lt;- read_csv(file = &quot;/Users/manos/OneDrive/Projects/R/All_Projects/Churn/data/new_data_bank.csv&quot;)
+
+new_data_recipe  &lt;- bake(recipe_obj, new_data)
+
+new_dat_pred &lt;- 
+  predict(Logistic_model, newdata = new_data_recipe, type = &#39;prob&#39;) %&gt;% 
+  select(Yes) %&gt;% 
+  rename(churn_prob = Yes) %&gt;% 
+  bind_cols(new_data) %&gt;% 
+  mutate(churn_group = ntile(churn_prob, n = 10)) %&gt;% 
+  select(churn_prob, churn_group, everything()) %&gt;% 
+  mutate(churn_prob = round(churn_prob, 2))
+
+new_dat_pred %&gt;% 
+  select(churn_prob, churn_group, Age, NumOfProducts, Geography, HasCrCard, Tenure) %&gt;% 
+  head(10) %&gt;% 
+  kable() %&gt;%
+  kableExtra::kable_styling()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">churn_prob</th>
+<th align="right">churn_group</th>
+<th align="right">Age</th>
+<th align="right">NumOfProducts</th>
+<th align="left">Geography</th>
+<th align="left">HasCrCard</th>
+<th align="right">Tenure</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.17</td>
+<td align="right">6</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="left">Germany</td>
+<td align="left">Yes</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="right">0.10</td>
+<td align="right">4</td>
+<td align="right">33</td>
+<td align="right">1</td>
+<td align="left">France</td>
+<td align="left">Yes</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="right">0.26</td>
+<td align="right">8</td>
+<td align="right">44</td>
+<td align="right">2</td>
+<td align="left">France</td>
+<td align="left">No</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">0.38</td>
+<td align="right">9</td>
+<td align="right">45</td>
+<td align="right">1</td>
+<td align="left">Germany</td>
+<td align="left">Yes</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">0.08</td>
+<td align="right">3</td>
+<td align="right">31</td>
+<td align="right">1</td>
+<td align="left">France</td>
+<td align="left">Yes</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="right">0.13</td>
+<td align="right">5</td>
+<td align="right">43</td>
+<td align="right">1</td>
+<td align="left">France</td>
+<td align="left">Yes</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">0.07</td>
+<td align="right">2</td>
+<td align="right">38</td>
+<td align="right">1</td>
+<td align="left">Spain</td>
+<td align="left">Yes</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="right">0.07</td>
+<td align="right">3</td>
+<td align="right">29</td>
+<td align="right">2</td>
+<td align="left">Spain</td>
+<td align="left">Yes</td>
+<td align="right">9</td>
+</tr>
+<tr class="odd">
+<td align="right">0.06</td>
+<td align="right">2</td>
+<td align="right">33</td>
+<td align="right">2</td>
+<td align="left">France</td>
+<td align="left">Yes</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="right">0.19</td>
+<td align="right">7</td>
+<td align="right">38</td>
+<td align="right">2</td>
+<td align="left">Spain</td>
+<td align="left">Yes</td>
+<td align="right">10</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="create-a-churn-risk-ranking" class="section level3">
+<h3>Create a churn risk ranking</h3>
+<p>Although we developed a model that can predict pretty well if a customer will churn, the model output probabilities are not sufficient in the business context. We need some metric that will be understood &amp; easily used by all stakeholders and remove the complexities of e.g. explaining a threshold to non-technical stakeholder.</p>
+<p>So instead of an actual probability, a <strong>churn risk ranking</strong> would be more useful. So we break up the probabilities variable into 10 churn risk buckets. Now a customer has a churn risk from <strong>1 (lowest probability) to 10 (highest probability)</strong> .</p>
+</div>
+<div id="tactics-for-churn-prevention" class="section level3">
+<h3>Tactics for churn prevention</h3>
+<p>An initial tactic is to develop different sales offers (or marketing campaigns) for the different churn risk groups.</p>
+<p>For example, customers that belong in churn risk groups 10 &amp; 9 have a significantly higher churn risk than for example 1 &amp; 2. So it will be crucial to offer them something more in order to retain them.</p>
+</div>
+</div>
