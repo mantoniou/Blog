@@ -1,5 +1,5 @@
 # Site settings
-baseurl = "https://www.manosantoniou.com/"
+baseurl = "https://clever-edison-73ae9c.netlify.app"
 languageCode = "en"
 title = "Manos Antoniou"
 theme = "hugo-theme-cactus-plus"

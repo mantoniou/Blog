@@ -2,206 +2,206 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Manos Antoniou</title>
-    <link>http://manosantoniou.com/tags/</link>
+    <link>https://clever-edison-73ae9c.netlify.app/tags/</link>
     <description>Recent content in Tags on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 22 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://manosantoniou.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 22 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://clever-edison-73ae9c.netlify.app/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Churn</title>
-      <link>http://manosantoniou.com/tags/churn/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/churn/</link>
       <pubDate>Thu, 22 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/churn/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/churn/</guid>
       <description></description>
     </item>
     
     <item>
       <title>classification</title>
-      <link>http://manosantoniou.com/tags/classification/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/classification/</link>
       <pubDate>Thu, 22 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/classification/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/classification/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Logistic regression</title>
-      <link>http://manosantoniou.com/tags/logistic-regression/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/logistic-regression/</link>
       <pubDate>Thu, 22 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/logistic-regression/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/logistic-regression/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Random forest</title>
-      <link>http://manosantoniou.com/tags/random-forest/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/random-forest/</link>
       <pubDate>Thu, 22 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/random-forest/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/random-forest/</guid>
       <description></description>
     </item>
     
     <item>
       <title>XGBoost</title>
-      <link>http://manosantoniou.com/tags/xgboost/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/xgboost/</link>
       <pubDate>Thu, 22 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/xgboost/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/xgboost/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Arima</title>
-      <link>http://manosantoniou.com/tags/arima/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/arima/</link>
       <pubDate>Sat, 14 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/arima/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/arima/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Exponential Smoothing</title>
-      <link>http://manosantoniou.com/tags/exponential-smoothing/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/exponential-smoothing/</link>
       <pubDate>Sat, 14 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/exponential-smoothing/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/exponential-smoothing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Forecasting</title>
-      <link>http://manosantoniou.com/tags/forecasting/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/forecasting/</link>
       <pubDate>Sat, 14 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/forecasting/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/forecasting/</guid>
       <description></description>
     </item>
     
     <item>
       <title>clustering</title>
-      <link>http://manosantoniou.com/tags/clustering/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/clustering/</link>
       <pubDate>Sat, 27 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/clustering/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/clustering/</guid>
       <description></description>
     </item>
     
     <item>
       <title>K-means</title>
-      <link>http://manosantoniou.com/tags/k-means/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/k-means/</link>
       <pubDate>Sat, 27 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/k-means/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/k-means/</guid>
       <description></description>
     </item>
     
     <item>
       <title>PCA</title>
-      <link>http://manosantoniou.com/tags/pca/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/pca/</link>
       <pubDate>Sat, 27 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/pca/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/pca/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Eurostat</title>
-      <link>http://manosantoniou.com/tags/eurostat/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/eurostat/</link>
       <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/eurostat/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/eurostat/</guid>
       <description></description>
     </item>
     
     <item>
       <title>LDA</title>
-      <link>http://manosantoniou.com/tags/lda/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/lda/</link>
       <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/lda/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/lda/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Text analytics</title>
-      <link>http://manosantoniou.com/tags/text-analytics/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/text-analytics/</link>
       <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/text-analytics/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/text-analytics/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Tidytext</title>
-      <link>http://manosantoniou.com/tags/tidytext/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/tidytext/</link>
       <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/tidytext/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/tidytext/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Topic modelling</title>
-      <link>http://manosantoniou.com/tags/topic-modelling/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/topic-modelling/</link>
       <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/topic-modelling/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/topic-modelling/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Smoothing</title>
-      <link>http://manosantoniou.com/tags/smoothing/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/smoothing/</link>
       <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/smoothing/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/smoothing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Time series</title>
-      <link>http://manosantoniou.com/tags/time-series/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/time-series/</link>
       <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/time-series/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/time-series/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Web scraping</title>
-      <link>http://manosantoniou.com/tags/web-scraping/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/web-scraping/</link>
       <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/web-scraping/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/web-scraping/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Decision trees</title>
-      <link>http://manosantoniou.com/tags/decision-trees/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/decision-trees/</link>
       <pubDate>Mon, 19 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/decision-trees/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/decision-trees/</guid>
       <description></description>
     </item>
     
     <item>
       <title>k-NN</title>
-      <link>http://manosantoniou.com/tags/k-nn/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/k-nn/</link>
       <pubDate>Thu, 28 Dec 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/k-nn/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/k-nn/</guid>
       <description></description>
     </item>
     
     <item>
       <title>SVD</title>
-      <link>http://manosantoniou.com/tags/svd/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/tags/svd/</link>
       <pubDate>Thu, 28 Dec 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/tags/svd/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/tags/svd/</guid>
       <description></description>
     </item>
     

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>PCA on Manos Antoniou</title>
-    <link>http://manosantoniou.com/tags/pca/</link>
+    <link>https://clever-edison-73ae9c.netlify.app/tags/pca/</link>
     <description>Recent content in PCA on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 27 Oct 2018 00:00:00 +0000</lastBuildDate><atom:link href="http://manosantoniou.com/tags/pca/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 27 Oct 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://clever-edison-73ae9c.netlify.app/tags/pca/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Clustering of EU countries</title>
-      <link>http://manosantoniou.com/post/clustering-of-eu-countries/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/post/clustering-of-eu-countries/</link>
       <pubDate>Sat, 27 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/post/clustering-of-eu-countries/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/post/clustering-of-eu-countries/</guid>
       <description>In this article I used a public Eurostat dataset, to develop a segmentation of the EU countries. This dataset consists of 5 confidence indicators:
  Consumer Confidence Indicator
  Construction confidence indicator

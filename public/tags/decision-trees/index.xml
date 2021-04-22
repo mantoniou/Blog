@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Decision trees on Manos Antoniou</title>
-    <link>http://manosantoniou.com/tags/decision-trees/</link>
+    <link>https://clever-edison-73ae9c.netlify.app/tags/decision-trees/</link>
     <description>Recent content in Decision trees on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 19 Feb 2018 00:00:00 +0000</lastBuildDate><atom:link href="http://manosantoniou.com/tags/decision-trees/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 19 Feb 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://clever-edison-73ae9c.netlify.app/tags/decision-trees/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Predict using classification methods</title>
-      <link>http://manosantoniou.com/post/predict-using-classification-methods/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/post/predict-using-classification-methods/</link>
       <pubDate>Mon, 19 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/post/predict-using-classification-methods/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/post/predict-using-classification-methods/</guid>
       <description>In this analysis i’ll try to build a model that will predict whether a tumor is malignant or benign, based on data from a study on breast cancer. Classification algorithms will be used in the modelling process.
 The dataset
 The data for this analysis refer to 569 patients from a study on breast cancer. The actual data can be found at UCI (Machine Learning Repository): https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic). The variables were computed from a digitized image of a breast mass and describe characteristics of the cell nucleus present in the image.</description>

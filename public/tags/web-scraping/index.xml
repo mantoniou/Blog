@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Web scraping on Manos Antoniou</title>
-    <link>http://manosantoniou.com/tags/web-scraping/</link>
+    <link>https://clever-edison-73ae9c.netlify.app/tags/web-scraping/</link>
     <description>Recent content in Web scraping on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 04 Apr 2018 00:00:00 +0000</lastBuildDate><atom:link href="http://manosantoniou.com/tags/web-scraping/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 04 Apr 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://clever-edison-73ae9c.netlify.app/tags/web-scraping/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Web scraping and analyzing 400,000 articles</title>
-      <link>http://manosantoniou.com/post/web-scraping-and-analyzing-400-000-articles/</link>
+      <link>https://clever-edison-73ae9c.netlify.app/post/web-scraping-and-analyzing-400-000-articles/</link>
       <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://manosantoniou.com/post/web-scraping-and-analyzing-400-000-articles/</guid>
+      <guid>https://clever-edison-73ae9c.netlify.app/post/web-scraping-and-analyzing-400-000-articles/</guid>
       <description>In this post i will analyze the articles published by NEWSBEAST, one of the main on-line publishers in Greece. The main question is “Are there any trends on the daily posting frequency of NEWSBEAST?” The steps below were followed before the main data analysis (link for the full r code can be found at the end of the article):
  Scraping the articles from the site (www.newbeast.gr) using rvest &amp;amp; car libraries in R</description>
     </item>
