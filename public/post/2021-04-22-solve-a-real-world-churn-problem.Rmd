@@ -1,0 +1,450 @@
+---
+title: Solve a real-world churn problem with Machine learning (including a detailed case study)
+author: ''
+date: '2021-04-22'
+description: "Use R & Tidyverse to develop a churn management strategy"
+slug: solve-a-real-world-churn-problem
+categories:
+  - R
+tags:
+  - XGBoost
+  - Random forest
+  - Logistic Regression
+  - Churn
+  - Classification
+---
+
+
+Use R & Tidyverse to develop a churn management strategy..
+
+### Churn definition
+
+Customer churn is a major problem for most of the companies. Losing customers require gaining new customers to replace them. This could be around 10X more expensive than retaining existing customers, depending on the domain.
+
+A customer is considered as churn when he/she stop using your company's product or service. This is easy to define it for contractual setting, as a customer is considered as churn when fails to renew the contract. But in a non-contractual setting there aren't clear rules for defining churn. In most of these cases, business users with extended domain knowledge together with data scientists/data analysts define what is considered as churn in the specific problem. e.g. in a retail organization the team could define that a customer is a churn when fails to purchase for the last 4 months.
+
+### Benefits of churn management
+
+The main benefit is increased revenue by obtaining higher retention rates and customer satisfaction. The other benefit is the optimization of marketing expenditures with targeted marketing campaigns & reallocation of marketing budgets.
+
+### Churn rate
+
+You can calculate churn rate by dividing the number of customers lost during a specific time period -- say a quarter or a year -- by the number of customers we had at the beginning of that time period.
+
+For example, if we start the quarter with 400 customers and end with 380, our churn rate is 5% because we lost 5% or 20 of our customers.
+
+### Our churn problem
+
+Our case study is a bank that wants to develop a churn model to predict the probability of a customer to churn. The banking sector has become one of the main industries in developed countries. The technical progress and the increasing number of banks raised the level of competition. Banks are working hard to survive in this competitive market depending on multiple strategies.
+
+Three main strategies have been proposed to generate more revenues:
+
+-   **Acquire new customers**\
+-   **Upsell the existing customers** (persuade a customer to buy something additional or more expensive)
+-   **Increase the retention period of customers**
+
+In our case, we focus on the last strategy i.e. increase the retention period of customers. The original dataset is public and can be found at [kaggle](https://www.kaggle.com/shrutimechlearn/churn-modelling)
+
+### Import libraries
+
+At first we are loading all libraries.
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggthemes)
+library(correlationfunnel)
+library(knitr)
+library(caret)
+library(recipes)
+library(yardstick)
+library(DT)
+
+# Set the black & white theme for all plots
+theme_set(theme_bw())
+```
+
+### Load dataset
+
+We use the read_csv() function (from readr library) to read the csv file in R.
+
+```{r message=FALSE, warning=FALSE}
+bank <- read_csv(file = "/Users/manos/OneDrive/Projects/R/All_Projects/Churn/data/Churn_Modelling.csv")
+
+bank <- 
+  bank %>% 
+  mutate(Churn = if_else(Exited == 0, "No", "Yes"),
+         HasCrCard = if_else(HasCrCard == 0, "No", "Yes"),
+         IsActiveMember = if_else(IsActiveMember == 0, "No", "Yes")) %>% 
+  select(- RowNumber, -CustomerId, - Surname, -Exited)
+
+```
+
+### Inspect the dataset
+
+Use glimpse() function to inspect the dataset.
+
+```{r message=FALSE, warning=FALSE}
+bank %>% glimpse()
+
+```
+
+Below there is a detailed description of all variables of the dataset
+
+-   CreditScore \| A credit score is a number between 300--850 that depicts a consumer's creditworthiness. The higher the score, the better a borrower looks to potential lenders\
+-   Geography \| Customer's country\
+-   Gender \| Customer's gender\
+-   Age \| Customer's age\
+-   Tenure \| Number of years for which the customer has been with the bank\
+-   Balance \| Customer's current balance\
+-   NumOfProducts \| Number of bank products the customer is utilizing\
+-   HasCrCard \| Whether or not has a credit card\
+-   IsActiveMember \| Whether or not the customer is an active member
+-   EstimatedSalary \| The estimated salary of the customer
+-   Churn \| Whether or not the customer churned
+
+### Check for missing values
+
+One of the most common problems in any data analysis is to discover & handle missing data.
+
+```{r message=FALSE, warning=FALSE}
+bank %>%
+    map_df(~ sum(is.na(.))) %>%
+    gather() %>%
+    arrange(desc(value))
+
+```
+
+There aren't any missing values.
+
+### Check the levels of categorical/text variables
+
+Now we want to check the levels of all categorical variables.
+
+```{r}
+
+bank %>%
+  summarise_if(is.character, n_distinct) %>% 
+  t()
+
+```
+
+It looks that all character variables, are categorical variables with a few levels (2-3).
+
+### Categorical variables distribution
+
+Now we want to check the distribution of categorical variables in relation to churn.
+
+```{r}
+
+bank %>% 
+  select_if(is.character) %>% 
+  gather(key = key, value = value, - Churn, factor_key = T) %>% 
+  ggplot(aes( x = value, fill = Churn)) +
+  geom_bar() +
+  facet_wrap(~key, scales = 'free') +
+  scale_x_discrete(labels = abbreviate) +
+  labs(
+    title = 'Distribution of categorical variables in relation to churn',
+    x = '') +
+  scale_fill_economist()
+
+
+```
+
+The main findings are:
+
+-   Customers from Germany are more likely to churn
+-   Male customers are slightly less likely to churn\
+-   Active members are less likely to churn
+
+### Numerical variables distribution
+
+Check the distribution of the numerical variables concerning churn.
+
+```{r}
+
+bank %>% 
+  select_if(function(col) is.numeric(col) | all(col == .$Churn)) %>% 
+  gather(key = "Variable", value = "Value", -Churn) %>% 
+  ggplot(aes(Value, fill = Churn)) +
+  geom_histogram(bins = 20) +
+  facet_wrap(~ Variable, scales = "free") +
+  labs(
+    title = "Numerical variables histograms",
+    x = ""
+  ) +
+  scale_fill_economist()
+
+```
+
+The main findings are:
+
+-   It seems that higher age means higher probability of churn
+
+### Correlation funnel
+
+Correlation is a very important metric to understand the relationship between variables. The package correlationfunnel produces a chart, which helps us understand the relationship of all variables (categorical & numerical) with churn.
+
+At first, it creates binary variables of each class of categorical variables and 4 bins of each numerical variable (based on quantiles). It plots all variables starting from the most correlated to the less correlated.
+
+```{r}
+
+# Create correlation Funnel 
+bank %>%
+  drop_na() %>% 
+    binarize() %>% 
+    correlate(Churn__Yes) %>% 
+    plot_correlation_funnel()
+
+```
+
+It looks that Age, Number of products, Geography & Member activity seems quite important. Balance & gender are less important. At last, credit score, tenure, estimated salary & credit card seems to be unimportant for churn, as almost all classes are near zero correlated.
+
+# MODELLING
+
+Now we can go ahead anddevelop a machine learning model that will predict the churn probability for all customers.
+
+### Split dataset
+
+At first, we're splitting the dataset into 2 parts, training & test dataset. We'll use the training dataset to train our model & the testing dataset to check the performance of the model.
+
+```{r message=FALSE, warning=FALSE}
+
+# Split the dataset in two parts
+set.seed(1)
+inTrain = createDataPartition(bank$Churn, p = .70)[[1]]
+
+# Assign the 70% of observations to training data
+training <- bank[inTrain,]
+
+# Assign the remaining 30 % of observations to testing data
+testing <- bank[-inTrain,]
+
+```
+
+### Prepare the recipe of data for modeling
+
+Here we're using the recipes package to apply the same pre-processing steps to training & test data.
+
+```{r message=FALSE, warning=FALSE}
+
+# Create the recipe object
+recipe_obj <- 
+  recipe(Churn ~ ., data = training) %>% 
+  step_zv(all_predictors()) %>%       # check any zero variance features
+  step_center(all_numeric()) %>% 
+  step_scale(all_numeric()) %>%         # scale the numeric features
+  prep()
+```
+
+### Processing data according the recipe
+
+```{r message=FALSE, warning=FALSE}
+
+train_data <- bake(recipe_obj, training)
+
+test_data  <- bake(recipe_obj, testing)
+```
+
+### Setting the train controls for modeling
+
+We're using TrainControl() function in order to specify some parameters during model training, e.g. the resampling method, number of folds in K-Fold etc.
+
+```{r message=FALSE, warning=FALSE}
+
+train_ctr <- trainControl(method = 'cv', 
+                          number = 10,
+                          classProbs = TRUE,
+                          summaryFunction = twoClassSummary)
+
+```
+
+### Develop multiple machine learning models
+
+Develop a **logistic regression** model
+
+```{r message=FALSE, warning=FALSE, eval=FALSE}
+Logistic_model <- train(Churn ~ .,
+                        data = train_data,
+                        method = 'glm',
+                        family = 'binomial',
+                        trControl = train_ctr,
+                        metric = 'ROC')
+
+
+```
+
+Develop a **random forest** model
+
+```{r message=FALSE, warning=FALSE, eval=FALSE}
+rf_model <- train(Churn ~ .,
+                  data = train_data,
+                  method = 'rf',
+                  trControl = train_ctr,
+                  tuneLength = 5,
+                  metric = 'ROC')
+
+```
+
+Develop an **XGBoost model**
+
+```{r message=FALSE, warning=FALSE, eval=FALSE}
+xgb_model <- train(Churn ~ ., data = train_data,
+                        method = 'xgbTree',
+                        trControl = train_ctr,
+                        tuneLength = 5,
+                        metric = 'ROC')
+
+```
+
+Now we can save all models in a single file
+
+```{r eval=FALSE, message=FALSE, warning=FALSE}
+save(Logistic_model, rf_model, xgb_model, file = "/Users/manos/OneDrive/Projects/R/All_Projects/Churn/data/ml_models_bank.RDA")
+
+```
+
+We can load all trained models
+
+```{r message=FALSE, warning=FALSE}
+load(file = "/Users/manos/OneDrive/Projects/R/All_Projects/Churn/data/ml_models_bank.RDA")
+
+```
+
+### Model Comparison
+
+In this step we'll compare the models accuracy.
+
+```{r}
+
+model_list <- resamples(list(Logistic = Logistic_model,
+                             Random_forest = rf_model,
+                             XgBoost = xgb_model))
+
+summary(model_list)
+```
+
+-   Based on ROC (AUC value) the best model is **XgBoost**.
+
+The AUC value of the best model (mean of logistic regression) is **0.87**. In general, models with an AUC value \> 0.7 are considered as useful, depending of course on the context of the problem.
+
+### Model evaluation
+
+```{r message=FALSE, warning=FALSE}
+
+# Predictions on test data
+pred_logistic <- predict(Logistic_model, newdata = test_data, type = 'prob')
+
+pred_rf <- predict(rf_model, newdata = test_data, type = 'prob')
+
+pred_xgb <- predict(xgb_model, newdata = test_data, type = 'prob')
+
+
+evaluation_tbl <- tibble(true_class     = test_data$Churn,
+                         logistic_churn = pred_logistic$Yes,
+                         rf_churn       = pred_rf$Yes,
+                         xgb_churn      = pred_xgb$Yes)
+
+evaluation_tbl
+```
+
+### Roc curve
+
+ROC curve or receiver operating characteristic curve is a plot that illustrates the diagnostic ability of a binary classifier system as its discrimination threshold is varied.
+
+i.e. how well the model predicts at different thresholds
+
+```{r message=FALSE, warning=FALSE}
+
+# set the second level as the positive class
+options(yardstick.event_first = FALSE)
+
+# creating data for ploting ROC curve
+roc_curve_logistic <- roc_curve(evaluation_tbl, true_class, logistic_churn) %>% 
+  mutate(model = 'logistic')
+
+roc_curve_rf <- roc_curve(evaluation_tbl, true_class, rf_churn) %>% 
+  mutate(model = 'RF')
+
+roc_curve_xgb <- roc_curve(evaluation_tbl, true_class, xgb_churn) %>% 
+  mutate(model = 'XGB')
+
+# combine all the roc curve data
+roc_curve_combine_tbl <- Reduce(rbind, list(roc_curve_logistic, roc_curve_rf,
+                                            roc_curve_xgb))
+
+head(roc_curve_combine_tbl,10)
+
+
+
+
+```
+
+```{r message=FALSE, warning=FALSE}
+# Plot ROC curves
+
+roc_curve_combine_tbl %>% 
+  ggplot(aes(x = 1- specificity, y = sensitivity, color = model))+
+  geom_line(size = 1)+
+  geom_abline(linetype = 'dashed')+
+  scale_color_tableau()+
+  labs(title = 'ROC curve Comparison',
+       x = '1 - Specificity',
+       y = 'Sensitivity')
+```
+
+The largest the AUC value, the better is the model accuracy.
+
+### Feature Importance
+
+It is important to understand how a model works, especially in a case of a churn model. A common measure that is used is the global feature importance. It measures the contribution of each variable towards the churn prediction.
+
+This importance is calculated explicitly for each attribute in the dataset, allowing attributes to be ranked and compared to each other. Importance is calculated for a single decision tree by the amount that each attribute split point improves the performance measure, weighted by the number of observations the node is responsible for. The feature importances are then averaged across all of the the decision trees within the model.
+
+```{r}
+ggplot(varImp(xgb_model)) +
+  labs(title = "Feature Importance for XGBoost churn model") 
+
+```
+
+It seems that the top 2 most important feature are:\
+- **Age**\
+- **Number of products**
+
+### Predict churn for new customers
+
+When we want to run predictions on customers we can follow the process below.
+
+```{r message=FALSE, warning=FALSE}
+
+new_data <- read_csv(file = "/Users/manos/OneDrive/Projects/R/All_Projects/Churn/data/new_data_bank.csv")
+
+new_data_recipe  <- bake(recipe_obj, new_data)
+
+new_dat_pred <- 
+  predict(Logistic_model, newdata = new_data_recipe, type = 'prob') %>% 
+  select(Yes) %>% 
+  rename(churn_prob = Yes) %>% 
+  bind_cols(new_data) %>% 
+  mutate(churn_group = ntile(churn_prob, n = 10)) %>% 
+  select(churn_prob, churn_group, everything()) %>% 
+  mutate(churn_prob = round(churn_prob, 2))
+
+new_dat_pred %>% 
+  select(churn_prob, churn_group, Age, NumOfProducts, Geography, HasCrCard, Tenure) %>% 
+  head(10) %>% 
+  kable() %>%
+  kableExtra::kable_styling()
+```
+
+### Create a churn risk ranking
+
+Although we developed a model that can predict pretty well if a customer will churn, the model output probabilities are not sufficient in the business context. We need some metric that will be understood & easily used by all stakeholders and remove the complexities of e.g. explaining a threshold to non-technical stakeholder.
+
+So instead of an actual probability, a **churn risk ranking** would be more useful. So we break up the probabilities variable into 10 churn risk buckets. Now a customer has a churn risk from **1 (lowest probability) to 10 (highest probability)** .
+
+### Tactics for churn prevention
+
+An initial tactic is to develop different sales offers (or marketing campaigns) for the different churn risk groups.
+
+For example, customers that belong in churn risk groups 10 & 9 have a significantly higher churn risk than for example 1 & 2. So it will be crucial to offer them something more in order to retain them.

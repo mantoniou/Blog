@@ -1,193 +1,119 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
-    <loc>/post/predicting-the-future-popularity-of-programming-languages/</loc>
+    <loc>http://manosantoniou.com/categories/</loc>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/churn/</loc>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/classification/</loc>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/logistic-regression/</loc>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/</loc>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/post/</loc>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/categories/r/</loc>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/random-forest/</loc>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/post/solve-a-real-world-churn-problem/</loc>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/</loc>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/post/2021-04-22-test/</loc>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/xgboost/</loc>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/arima/</loc>
     <lastmod>2019-09-14T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/clustering-of-eu-countries/</loc>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/exponential-smoothing/</loc>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/forecasting/</loc>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/post/predicting-the-future-popularity-of-programming-languages/</loc>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/clustering/</loc>
     <lastmod>2018-10-27T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/forecasting-arima-modelling-gdp-eurostat/</loc>
+  </url><url>
+    <loc>http://manosantoniou.com/post/clustering-of-eu-countries/</loc>
+    <lastmod>2018-10-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/k-means/</loc>
+    <lastmod>2018-10-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/pca/</loc>
+    <lastmod>2018-10-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/eurostat/</loc>
     <lastmod>2018-08-26T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/text-analytics-topic-modelling-songs-lyrics/</loc>
+  </url><url>
+    <loc>http://manosantoniou.com/post/forecasting-arima-modelling-gdp-eurostat/</loc>
+    <lastmod>2018-08-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/lda/</loc>
     <lastmod>2018-06-24T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/web-scraping-and-analyzing-400-000-articles/</loc>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/text-analytics/</loc>
+    <lastmod>2018-06-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/post/text-analytics-topic-modelling-songs-lyrics/</loc>
+    <lastmod>2018-06-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/tidytext/</loc>
+    <lastmod>2018-06-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/topic-modelling/</loc>
+    <lastmod>2018-06-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/smoothing/</loc>
     <lastmod>2018-04-04T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/predict-using-classification-methods/</loc>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/time-series/</loc>
+    <lastmod>2018-04-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/web-scraping/</loc>
+    <lastmod>2018-04-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/post/web-scraping-and-analyzing-400-000-articles/</loc>
+    <lastmod>2018-04-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/decision-trees/</loc>
     <lastmod>2018-02-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/2017-12-28-build-a-letter-recognition-classifier/</loc>
+  </url><url>
+    <loc>http://manosantoniou.com/post/predict-using-classification-methods/</loc>
+    <lastmod>2018-02-19T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/post/2017-12-28-build-a-letter-recognition-classifier/</loc>
     <lastmod>2017-12-28T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/about/</loc>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/k-nn/</loc>
+    <lastmod>2017-12-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/tags/svd/</loc>
+    <lastmod>2017-12-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/about/</loc>
+    <lastmod>2015-06-20T14:02:37+02:00</lastmod>
+  </url><url>
+    <loc>http://manosantoniou.com/posts/</loc>
     <lastmod>2015-06-20T14:02:37+02:00</lastmod>
   </url>
-  
-  <url>
-    <loc>/posts/</loc>
-    <lastmod>2015-06-20T14:02:37+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/arima/</loc>
-    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/classification/</loc>
-    <lastmod>2018-02-19T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/clustering/</loc>
-    <lastmod>2018-10-27T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/decision-trees/</loc>
-    <lastmod>2018-02-19T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/eurostat/</loc>
-    <lastmod>2018-08-26T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/exponential-smoothing/</loc>
-    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/forecasting/</loc>
-    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/k-means/</loc>
-    <lastmod>2018-10-27T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/k-nn/</loc>
-    <lastmod>2017-12-28T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/lda/</loc>
-    <lastmod>2018-06-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/logistic-regression/</loc>
-    <lastmod>2018-02-19T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/</loc>
-    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/pca/</loc>
-    <lastmod>2018-10-27T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
-    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/r/</loc>
-    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/smoothing/</loc>
-    <lastmod>2018-04-04T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/svd/</loc>
-    <lastmod>2017-12-28T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
-    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/text-analytics/</loc>
-    <lastmod>2018-06-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/tidytext/</loc>
-    <lastmod>2018-06-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/time-series/</loc>
-    <lastmod>2018-04-04T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/topic-modelling/</loc>
-    <lastmod>2018-06-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/web-scraping/</loc>
-    <lastmod>2018-04-04T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
 </urlset>

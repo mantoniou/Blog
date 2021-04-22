@@ -1,22 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Svd on Manos Antoniou</title>
-    <link>/tags/svd/</link>
-    <description>Recent content in Svd on Manos Antoniou</description>
+    <title>SVD on Manos Antoniou</title>
+    <link>http://manosantoniou.com/tags/svd/</link>
+    <description>Recent content in SVD on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 28 Dec 2017 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/svd/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 28 Dec 2017 00:00:00 +0000</lastBuildDate><atom:link href="http://manosantoniou.com/tags/svd/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Build a letter recognition classifier</title>
-      <link>/post/2017-12-28-build-a-letter-recognition-classifier/</link>
+      <link>http://manosantoniou.com/post/2017-12-28-build-a-letter-recognition-classifier/</link>
       <pubDate>Thu, 28 Dec 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/2017-12-28-build-a-letter-recognition-classifier/</guid>
+      <guid>http://manosantoniou.com/post/2017-12-28-build-a-letter-recognition-classifier/</guid>
       <description>In this analysis i’ll develop a model that will predict the hand-written capital letters (English) displayed in a picture, using various of it’s attributes.
 INTRODUCTION Dataset Information
 This data set was originally used in the paper of P. W. Frey and D. J. Slate.“Letter Recognition Using Holland-style Adaptive Classifiers” (Machine Learning Vol 6 #2 March 91). It investigated the ability of several variations of Holland-style adaptive classifier systems to learn to correctly guess the letter categories associated with vectors of 16 integer attributes extracted from raster scan images of the letters.</description>
