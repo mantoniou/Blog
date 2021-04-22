@@ -15,7 +15,7 @@ tags:
 ---
 
 
-Use R & Tidyverse to develop a churn management strategy
+Use R & Tidyverse to develop a churn management strategy..
 
 ### Churn definition
 
