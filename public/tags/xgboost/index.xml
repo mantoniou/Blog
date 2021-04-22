@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>XGBoost on Manos Antoniou</title>
-    <link>https://clever-edison-73ae9c.netlify.app/tags/xgboost/</link>
+    <link>https://manosantoniou.com/tags/xgboost/</link>
     <description>Recent content in XGBoost on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 22 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://clever-edison-73ae9c.netlify.app/tags/xgboost/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 22 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://manosantoniou.com/tags/xgboost/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Solve a real-world churn problem with Machine learning (including a detailed case study)</title>
-      <link>https://clever-edison-73ae9c.netlify.app/post/solve-a-real-world-churn-problem/</link>
+      <link>https://manosantoniou.com/post/solve-a-real-world-churn-problem/</link>
       <pubDate>Thu, 22 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://clever-edison-73ae9c.netlify.app/post/solve-a-real-world-churn-problem/</guid>
+      <guid>https://manosantoniou.com/post/solve-a-real-world-churn-problem/</guid>
       <description>Use R &amp;amp; Tidyverse to develop a churn management strategy..
 Churn definition Customer churn is a major problem for most of the companies. Losing customers require gaining new customers to replace them. This could be around 10X more expensive than retaining existing customers, depending on the domain.
 A customer is considered as churn when he/she stop using your company’s product or service. This is easy to define it for contractual setting, as a customer is considered as churn when fails to renew the contract.</description>

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>clustering on Manos Antoniou</title>
-    <link>https://clever-edison-73ae9c.netlify.app/tags/clustering/</link>
+    <link>https://manosantoniou.com/tags/clustering/</link>
     <description>Recent content in clustering on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 27 Oct 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://clever-edison-73ae9c.netlify.app/tags/clustering/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 27 Oct 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://manosantoniou.com/tags/clustering/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Clustering of EU countries</title>
-      <link>https://clever-edison-73ae9c.netlify.app/post/clustering-of-eu-countries/</link>
+      <link>https://manosantoniou.com/post/clustering-of-eu-countries/</link>
       <pubDate>Sat, 27 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://clever-edison-73ae9c.netlify.app/post/clustering-of-eu-countries/</guid>
+      <guid>https://manosantoniou.com/post/clustering-of-eu-countries/</guid>
       <description>In this article I used a public Eurostat dataset, to develop a segmentation of the EU countries. This dataset consists of 5 confidence indicators:
  Consumer Confidence Indicator
  Construction confidence indicator
@@ -23,10 +23,10 @@
     
     <item>
       <title>Predict using classification methods</title>
-      <link>https://clever-edison-73ae9c.netlify.app/post/predict-using-classification-methods/</link>
+      <link>https://manosantoniou.com/post/predict-using-classification-methods/</link>
       <pubDate>Mon, 19 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://clever-edison-73ae9c.netlify.app/post/predict-using-classification-methods/</guid>
+      <guid>https://manosantoniou.com/post/predict-using-classification-methods/</guid>
       <description>In this analysis i’ll try to build a model that will predict whether a tumor is malignant or benign, based on data from a study on breast cancer. Classification algorithms will be used in the modelling process.
 The dataset
 The data for this analysis refer to 569 patients from a study on breast cancer. The actual data can be found at UCI (Machine Learning Repository): https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic). The variables were computed from a digitized image of a breast mass and describe characteristics of the cell nucleus present in the image.</description>
@@ -34,10 +34,10 @@ The data for this analysis refer to 569 patients from a study on breast cancer. 
     
     <item>
       <title>Build a letter recognition classifier</title>
-      <link>https://clever-edison-73ae9c.netlify.app/post/2017-12-28-build-a-letter-recognition-classifier/</link>
+      <link>https://manosantoniou.com/post/2017-12-28-build-a-letter-recognition-classifier/</link>
       <pubDate>Thu, 28 Dec 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://clever-edison-73ae9c.netlify.app/post/2017-12-28-build-a-letter-recognition-classifier/</guid>
+      <guid>https://manosantoniou.com/post/2017-12-28-build-a-letter-recognition-classifier/</guid>
       <description>In this analysis i’ll develop a model that will predict the hand-written capital letters (English) displayed in a picture, using various of it’s attributes.
 INTRODUCTION Dataset Information
 This data set was originally used in the paper of P. W. Frey and D. J. Slate.“Letter Recognition Using Holland-style Adaptive Classifiers” (Machine Learning Vol 6 #2 March 91). It investigated the ability of several variations of Holland-style adaptive classifier systems to learn to correctly guess the letter categories associated with vectors of 16 integer attributes extracted from raster scan images of the letters.</description>

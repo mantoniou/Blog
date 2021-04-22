@@ -79,3 +79,8 @@ hasCJKLanguage = false
 	twitter-square = "https://twitter.com/mantoniou1"
 	github-square = "https://github.com/mantoniou"
 
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

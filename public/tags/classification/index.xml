@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>classification on Manos Antoniou</title>
-    <link>https://clever-edison-73ae9c.netlify.app/tags/classification/</link>
+    <link>https://manosantoniou.com/tags/classification/</link>
     <description>Recent content in classification on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 22 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://clever-edison-73ae9c.netlify.app/tags/classification/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 22 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://manosantoniou.com/tags/classification/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Solve a real-world churn problem with Machine learning (including a detailed case study)</title>
-      <link>https://clever-edison-73ae9c.netlify.app/post/solve-a-real-world-churn-problem/</link>
+      <link>https://manosantoniou.com/post/solve-a-real-world-churn-problem/</link>
       <pubDate>Thu, 22 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://clever-edison-73ae9c.netlify.app/post/solve-a-real-world-churn-problem/</guid>
+      <guid>https://manosantoniou.com/post/solve-a-real-world-churn-problem/</guid>
       <description>Use R &amp;amp; Tidyverse to develop a churn management strategy..
 Churn definition Customer churn is a major problem for most of the companies. Losing customers require gaining new customers to replace them. This could be around 10X more expensive than retaining existing customers, depending on the domain.
 A customer is considered as churn when he/she stop using your company’s product or service. This is easy to define it for contractual setting, as a customer is considered as churn when fails to renew the contract.</description>
@@ -20,10 +20,10 @@ A customer is considered as churn when he/she stop using your company’s produc
     
     <item>
       <title>Predict using classification methods</title>
-      <link>https://clever-edison-73ae9c.netlify.app/post/predict-using-classification-methods/</link>
+      <link>https://manosantoniou.com/post/predict-using-classification-methods/</link>
       <pubDate>Mon, 19 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://clever-edison-73ae9c.netlify.app/post/predict-using-classification-methods/</guid>
+      <guid>https://manosantoniou.com/post/predict-using-classification-methods/</guid>
       <description>In this analysis i’ll try to build a model that will predict whether a tumor is malignant or benign, based on data from a study on breast cancer. Classification algorithms will be used in the modelling process.
 The dataset
 The data for this analysis refer to 569 patients from a study on breast cancer. The actual data can be found at UCI (Machine Learning Repository): https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic). The variables were computed from a digitized image of a breast mass and describe characteristics of the cell nucleus present in the image.</description>
@@ -31,10 +31,10 @@ The data for this analysis refer to 569 patients from a study on breast cancer. 
     
     <item>
       <title>Build a letter recognition classifier</title>
-      <link>https://clever-edison-73ae9c.netlify.app/post/2017-12-28-build-a-letter-recognition-classifier/</link>
+      <link>https://manosantoniou.com/post/2017-12-28-build-a-letter-recognition-classifier/</link>
       <pubDate>Thu, 28 Dec 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://clever-edison-73ae9c.netlify.app/post/2017-12-28-build-a-letter-recognition-classifier/</guid>
+      <guid>https://manosantoniou.com/post/2017-12-28-build-a-letter-recognition-classifier/</guid>
       <description>In this analysis i’ll develop a model that will predict the hand-written capital letters (English) displayed in a picture, using various of it’s attributes.
 INTRODUCTION Dataset Information
 This data set was originally used in the paper of P. W. Frey and D. J. Slate.“Letter Recognition Using Holland-style Adaptive Classifiers” (Machine Learning Vol 6 #2 March 91). It investigated the ability of several variations of Holland-style adaptive classifier systems to learn to correctly guess the letter categories associated with vectors of 16 integer attributes extracted from raster scan images of the letters.</description>

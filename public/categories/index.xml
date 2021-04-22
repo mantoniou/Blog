@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Manos Antoniou</title>
-    <link>https://clever-edison-73ae9c.netlify.app/categories/</link>
+    <link>https://manosantoniou.com/categories/</link>
     <description>Recent content in Categories on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 22 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://clever-edison-73ae9c.netlify.app/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 22 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://manosantoniou.com/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>R</title>
-      <link>https://clever-edison-73ae9c.netlify.app/categories/r/</link>
+      <link>https://manosantoniou.com/categories/r/</link>
       <pubDate>Thu, 22 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://clever-edison-73ae9c.netlify.app/categories/r/</guid>
+      <guid>https://manosantoniou.com/categories/r/</guid>
       <description></description>
     </item>
     

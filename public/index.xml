@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Manos Antoniou</title>
-    <link>https://clever-edison-73ae9c.netlify.app/</link>
+    <link>https://manosantoniou.com/</link>
     <description>Recent content on Manos Antoniou</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 22 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://clever-edison-73ae9c.netlify.app/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 22 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://manosantoniou.com/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Solve a real-world churn problem with Machine learning (including a detailed case study)</title>
-      <link>https://clever-edison-73ae9c.netlify.app/post/solve-a-real-world-churn-problem/</link>
+      <link>https://manosantoniou.com/post/solve-a-real-world-churn-problem/</link>
       <pubDate>Thu, 22 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://clever-edison-73ae9c.netlify.app/post/solve-a-real-world-churn-problem/</guid>
+      <guid>https://manosantoniou.com/post/solve-a-real-world-churn-problem/</guid>
       <description>Use R &amp;amp; Tidyverse to develop a churn management strategy..
 Churn definition Customer churn is a major problem for most of the companies. Losing customers require gaining new customers to replace them. This could be around 10X more expensive than retaining existing customers, depending on the domain.
 A customer is considered as churn when he/she stop using your company’s product or service. This is easy to define it for contractual setting, as a customer is considered as churn when fails to renew the contract.</description>
@@ -20,20 +20,20 @@ A customer is considered as churn when he/she stop using your company’s produc
     
     <item>
       <title>Predicting the future popularity of programming languages</title>
-      <link>https://clever-edison-73ae9c.netlify.app/post/predicting-the-future-popularity-of-programming-languages/</link>
+      <link>https://manosantoniou.com/post/predicting-the-future-popularity-of-programming-languages/</link>
       <pubDate>Sat, 14 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://clever-edison-73ae9c.netlify.app/post/predicting-the-future-popularity-of-programming-languages/</guid>
+      <guid>https://manosantoniou.com/post/predicting-the-future-popularity-of-programming-languages/</guid>
       <description>Insert data and ETL Stack overflow data were used for this analysis. The dataset was downloaded from the Stack Exchange Data Explorer. The processed file is also downloadable here. It was used by David Robinson in a datacamp project.
 Each Stack Overflow question has a tag, which marks a question to describe its topic or technology. This data has one observation for each pair of a tag and a year, showing the number of questions asked in that tag in that year and the total number of questions asked in that year.</description>
     </item>
     
     <item>
       <title>Clustering of EU countries</title>
-      <link>https://clever-edison-73ae9c.netlify.app/post/clustering-of-eu-countries/</link>
+      <link>https://manosantoniou.com/post/clustering-of-eu-countries/</link>
       <pubDate>Sat, 27 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://clever-edison-73ae9c.netlify.app/post/clustering-of-eu-countries/</guid>
+      <guid>https://manosantoniou.com/post/clustering-of-eu-countries/</guid>
       <description>In this article I used a public Eurostat dataset, to develop a segmentation of the EU countries. This dataset consists of 5 confidence indicators:
  Consumer Confidence Indicator
  Construction confidence indicator
@@ -44,20 +44,20 @@ Each Stack Overflow question has a tag, which marks a question to describe its t
     
     <item>
       <title>Forecasting GDP in the eurozone</title>
-      <link>https://clever-edison-73ae9c.netlify.app/post/forecasting-arima-modelling-gdp-eurostat/</link>
+      <link>https://manosantoniou.com/post/forecasting-arima-modelling-gdp-eurostat/</link>
       <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://clever-edison-73ae9c.netlify.app/post/forecasting-arima-modelling-gdp-eurostat/</guid>
+      <guid>https://manosantoniou.com/post/forecasting-arima-modelling-gdp-eurostat/</guid>
       <description>This analysis uses public Eurostat datasets, to forecast future total quarterly GDP of all eurozone countries. Eurostat is the statistical office of the European Union situated in Luxembourg. Its mission is to provide high quality statistics for Europe. Eurostat offers a whole range of important and interesting data that governments, businesses, the education sector, journalists and the public can use for their work and daily life.
 In particular, the eurozone (EU 19) quarterly GDP (Gross domestic product) dataset is used.</description>
     </item>
     
     <item>
       <title>Text analytics &amp; topic modelling on music genres song lyrics</title>
-      <link>https://clever-edison-73ae9c.netlify.app/post/text-analytics-topic-modelling-songs-lyrics/</link>
+      <link>https://manosantoniou.com/post/text-analytics-topic-modelling-songs-lyrics/</link>
       <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://clever-edison-73ae9c.netlify.app/post/text-analytics-topic-modelling-songs-lyrics/</guid>
+      <guid>https://manosantoniou.com/post/text-analytics-topic-modelling-songs-lyrics/</guid>
       <description>This analysis uses a dataset of more than 380,000 songs since 1970 published in kaggle. The main objective is to develop clusters of music genres by the song lyrics and the steps are the following:
  Data preparation (cleansing, transform etc.) Exploratory analysis
  Topic modelling  Various R libraries were used, but it is mainly based on #tidytext and #tidyverse environment.
@@ -66,20 +66,20 @@ Data preparation was a very important part of the analysis.</description>
     
     <item>
       <title>Web scraping and analyzing 400,000 articles</title>
-      <link>https://clever-edison-73ae9c.netlify.app/post/web-scraping-and-analyzing-400-000-articles/</link>
+      <link>https://manosantoniou.com/post/web-scraping-and-analyzing-400-000-articles/</link>
       <pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://clever-edison-73ae9c.netlify.app/post/web-scraping-and-analyzing-400-000-articles/</guid>
+      <guid>https://manosantoniou.com/post/web-scraping-and-analyzing-400-000-articles/</guid>
       <description>In this post i will analyze the articles published by NEWSBEAST, one of the main on-line publishers in Greece. The main question is “Are there any trends on the daily posting frequency of NEWSBEAST?” The steps below were followed before the main data analysis (link for the full r code can be found at the end of the article):
  Scraping the articles from the site (www.newbeast.gr) using rvest &amp;amp; car libraries in R</description>
     </item>
     
     <item>
       <title>Predict using classification methods</title>
-      <link>https://clever-edison-73ae9c.netlify.app/post/predict-using-classification-methods/</link>
+      <link>https://manosantoniou.com/post/predict-using-classification-methods/</link>
       <pubDate>Mon, 19 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://clever-edison-73ae9c.netlify.app/post/predict-using-classification-methods/</guid>
+      <guid>https://manosantoniou.com/post/predict-using-classification-methods/</guid>
       <description>In this analysis i’ll try to build a model that will predict whether a tumor is malignant or benign, based on data from a study on breast cancer. Classification algorithms will be used in the modelling process.
 The dataset
 The data for this analysis refer to 569 patients from a study on breast cancer. The actual data can be found at UCI (Machine Learning Repository): https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic). The variables were computed from a digitized image of a breast mass and describe characteristics of the cell nucleus present in the image.</description>
@@ -87,10 +87,10 @@ The data for this analysis refer to 569 patients from a study on breast cancer. 
     
     <item>
       <title>Build a letter recognition classifier</title>
-      <link>https://clever-edison-73ae9c.netlify.app/post/2017-12-28-build-a-letter-recognition-classifier/</link>
+      <link>https://manosantoniou.com/post/2017-12-28-build-a-letter-recognition-classifier/</link>
       <pubDate>Thu, 28 Dec 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://clever-edison-73ae9c.netlify.app/post/2017-12-28-build-a-letter-recognition-classifier/</guid>
+      <guid>https://manosantoniou.com/post/2017-12-28-build-a-letter-recognition-classifier/</guid>
       <description>In this analysis i’ll develop a model that will predict the hand-written capital letters (English) displayed in a picture, using various of it’s attributes.
 INTRODUCTION Dataset Information
 This data set was originally used in the paper of P. W. Frey and D. J. Slate.“Letter Recognition Using Holland-style Adaptive Classifiers” (Machine Learning Vol 6 #2 March 91). It investigated the ability of several variations of Holland-style adaptive classifier systems to learn to correctly guess the letter categories associated with vectors of 16 integer attributes extracted from raster scan images of the letters.</description>
